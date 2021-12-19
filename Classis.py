@@ -82,6 +82,12 @@ class Button(pygame.sprite.Sprite):
 #        screen.blit(string_rendered, intro_rect)
         pass
 
+    def click(self, *args):
+        if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
+                self.rect.collidepoint(args[0].pos):
+            return True
+        return False
+
 
 class Interface:
     """
