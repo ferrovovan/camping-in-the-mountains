@@ -27,6 +27,7 @@ def start_screen(screen, FPS):
                     if butt.click(event):
                         return True
         button_sprites.draw(screen)
-        #        button_sprites.draw_text(screen)
+        for butt in button_sprites:
+            butt.draw_text(screen)
         pygame.display.flip()
         clock.tick(FPS)
