@@ -8,12 +8,13 @@ def start_screen(screen, FPS):
 
     button_sprites = pygame.sprite.Group()
     scr_size = screen.get_size()
-    butt_width = 120
-    butt_height = 60
+    butt_width = 300
+    butt_height = 100
     n = 4
     for i in range(1, n + 1):
-        Button(button_sprites, scr_size[0] // 2, scr_size[1] // 2 + int((n // 2 - i) * butt_width * 0.75), butt_width,
-               butt_height, '', id=i)
+        Button(button_sprites, scr_size[0] // 2 - butt_width // 2,
+               scr_size[1] // 2 + int((n // 2 - i) * butt_height * 1.2) + int(butt_height * 3 / n),
+               butt_width, butt_height, id=i)
 
     running = True
     while running:
