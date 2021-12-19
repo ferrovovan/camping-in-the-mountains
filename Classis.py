@@ -76,10 +76,10 @@ class Button(pygame.sprite.Sprite):
         self.id = id
 
     def draw_text(self, screen):
-#        font = pygame.font.Font(None, 30)
-#        string_rendered = font.render(self.text, 1, pygame.Color('white'))
-#        intro_rect = string_rendered.get_rect()
-#        screen.blit(string_rendered, intro_rect)
+        #        font = pygame.font.Font(None, 30)
+        #        string_rendered = font.render(self.text, 1, pygame.Color('white'))
+        #        intro_rect = string_rendered.get_rect()
+        #        screen.blit(string_rendered, intro_rect)
         pass
 
     def click(self, *args):
@@ -93,6 +93,7 @@ class Interface:
     """
     Это класс пользовательского интерфейса в игре.
     """
+
     def __init__(self, screenBoards, cell_size):
         """
         :param screenBoards: (width, height)
