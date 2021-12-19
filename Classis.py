@@ -64,25 +64,23 @@ class Button(pygame.sprite.Sprite):
 
     image = load_image('gfx/buttons/button1.png', colorkey=-1)
 
-    def __init__(self, group, x, y, width, height, text="", id=0):
+    def __init__(self, group, x, y, width, height, id=0):
         """
         :param group: группа спрайтов
         :param x: left
         :param y: top
-        :param text: текст
-        :param id: id кнопки, число
         """
         super().__init__(group)
         self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = pygame.rect.Rect(x, y, width, height)
-        self.text = text
         self.id = id
 
     def draw_text(self, screen):
-        font = pygame.font.Font(None, 30)
-        string_rendered = font.render(self.text, 1, pygame.Color('white'))
-        intro_rect = string_rendered.get_rect()
-        screen.blit(string_rendered, intro_rect)
+#        font = pygame.font.Font(None, 30)
+#        string_rendered = font.render(self.text, 1, pygame.Color('white'))
+#        intro_rect = string_rendered.get_rect()
+#        screen.blit(string_rendered, intro_rect)
+        pass
 
 
 class Interface:
