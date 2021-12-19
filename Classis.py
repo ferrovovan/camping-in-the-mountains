@@ -111,6 +111,13 @@ class Interface:
         self.buttonsSpriteGroup.draw(screen)
 
 
+class Inventory(Board):
+    """
+    Это класс инвенторя, в котором игрок сможет увидеть свои вещи, свои навыки, летопись действий и прочее
+    """
+    pass
+
+
 class Map(Board):
     """
     Это класс поля, на котором всё будет отображаться.
