@@ -93,7 +93,22 @@ class Interface:
     """
     Это класс пользовательского интерфейса в игре.
     """
-    pass
+    def __init__(self, screenBoards, cell_size):
+        """
+        :param screenBoards: (width, height)
+        :param cell_size: int
+        """
+        self.rect = pygame.rect.Rect(0, 0, *screenBoards)
+        # группы спрайтов
+        self.specificationsSpriteGroup = pygame.sprite.Group()
+        self.buttonsSpriteGroup = pygame.sprite.Group()
+        # распределение кнопок
+        self.menuButt = Button(self.buttonsSpriteGroup, screenBoards[0] - cell_size // 2,
+                               0, cell_size // 2, cell_size // 2)
+
+    def render(self, screen):
+        self.specificationsSpriteGroup.draw(screen)
+        self.buttonsSpriteGroup.draw(screen)
 
 
 class Map(Board):

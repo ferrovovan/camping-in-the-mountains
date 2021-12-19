@@ -1,5 +1,5 @@
 import pygame
-from Classis import Map, Hero
+from Classis import Map, Hero, Interface
 from menu import start_screen
 
 pygame.init()
@@ -13,6 +13,7 @@ FPS = 60
 def main():
     board = Map(16, 16, screenBoards=size)
     board.load_map('data/maps/main_map.txt', size)
+    interface = Interface(size, board.cell_size)
     hero1 = Hero(board.board, 0, 7, is_in_circle=True)
     # основной цикл
     running = True
@@ -41,6 +42,7 @@ def main():
                 board.zoom(event.y, screen.get_size())
         screen.fill('black')
         board.render(screen)
+        interface.render(screen)
         pygame.display.flip()
         clock.tick(FPS)
     pygame.quit()
