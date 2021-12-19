@@ -1,4 +1,22 @@
 import pygame
+import os
+import sys
+
+
+def load_image(name, colorkey=None):
+    fullname = os.path.join('data', name)
+    if not os.path.isfile(fullname):
+        print(f"Файл с изображением '{fullname}' не найден")
+        sys.exit()
+
+    image = pygame.image.load(fullname)
+    if colorkey is not None:
+        if colorkey == -1:
+            colorkey = image.get_at((0, 0))
+        image.set_colorkey(colorkey)
+    else:
+        image = image.convert_alpha()
+    return image
 
 
 class Board:
@@ -37,6 +55,34 @@ class Board:
                 pygame.draw.rect(screen, 'white',
                                  ((self.left + i * self.cell_size, self.top + j * self.cell_size),
                                   (self.cell_size, self.cell_size)), width=2)
+
+
+class Button(pygame.sprite.Sprite):
+    """
+    класс кнопки
+    """
+
+    image = load_image('gfx/buttons/button1.png', colorkey=-1)
+
+    def __init__(self, group, x, y, width, height, text="", id=0):
+        """
+        :param group: группа спрайтов
+        :param x: left
+        :param y: top
+        :param text: текст
+        :param id: id кнопки, число
+        """
+        super().__init__(group)
+        self.image = pygame.transform.scale(self.image, (width, height))
+        self.rect = pygame.rect.Rect(x, y, width, height)
+        self.text = text
+        self.id = id
+
+    def draw_text(self, screen):
+        font = pygame.font.Font(None, 30)
+        string_rendered = font.render(self.text, 1, pygame.Color('white'))
+        intro_rect = string_rendered.get_rect()
+        screen.blit(string_rendered, intro_rect)
 
 
 class Interface:
