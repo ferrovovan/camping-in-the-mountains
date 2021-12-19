@@ -22,8 +22,10 @@ def start_screen(screen, FPS):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-            elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-                return True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for butt in button_sprites:
+                    if butt.click(event):
+                        return True
         button_sprites.draw(screen)
         #        button_sprites.draw_text(screen)
         pygame.display.flip()
