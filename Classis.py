@@ -112,11 +112,77 @@ class Interface:
         self.buttonsSpriteGroup.draw(screen)
 
 
+class Character:
+    """
+    Это класс , в котором игрок сможет увидеть свои вещи, свои навыки, летопись действий и прочее
+    """
+
+    def __init__(self):
+        self.inventory = Inventory(6, 3)
+
+
+class Item(pygame.sprite.Sprite):
+    """
+    Класс предмета
+    """
+
+    def __init__(self, group, filename, id=0):
+        super().__init__(group)
+        self.image = load_image(filename, colorkey=-1)
+        self.id = id
+
+    def render(self, screen, x=0, y=0):
+        screen.blit(self.image, (x, y, self.image.get_width(), self.image.get_height()))
+
+
 class Inventory(Board):
     """
-    Это класс инвенторя, в котором игрок сможет увидеть свои вещи, свои навыки, летопись действий и прочее
+    Хранит в себе предметы персонажа
     """
-    pass
+
+    def __init__(self, width, height, cell_size=None):
+        super().__init__(width, height)
+        if cell_size is not None:
+            self.cell_size = cell_size
+        self.board = [None for _ in range(width * height)]
+
+    def render(self, screen):
+        super().render(screen)
+        for i in range(len(self.board)):
+            item = self.board[i]
+            if item is None:
+                break
+            item.render(screen, i * self.cell_size, i * self.cell_size)
+
+    def add_item(self, item):
+        if not isinstance(item, Item):
+            raise Exception('into inventory added not Item object')
+        i = self.board.index(None)
+        if i != -1:  # если осталось место
+            self.board[i] = item
+            self.sord_board()
+
+    def del_item(self, id):
+        x = self.board.index(None)
+        if x == -1:
+            x = len(self.board)
+        for i in range(x):
+            if self.board[i].id == id:
+                x = self.board.pop(i)
+                self.sord_board()
+                return x
+        else:
+            return False
+
+    def sord_board(self):
+        x = self.board.index(None)
+        if x == -1:
+            x = len(self.board)
+        board = self.board[:x]
+        board.sort(key=lambda item: item.id)
+        self.board = board
+        for i in range(self.width * self.height - x):
+            self.board.append(None)
 
 
 class Map(Board):
