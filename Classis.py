@@ -181,6 +181,8 @@ class Inventory(Board):
         if i != -1:  # если осталось место
             self.board[i] = item
             self.sort_board()
+        else:
+            return False
 
     def del_item(self, id):
         x = self.board.index(None)
@@ -192,7 +194,7 @@ class Inventory(Board):
                 self.sort_board()
                 return x
         else:
-            return False
+            return None
 
     def sort_board(self):
         x = self.board.index(None)
