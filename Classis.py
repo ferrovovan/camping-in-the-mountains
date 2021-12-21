@@ -330,11 +330,11 @@ class MouseManager:
         self.character = character
 
     def manage_click(self, event):
-        if self.interface.is_click(event):
+        if self.interface.is_click(event):  # интерфейс
             self.interface.get_click(pygame.mouse.get_pos())
-        elif self.character.is_click(event):
+        elif self.character.is_click(event):  # инвентарь
             self.character.get_click(pygame.mouse.get_pos())
-        elif self.map.is_click(pygame.mouse.get_pos()):
+        elif self.map.is_click(pygame.mouse.get_pos()):  # карта
             self.map.on_click(pygame.mouse.get_pos())
 
     def manage_motion(self, event):
