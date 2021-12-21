@@ -180,7 +180,7 @@ class Inventory(Board):
         i = self.board.index(None)
         if i != -1:  # если осталось место
             self.board[i] = item
-            self.sord_board()
+            self.sort_board()
 
     def del_item(self, id):
         x = self.board.index(None)
@@ -189,7 +189,7 @@ class Inventory(Board):
         for i in range(x):
             if self.board[i].id == id:
                 x = self.board.pop(i)
-                self.sord_board()
+                self.sort_board()
                 return x
         else:
             return False
