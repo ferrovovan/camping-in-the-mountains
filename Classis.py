@@ -323,6 +323,10 @@ class Map(Board):
 
 
 class MouseManager:
+    modifications = {'interface': True,
+                     'character': True,
+                     'map': True}
+
     def __init__(self, screen, interface, map1, character):
         self.screen = screen
         self.interface = interface
@@ -330,11 +334,11 @@ class MouseManager:
         self.character = character
 
     def manage_click(self, event):
-        if self.interface.is_click(event):  # интерфейс
+        if self.interface.is_click(event) and self.modifications['interface']:  # интерфейс
             self.interface.get_click(pygame.mouse.get_pos())
-        elif self.character.is_click(event):  # инвентарь
+        elif self.character.is_click(event) and self.modifications['character']:  # инвентарь
             self.character.get_click(pygame.mouse.get_pos())
-        elif self.map.is_click(pygame.mouse.get_pos()):  # карта
+        elif self.map.is_click(pygame.mouse.get_pos()) and self.modifications['map']:  # карта
             self.map.on_click(pygame.mouse.get_pos())
 
     def manage_motion(self, event):
