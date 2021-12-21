@@ -446,7 +446,7 @@ class MoveObj(StaticObj):
 
 class Hero(MoveObj):
     """
-    класс главного героя.
+    класс главного героя, картинка.
     """
     pass
 
