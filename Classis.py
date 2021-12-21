@@ -110,29 +110,37 @@ class Interface:
         self.rect = pygame.rect.Rect(0, 0, *screenBoards)
         # группы спрайтов
         self.specificationsSpriteGroup = pygame.sprite.Group()  # рисунки, только отображающиеся
-        self.buttonSpriteGroup = pygame.sprite.Group()  # кнопки
-        self.menu_buttons = pygame.sprite.Group()
+        self.buttonGroup = pygame.sprite.Group()  # кнопки
+        self.menuButtonsGroup = pygame.sprite.Group()
         # распределение кнопок
 
         # меню кнопки
-        self.menuButt = Button(self.buttonSpriteGroup, screenBoards[0] - cell_size // 2,
+        self.menuButt = Button(self.buttonGroup, screenBoards[0] - cell_size // 2,
                                0, cell_size // 2, cell_size // 2)
         n = 4  # количество кнопок
         width = 120
         height = 60
         for i in range(n):
-            Button(self.menu_buttons, (screenBoards[0] - width) // 2,
+            Button(self.menuButtonsGroup, (screenBoards[0] - width) // 2,
                    screenBoards[1] // 2 + int((n // 2 - i) * height * 1.2) + int(height * 3 / n),
                    width, height)
 
     def get_click(self, event):
-        for button in self.buttonSpriteGroup:
+        for button in self.buttonGroup:
             if button.is_click(event):
                 if button == self.menuButt:
                     self._close_menu(not self.menu_close)
+                    break
+        if not self.menu_close:
+            for button in self.menuButtonsGroup:
+                if button.is_click(event):
+                    pass
 
     def is_click(self, event):
-        for button in self.buttonSpriteGroup:
+        for button in self.buttonGroup:
+            if button.is_click(event):
+                return True
+        for button in self.menuButtonsGroup:
             if button.is_click(event):
                 return True
         return False
@@ -144,7 +152,7 @@ class Interface:
 
     def render(self, screen):
         self.specificationsSpriteGroup.draw(screen)
-        self.buttonSpriteGroup.draw(screen)
+        self.buttonGroup.draw(screen)
         if not self.menu_close:
             self.menu_buttons.draw(screen)
 
@@ -349,6 +357,7 @@ class MouseManager:
                      'character': True,
                      'map': True}
 
+    # готов
     def __init__(self, screen, interface, map1, character):
         self.screen = screen
         self.interface = interface
