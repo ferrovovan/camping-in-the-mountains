@@ -1,0 +1,3 @@
+FPS = 60
+languitch = russian
+display = 900, 900
