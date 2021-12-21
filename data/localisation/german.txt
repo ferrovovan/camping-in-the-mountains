@@ -1,5 +1,0 @@
-id; text
-1; text_1
-2; text_2
-3; text_3
-4; text_4
