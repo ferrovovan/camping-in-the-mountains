@@ -48,8 +48,8 @@ def main():
         interface.render(screen)
         pygame.display.flip()
         clock.tick(FPS)
-    pygame.quit()
 
 
 if start_screen(screen, FPS):
     main()
+pygame.quit()
