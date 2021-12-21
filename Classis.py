@@ -129,7 +129,7 @@ class Interface:
 
 class Character:
     """
-    Это класс , в котором игрок сможет увидеть свои вещи, свои навыки, летопись действий и прочее
+    Это класс, в котором игрок сможет увидеть свои вещи, свои навыки, летопись действий и прочее
     """
 
     def __init__(self):
@@ -330,8 +330,11 @@ class MouseManager:
     def __init__(self, screen, interface, map1, character):
         self.screen = screen
         self.interface = interface
+        interface.mouseManager_linc = self
         self.map = map1
+        map1.mouseManager_linc = self
         self.character = character
+        character.mouseManager_linc = self
 
     def manage_click(self, event):
         if self.interface.is_click(event) and self.modifications['interface']:  # интерфейс
