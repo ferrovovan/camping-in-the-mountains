@@ -1,6 +1,7 @@
 import pygame
 import os
 import sys
+import csv
 
 
 def load_image(name, colorkey=None):
@@ -80,12 +81,16 @@ class Button(pygame.sprite.Sprite):
         self.rect = pygame.rect.Rect(x, y, width, height)
         self.id = id
 
-    def draw_text(self, screen):
-        #        font = pygame.font.Font(None, 30)
-        #        string_rendered = font.render(self.text, 1, pygame.Color('white'))
-        #        intro_rect = string_rendered.get_rect()
-        #        screen.blit(string_rendered, intro_rect)
-        pass
+    def draw_text(self, screen, text_dict=None):
+        font = pygame.font.Font(None, 30)
+        if text_dict is None:
+            data = open('data/localisation/buttons text/russian.txt', encoding='utf-8').read()
+            table = [r.split(';') for r in data.split('\n')]
+            text = table[self.id][1]
+        else:
+            text = text_dict[id]
+        string_rendered = font.render(text, True, pygame.Color('red'))
+        screen.blit(string_rendered, self.rect)
 
     # готов
     def is_click(self, *args):
@@ -118,12 +123,13 @@ class Interface:
         self.menuButt = Button(self.buttonGroup, screenBoards[0] - cell_size // 2,
                                0, cell_size // 2, cell_size // 2)
         n = 4  # количество кнопок
-        width = 120
-        height = 60
-        for i in range(n):
+        width = 240
+        height = 120
+        k = 1.2  # коэфициэнт удалённости кнопок
+        for i in range(1, n + 1):
             Button(self.menuButtonsGroup, (screenBoards[0] - width) // 2,
-                   screenBoards[1] // 2 + int((n // 2 - i) * height * 1.2) + int(height * 3 / n),
-                   width, height)
+                   screenBoards[1] // 2 + int((n // 2 - i) * height * k),
+                   width, height, id=n - i + 1)
 
     def get_click(self, event):
         for button in self.buttonGroup:
@@ -153,8 +159,12 @@ class Interface:
     def render(self, screen):
         self.specificationsSpriteGroup.draw(screen)
         self.buttonGroup.draw(screen)
+        for button in self.buttonGroup:
+            button.draw_text(screen)
         if not self.menu_close:
-            self.menu_buttons.draw(screen)
+            self.menuButtonsGroup.draw(screen)
+            for button in self.menuButtonsGroup:
+                button.draw_text(screen)
 
 
 class Character:
