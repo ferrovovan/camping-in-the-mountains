@@ -371,9 +371,11 @@ class MouseManager:
 
     def manage_wheel(self, event):
         if self.interface.is_click(event):
-            self.interface.get_click(pygame.mouse.get_pos())
+            pass
+            # self.interface.get_click(pygame.mouse.get_pos())
         elif self.character.is_click(event):
-            self.character.get_click(pygame.mouse.get_pos())
+            pass
+            # self.character.get_click(pygame.mouse.get_pos())
         elif self.map.is_click(pygame.mouse.get_pos()):
             self.map.zoom(event.y, self.screen.get_size())
 
