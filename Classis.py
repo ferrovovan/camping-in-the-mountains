@@ -100,6 +100,8 @@ class Interface:
     Это класс пользовательского интерфейса в игре.
     """
 
+    menu_close = True
+
     def __init__(self, screenBoards, cell_size):
         """
         :param screenBoards: (width, height)
@@ -109,12 +111,25 @@ class Interface:
         # группы спрайтов
         self.specificationsSpriteGroup = pygame.sprite.Group()  # рисунки, только отображающиеся
         self.buttonSpriteGroup = pygame.sprite.Group()  # кнопки
+        self.menu_buttons = pygame.sprite.Group()
         # распределение кнопок
+
+        # меню кнопки
         self.menuButt = Button(self.buttonSpriteGroup, screenBoards[0] - cell_size // 2,
                                0, cell_size // 2, cell_size // 2)
+        n = 4  # количество кнопок
+        width = 120
+        height = 60
+        for i in range(n):
+            Button(self.menu_buttons, (screenBoards[0] - width) // 2,
+                   screenBoards[1] // 2 + int((n // 2 - i) * height * 1.2) + int(height * 3 / n),
+                   width, height)
 
-    def get_click(self, mouse_pos):
-        pass
+    def get_click(self, event):
+        for button in self.buttonSpriteGroup:
+            if button.is_click(event):
+                if button == self.menuButt:
+                    self._close_menu(not self.menu_close)
 
     def is_click(self, event):
         for button in self.buttonSpriteGroup:
@@ -122,9 +137,16 @@ class Interface:
                 return True
         return False
 
+    def _close_menu(self, a=True):
+        self.menu_close = a
+        self.mouseManager_linc.modifications['character'] = not a
+        self.mouseManager_linc.modifications['map'] = not a
+
     def render(self, screen):
         self.specificationsSpriteGroup.draw(screen)
         self.buttonSpriteGroup.draw(screen)
+        if not self.menu_close:
+            self.menu_buttons.draw(screen)
 
 
 class Character:
@@ -338,7 +360,7 @@ class MouseManager:
 
     def manage_click(self, event):
         if self.interface.is_click(event) and self.modifications['interface']:  # интерфейс
-            self.interface.get_click(pygame.mouse.get_pos())
+            self.interface.get_click(event)
         elif self.character.is_click(event) and self.modifications['character']:  # инвентарь
             self.character.get_click(pygame.mouse.get_pos())
         elif self.map.is_click(pygame.mouse.get_pos()) and self.modifications['map']:  # карта
