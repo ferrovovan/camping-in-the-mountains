@@ -194,7 +194,7 @@ class Inventory(Board):
         else:
             return False
 
-    def sord_board(self):
+    def sort_board(self):
         x = self.board.index(None)
         if x == -1:
             x = len(self.board)
