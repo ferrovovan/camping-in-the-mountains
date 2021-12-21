@@ -1,5 +1,5 @@
 import pygame
-from Classis import Map, Hero, Interface
+from Classis import Map, Hero, Interface, MouseManager, Character
 from menu import start_screen
 
 pygame.init()
@@ -15,6 +15,8 @@ def main():
     board.load_map('data/maps/main_map.txt', size)
     interface = Interface(size, board.cell_size)
     hero1 = Hero(board.board, 0, 7, is_in_circle=True)
+    character = Character()
+    mouseManager = MouseManager(screen, interface, board, character)
     # основной цикл
     running = True
     clock = pygame.time.Clock()
@@ -39,7 +41,8 @@ def main():
                 elif kPressed[pygame.K_s]:
                     hero1.move((-1, 0))
             if event.type == pygame.MOUSEWHEEL:  # если мышь крутится
-                board.zoom(event.y, screen.get_size())
+                mouseManager.manage_wheel(event)
+#                board.zoom(event.y, screen.get_size())
         screen.fill('black')
         board.render(screen)
         interface.render(screen)
