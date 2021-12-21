@@ -35,13 +35,18 @@ class Board:
         self.top = top
         self.cell_size = cell_size
 
+    def is_click(self, mouse_pos):
+        if any((mouse_pos[0] <= self.left, mouse_pos[0] >= self.left + self.cell_size * self.width,
+                mouse_pos[1] <= self.top, mouse_pos[1] >= self.top + self.cell_size * self.height)):
+            return False
+        return True
+
     def get_click(self, mouse_pos):
         cell = self.get_cell(mouse_pos)
         self.on_click(cell)
 
     def get_cell(self, mouse_pos):
-        if any((mouse_pos[0] <= self.left, mouse_pos[0] >= self.left + self.cell_size * self.width,
-                mouse_pos[1] <= self.top, mouse_pos[1] >= self.top + self.cell_size * self.height)):
+        if self.is_click(mouse_pos):
             return None
         return ((mouse_pos[0] - self.left) // self.cell_size,
                 (mouse_pos[1] - self.top) // self.cell_size)
@@ -107,6 +112,15 @@ class Interface:
         self.menuButt = Button(self.buttonsSpriteGroup, screenBoards[0] - cell_size // 2,
                                0, cell_size // 2, cell_size // 2)
 
+    def get_click(self, mouse_pos):
+        pass
+
+    def is_click(self, event):
+        for button in self.buttonsSpriteGroup:
+            if button.click(event):
+                return True
+        return False
+
     def render(self, screen):
         self.specificationsSpriteGroup.draw(screen)
         self.buttonsSpriteGroup.draw(screen)
@@ -119,6 +133,12 @@ class Character:
 
     def __init__(self):
         self.inventory = Inventory(6, 3)
+
+    def get_click(self, mouse_pos):
+        pass
+
+    def is_click(self, event):
+        pass
 
 
 class Item(pygame.sprite.Sprite):
@@ -297,6 +317,33 @@ class Map(Board):
                                        (self.left + i * self.cell_size + self.cell_size // 2,
                                         self.top + j * self.cell_size + self.cell_size // 2),
                                        radius=self.cell_size // 2 - 4)
+
+
+class MouseManager:
+    def __init__(self, screen, interface, map1, character):
+        self.screen = screen
+        self.interface = interface
+        self.map = map1
+        self.character = character
+
+    def manage_click(self, event):
+        if self.interface.is_click(event):
+            self.interface.get_click(pygame.mouse.get_pos())
+        elif self.character.is_click(event):
+            self.character.get_click(pygame.mouse.get_pos())
+        elif self.map.is_click(pygame.mouse.get_pos()):
+            self.map.on_click(pygame.mouse.get_pos())
+
+    def manage_motion(self, event):
+        pass
+
+    def manage_wheel(self, event):
+        if self.interface.is_click(event):
+            self.interface.get_click(pygame.mouse.get_pos())
+        elif self.character.is_click(event):
+            self.character.get_click(pygame.mouse.get_pos())
+        elif self.map.is_click(pygame.mouse.get_pos()):
+            self.map.zoom(event.y, self.screen.get_size())
 
 
 class StaticObj:
