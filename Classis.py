@@ -87,7 +87,8 @@ class Button(pygame.sprite.Sprite):
         #        screen.blit(string_rendered, intro_rect)
         pass
 
-    def click(self, *args):
+    # готов
+    def is_click(self, *args):
         if args and args[0].type == pygame.MOUSEBUTTONDOWN and \
                 self.rect.collidepoint(args[0].pos):
             return True
@@ -106,24 +107,24 @@ class Interface:
         """
         self.rect = pygame.rect.Rect(0, 0, *screenBoards)
         # группы спрайтов
-        self.specificationsSpriteGroup = pygame.sprite.Group()
-        self.buttonsSpriteGroup = pygame.sprite.Group()
+        self.specificationsSpriteGroup = pygame.sprite.Group()  # рисунки, только отображающиеся
+        self.buttonSpriteGroup = pygame.sprite.Group()  # кнопки
         # распределение кнопок
-        self.menuButt = Button(self.buttonsSpriteGroup, screenBoards[0] - cell_size // 2,
+        self.menuButt = Button(self.buttonSpriteGroup, screenBoards[0] - cell_size // 2,
                                0, cell_size // 2, cell_size // 2)
 
     def get_click(self, mouse_pos):
         pass
 
     def is_click(self, event):
-        for button in self.buttonsSpriteGroup:
-            if button.click(event):
+        for button in self.buttonSpriteGroup:
+            if button.is_click(event):
                 return True
         return False
 
     def render(self, screen):
         self.specificationsSpriteGroup.draw(screen)
-        self.buttonsSpriteGroup.draw(screen)
+        self.buttonSpriteGroup.draw(screen)
 
 
 class Character:
