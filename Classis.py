@@ -154,9 +154,10 @@ class Interface:
                     self._close_menu(not self.menu_close)
                     break
         if not self.menu_close:
-            for button in self.menuButtonsGroup:
-                if button.is_click(event):
-                    pass
+            id = self.menuButtonsGroup.click_id(event)
+            if id is not None:
+                if id == 7:
+                    return "return"
 
     def is_click(self, event):
         for button in self.some_buttons:
@@ -393,7 +394,9 @@ class MouseManager:
 
     def manage_click(self, event):
         if self.interface.is_click(event) and self.modifications['interface']:  # интерфейс
-            self.interface.get_click(event)
+            message = self.interface.get_click(event)
+            if message is not None:
+                return message
         elif self.character.is_click(event) and self.modifications['character']:  # инвентарь
             self.character.get_click(pygame.mouse.get_pos())
         elif self.map.is_click(pygame.mouse.get_pos()) and self.modifications['map']:  # карта

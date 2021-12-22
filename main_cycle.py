@@ -11,6 +11,8 @@ FPS = 60
 
 
 def main():
+    is_return = False  # если нужно вернуться
+    # данные игры
     board = Map(16, 16, screenBoards=size)
     board.load_map('data/maps/main_map.txt', size)
     interface = Interface(size, board.cell_size)
@@ -43,7 +45,10 @@ def main():
             if event.type == pygame.MOUSEWHEEL:  # если мышь крутится
                 mouseManager.manage_wheel(event)
             elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONUP:
-                mouseManager.manage_click(event)
+                message = mouseManager.manage_click(event)
+                if message == "return":
+                    is_return = True
+                    running = False
             elif event.type == pygame.MOUSEMOTION:
                 mouseManager.manage_motion(event)
         screen.fill('black')
@@ -51,6 +56,9 @@ def main():
         interface.render(screen)
         pygame.display.flip()
         clock.tick(FPS)
+    if is_return:
+        if start_screen(screen, FPS):
+            main()
 
 
 if start_screen(screen, FPS):
