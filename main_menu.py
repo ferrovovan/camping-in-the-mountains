@@ -28,10 +28,12 @@ def start_screen(screen, FPS):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for butt in button_sprites:
                     if butt.is_click(event):
+                        # готово
                         if butt.id == 1:
                             return True
                         elif butt.id == 3:
                             pass
+                        # готово
                         elif butt.id == 4:
                             pygame.quit()
                             exit()
