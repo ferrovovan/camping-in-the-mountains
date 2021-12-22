@@ -130,12 +130,12 @@ class Interface:
         self.rect = pygame.rect.Rect(0, 0, *screenBoards)
         # группы спрайтов
         self.specificationsSpriteGroup = pygame.sprite.Group()  # рисунки, только отображающиеся
-        self.buttonGroup = pygame.sprite.Group()  # кнопки
+        self.some_buttons = pygame.sprite.Group()  # кнопки
         self.menuButtonsGroup = ButtonGroup()
         # распределение кнопок
 
         # меню кнопки
-        self.menuButt = Button(self.buttonGroup, screenBoards[0] - cell_size // 2,
+        self.menuButt = Button(self.some_buttons, screenBoards[0] - cell_size // 2,
                                0, cell_size // 2, cell_size // 2)
         x = [7, 6, 5]
         n = len(x)  # количество кнопок
@@ -148,7 +148,7 @@ class Interface:
                    width, height, id=x[i])
 
     def get_click(self, event):
-        for button in self.buttonGroup:
+        for button in self.some_buttons:
             if button.is_click(event):
                 if button == self.menuButt:
                     self._close_menu(not self.menu_close)
@@ -159,12 +159,11 @@ class Interface:
                     pass
 
     def is_click(self, event):
-        for button in self.buttonGroup:
+        for button in self.some_buttons:
             if button.is_click(event):
                 return True
-        for button in self.menuButtonsGroup:
-            if button.is_click(event):
-                return True
+        if not self.menu_close and self.menuButtonsGroup.click_id(event):
+            return True
         return False
 
     def _close_menu(self, a=True):
@@ -174,8 +173,8 @@ class Interface:
 
     def render(self, screen):
         self.specificationsSpriteGroup.draw(screen)
-        self.buttonGroup.draw(screen)
-        for button in self.buttonGroup:
+        self.some_buttons.draw(screen)
+        for button in self.some_buttons:
             button.draw_text(screen)
         if not self.menu_close:
             self.menuButtonsGroup.draw(screen)
