@@ -30,9 +30,13 @@ def start_screen(screen, FPS):
                     if butt.is_click(event):
                         if butt.id == 1:
                             return True
+                        elif butt.id == 3:
+                            pass
                         elif butt.id == 4:
                             pygame.quit()
                             exit()
+                        elif butt.id == 6:
+                            pass
 
         button_sprites.draw(screen)
         button_sprites.draw_text(screen)
