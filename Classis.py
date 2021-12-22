@@ -68,6 +68,15 @@ class ButtonGroup(pygame.sprite.Group):
         for button in self:
             button.draw_text(screen)
 
+    def click_id(self, event):
+        """
+        :return button's id, if one of them was clicked? else return None
+        """
+        for button in self:
+            if button.is_click(event):
+                return button.id
+        return None
+
 
 class Button(pygame.sprite.Sprite):
     """
