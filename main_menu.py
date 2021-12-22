@@ -1,12 +1,11 @@
 import pygame
-from Classis import Button
-from Fone import Background
+from Classis import Button, load_image
 
 
 def start_screen(screen, FPS):
-    BackGround = Background('fone.png', [0, 0])
     screen.fill([255, 255, 255])
-    screen.blit(BackGround.image, BackGround.rect)
+    menuIm = load_image('gfx/textures/interface/fone.png')
+    screen.blit(menuIm, menuIm.get_rect())
     clock = pygame.time.Clock()
 
     button_sprites = pygame.sprite.Group()
