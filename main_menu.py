@@ -10,6 +10,7 @@ def start_screen(screen, FPS):
     scr_size = screen.get_size()
     butt_width = 300
     butt_height = 100
+    x = [4, 3, 6, 1]
     n = 4
     for i in range(1, n + 1):
         Button(button_sprites, scr_size[0] // 2 - butt_width // 2,

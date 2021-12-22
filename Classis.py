@@ -122,15 +122,15 @@ class Interface:
         # меню кнопки
         self.menuButt = Button(self.buttonGroup, screenBoards[0] - cell_size // 2,
                                0, cell_size // 2, cell_size // 2)
-        n = 4  # количество кнопок
-        n1 = 3  # с какой начинать
+        x = [7, 6, 5]
+        n = len(x)  # количество кнопок
         width = 240
         height = 120
         k = 1.2  # коэфициэнт удалённости кнопок
-        for i in range(n1, n + n1):
+        for i in range(n):
             Button(self.menuButtonsGroup, (screenBoards[0] - width) // 2,
                    screenBoards[1] // 2 + int((n // 2 - i) * height * k),
-                   width, height, id=n - i + n1)
+                   width, height, id=x[i])
 
     def get_click(self, event):
         for button in self.buttonGroup:
