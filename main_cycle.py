@@ -1,6 +1,6 @@
 import pygame
 from Classis import Map, Hero, Interface, MouseManager, Character
-from menu import start_screen
+from main_menu import start_screen
 
 pygame.init()
 pygame.display.set_caption('Поход по горам')
