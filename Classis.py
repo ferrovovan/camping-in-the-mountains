@@ -63,7 +63,7 @@ class Board:
                                   (self.cell_size, self.cell_size)), width=2)
 
 
-class buttonGroup(pygame.sprite.Group):
+class ButtonGroup(pygame.sprite.Group):
     def draw_text(self, screen):
         for button in self:
             button.draw_text(screen)
@@ -122,7 +122,7 @@ class Interface:
         # группы спрайтов
         self.specificationsSpriteGroup = pygame.sprite.Group()  # рисунки, только отображающиеся
         self.buttonGroup = pygame.sprite.Group()  # кнопки
-        self.menuButtonsGroup = pygame.sprite.Group()
+        self.menuButtonsGroup = ButtonGroup()
         # распределение кнопок
 
         # меню кнопки
@@ -170,8 +170,7 @@ class Interface:
             button.draw_text(screen)
         if not self.menu_close:
             self.menuButtonsGroup.draw(screen)
-            for button in self.menuButtonsGroup:
-                button.draw_text(screen)
+            self.menuButtonsGroup.draw_text(screen)
 
 
 class Character:

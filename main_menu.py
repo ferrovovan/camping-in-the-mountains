@@ -1,5 +1,5 @@
 import pygame
-from Classis import Button, load_image
+from Classis import Button, load_image, ButtonGroup
 
 
 def start_screen(screen, FPS):
@@ -8,7 +8,7 @@ def start_screen(screen, FPS):
     screen.blit(menuIm, menuIm.get_rect())
     clock = pygame.time.Clock()
 
-    button_sprites = pygame.sprite.Group()
+    button_sprites = ButtonGroup
     scr_size = screen.get_size()
     butt_width = 300
     butt_height = 100
@@ -30,7 +30,6 @@ def start_screen(screen, FPS):
                     if butt.is_click(event):
                         return True
         button_sprites.draw(screen)
-        for butt in button_sprites:
-            butt.draw_text(screen)
+        button_sprites.draw_text(screen)
         pygame.display.flip()
         clock.tick(FPS)
