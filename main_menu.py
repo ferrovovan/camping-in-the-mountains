@@ -8,7 +8,7 @@ def start_screen(screen, FPS):
     screen.blit(menuIm, menuIm.get_rect())
     clock = pygame.time.Clock()
 
-    button_sprites = ButtonGroup
+    button_sprites = ButtonGroup()
     scr_size = screen.get_size()
     butt_width = 300
     butt_height = 100
