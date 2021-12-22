@@ -123,13 +123,14 @@ class Interface:
         self.menuButt = Button(self.buttonGroup, screenBoards[0] - cell_size // 2,
                                0, cell_size // 2, cell_size // 2)
         n = 4  # количество кнопок
+        n1 = 3  # с какой начинать
         width = 240
         height = 120
         k = 1.2  # коэфициэнт удалённости кнопок
-        for i in range(1, n + 1):
+        for i in range(n1, n + n1):
             Button(self.menuButtonsGroup, (screenBoards[0] - width) // 2,
                    screenBoards[1] // 2 + int((n // 2 - i) * height * k),
-                   width, height, id=n - i + 1)
+                   width, height, id=n - i + n1)
 
     def get_click(self, event):
         for button in self.buttonGroup:
@@ -388,11 +389,11 @@ class MouseManager:
     def manage_motion(self, event):
         pass
 
-    def manage_wheel(self, event):
-        if self.interface.is_click(event):
+    def manage_wheel(self, event) :
+        if self.interface.is_click(event) and self.modifications['interface']:  # интерфейс
             pass
             # self.interface.get_click(pygame.mouse.get_pos())
-        elif self.character.is_click(event):
+        elif self.character.is_click(event) and self.modifications['character']:  # инвентарь
             pass
             # self.character.get_click(pygame.mouse.get_pos())
         elif self.map.is_click(pygame.mouse.get_pos()):

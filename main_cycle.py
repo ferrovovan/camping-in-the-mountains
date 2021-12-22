@@ -40,12 +40,12 @@ def main():
                     hero1.move((1, 0))
                 elif kPressed[pygame.K_s]:
                     hero1.move((-1, 0))
-            if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONUP:
-                mouseManager.manage_click(event)
-            if event.type == pygame.MOUSEMOTION:
-                mouseManager.manage_motion(event)
             if event.type == pygame.MOUSEWHEEL:  # если мышь крутится
                 mouseManager.manage_wheel(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONUP:
+                mouseManager.manage_click(event)
+            elif event.type == pygame.MOUSEMOTION:
+                mouseManager.manage_motion(event)
         screen.fill('black')
         board.render(screen)
         interface.render(screen)
