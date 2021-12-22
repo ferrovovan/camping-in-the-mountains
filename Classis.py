@@ -63,6 +63,10 @@ class Board:
                                   (self.cell_size, self.cell_size)), width=2)
 
 
+class buttonGroup(pygame.sprite.Group):
+    pass
+
+
 class Button(pygame.sprite.Sprite):
     """
     класс кнопки
@@ -389,7 +393,7 @@ class MouseManager:
     def manage_motion(self, event):
         pass
 
-    def manage_wheel(self, event) :
+    def manage_wheel(self, event):
         if self.interface.is_click(event) and self.modifications['interface']:  # интерфейс
             pass
             # self.interface.get_click(pygame.mouse.get_pos())
