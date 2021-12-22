@@ -64,7 +64,9 @@ class Board:
 
 
 class buttonGroup(pygame.sprite.Group):
-    pass
+    def draw_text(self, screen):
+        for button in self:
+            button.draw_text(screen)
 
 
 class Button(pygame.sprite.Sprite):
