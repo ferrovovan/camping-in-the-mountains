@@ -4,10 +4,21 @@ from main_menu import start_screen
 
 pygame.init()
 pygame.display.set_caption('Поход по горам')
-a = 900
-size = a, a
+
+settingsDict = {}
+with open('settings.txt', 'r') as settings:
+    for line in settings:
+        x = line[:-1].split(' = ')
+        settingsDict[x[0]] = x[1]
+for key in settingsDict.keys():
+    if key == 'FPS':
+        FPS = int(settingsDict[key])
+    elif key == 'language':
+        language = settingsDict[key]
+    elif key == 'display':
+        size = tuple(map(int, settingsDict[key].split(', ')))
+
 screen = pygame.display.set_mode(size)
-FPS = 60
 
 
 def main():
