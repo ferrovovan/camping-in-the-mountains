@@ -84,13 +84,15 @@ class Button(pygame.sprite.Sprite):
 
     image = load_image('gfx/buttons/button1.png', colorkey=-1)
 
-    def __init__(self, group, x, y, width, height, id=0):
+    def __init__(self, group, x, y, width, height, id=0, image=None):
         """
         :param group: группа спрайтов
         :param x: left
         :param y: top
         """
         super().__init__(group)
+        if image is not None:
+            self.image = image
         self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = pygame.rect.Rect(x, y, width, height)
         self.id = id
