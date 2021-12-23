@@ -1,4 +1,5 @@
 from Classis import *
+from Settings import Set
 
 pygame.init()
 pygame.display.set_caption('Поход по горам')
@@ -50,8 +51,10 @@ def start_screen(screen, FPS):
                     # готово
                     if id == 1:
                         return True
+                    #готово
                     elif id == 3:
-                        pass
+                    #кнопка настроек
+                        Set(screen, FPS)
                     # готово
                     elif id == 4:
                         pygame.quit()
