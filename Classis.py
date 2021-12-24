@@ -63,20 +63,33 @@ class Board:
 
 
 class SomeDisplay(pygame.Surface):
-    def __init__(self, size, spriteGroup, coords=(0, 0)):
+    def __init__(self, size, spriteGroup, auto_data=(False, 0, 0), coords=(0, 0)):
         """
         Менюшка на экране
+        :param auto_data if you want to auto data: (True, indent, t)
         :param coords: left top corner in screen
         """
+        self.spriteGroup = spriteGroup.copy()
+        if auto_data[0]:
+            size, coords = self._auto_data(*auto_data[1:], size)
         super().__init__(size)
         self.fill('gray')
-        self.spriteGroup = spriteGroup.copy()
         for sprite in spriteGroup:
             sprite.rect.x = sprite.rect.x - coords[0]
             sprite.rect.y = sprite.rect.y - coords[1]
         for sprite in spriteGroup:
             del sprite
         self.coords = coords
+
+    def _auto_data(self, indent, t, size):
+        butt_width = (sprite for sprite in self.spriteGroup).__next__().rect.width
+        butt_height = (sprite for sprite in self.spriteGroup).__next__().rect.height
+        n = len(self.spriteGroup)
+        size1 = (butt_width + indent * 2,
+                 2 * (n // 2 * butt_height * 1.2 + indent) - butt_height * 0.2)
+        coords1 = (size[0] // 2 - (butt_width // 2 + indent),
+                   size[1] // 2 - (n // 2 * butt_height * 1.2 - t + indent))
+        return size1, coords1
 
     def render(self, screen):
         screen.blit(self, self.coords)

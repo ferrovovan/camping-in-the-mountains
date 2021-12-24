@@ -40,11 +40,7 @@ def start_screen(screen, FPS):
                butt_width, butt_height, id=x[i - 1], image=images['button1'])
 
     indent = 20  # отступ
-    menuWindow = SomeDisplay((butt_width + indent * 2,
-                              2 * (n // 2 * butt_height * 1.2 + indent) - butt_height * 0.2),
-                             button_sprites,
-                             coords=(scr_size[0] // 2 - (butt_width // 2 + indent),
-                                     scr_size[1] // 2 - (n // 2 * butt_height * 1.2 - t + indent)))
+    menuWindow = SomeDisplay(scr_size, button_sprites, (True, indent, t))
 
     running = True
     while running:
