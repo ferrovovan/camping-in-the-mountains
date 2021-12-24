@@ -33,10 +33,17 @@ def start_screen(screen, FPS):
     butt_height = 100
     x = [4, 3, 6, 1]
     n = 4
+    t = int(butt_height * 3 / n)
     for i in range(1, n + 1):
         Button(button_sprites, scr_size[0] // 2 - butt_width // 2,
-               scr_size[1] // 2 + int((n // 2 - i) * butt_height * 1.2) + int(butt_height * 3 / n),
+               scr_size[1] // 2 + int((n // 2 - i) * butt_height * 1.2) + t,
                butt_width, butt_height, id=x[i - 1], image=images['button1'])
+
+    indent = 0  # отступ
+    menuWindow = SomeDisplay((butt_width + indent * 2, 2 * (n // 2 * butt_height * 1.2 - t + indent)),
+                             button_sprites,
+                             coords=(scr_size[0] // 2 - (butt_width // 2 + indent),
+                                     scr_size[1] // 2 - (n // 2 * butt_height * 1.2 - t + indent)))
 
     running = True
     while running:
@@ -59,8 +66,9 @@ def start_screen(screen, FPS):
                     elif id == 6:
                         pass
 
-        button_sprites.draw(screen)
+#        button_sprites.draw(screen)
         button_sprites.draw_text(screen)
+        menuWindow.render(screen)
         pygame.display.flip()
         clock.tick(FPS)
 

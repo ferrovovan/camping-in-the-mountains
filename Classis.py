@@ -62,6 +62,28 @@ class Board:
                                   (self.cell_size, self.cell_size)), width=2)
 
 
+class SomeDisplay(pygame.Surface):
+    def __init__(self, size, spriteGroup, coords=(0, 0)):
+        """
+        Менюшка на экране
+        :param coords: left top corner in screen
+        """
+        super().__init__(size)
+        self.fill('gray')
+        self.spriteGroup = spriteGroup.copy()
+        for sprite in spriteGroup:
+            sprite.rect.x = sprite.rect.x - coords[0]
+            sprite.rect.y = sprite.rect.y - coords[1]
+        for sprite in spriteGroup:
+            del sprite
+        self.coords = coords
+
+    def render(self, screen):
+        screen.blit(self, self.coords)
+        self.spriteGroup.draw(self)
+        self.spriteGroup.draw_text(self)
+
+
 class ButtonGroup(pygame.sprite.Group):
     def draw_text(self, screen):
         for button in self:
@@ -104,7 +126,7 @@ class Button(pygame.sprite.Sprite):
             table = [r.split(';') for r in data.split('\n')]
             text = table[self.id][1]
         else:
-            text = text_dict[id]
+            text = text_dict[self.id]
         string_rendered = font.render(text, True, pygame.Color('red'))
         screen.blit(string_rendered, self.rect)
 
