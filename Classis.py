@@ -80,12 +80,14 @@ class ButtonGroup(pygame.sprite.Group):
         for button in self:
             button.draw_text(screen)
 
+    # готов
     def get_sprite(self, id):
         for button in self:
             if button.id == id:
                 return button
         return None
 
+    # готов
     def click_id(self, event):
         """
         :return button's id, if one of them was clicked? else return None
@@ -96,6 +98,7 @@ class ButtonGroup(pygame.sprite.Group):
         return None
 
 
+# готов
 class Button(pygame.sprite.Sprite):
     """
     класс кнопки
@@ -103,6 +106,7 @@ class Button(pygame.sprite.Sprite):
 
     image = load_image('gfx/buttons/button1.png', colorkey=-1)
 
+    # готов
     def __init__(self, group, x, y, width, height, id=0, image=None):
         """
         :param group: группа спрайтов
@@ -116,6 +120,7 @@ class Button(pygame.sprite.Sprite):
         self.rect = pygame.rect.Rect(x, y, width, height)
         self.id = id
 
+    # готов
     def draw_text(self, screen, text_dict=None):
         font = pygame.font.Font(None, 30)
         if text_dict is None:
@@ -126,6 +131,7 @@ class Button(pygame.sprite.Sprite):
             text = text_dict[self.id]
         string_rendered = font.render(text, True, pygame.Color('red'))
         blitRect = self.rect.copy()
+        blitRect.top = self.rect.top + (self.rect.height - string_rendered.get_height()) // 5
         blitRect.left = self.rect.left + (self.rect.width - string_rendered.get_width()) // 2
         screen.blit(string_rendered, blitRect)
 
