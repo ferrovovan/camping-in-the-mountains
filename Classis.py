@@ -87,7 +87,7 @@ class ButtonGroup(pygame.sprite.Group):
     # готов
     def get_sprite(self, id, sp_id=None):
         for button in self:
-            if button.id == id and button.spesial_id == sp_id:
+            if button.id == id and button.special_id == sp_id:
                 return button
         return None
 
