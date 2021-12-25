@@ -43,15 +43,15 @@ def start_screen(screen, FPS):
                 id = menuWin.click_id(event)
                 if id is not None:
                     # готово
-                    if id == 1:
+                    if id == 1:  # играть
                         return True
-                    elif id == 3:
+                    elif id == 3:  # загрузить
                         pass
                     # готово
-                    elif id == 4:
+                    elif id == 4:  # выход
                         pygame.quit()
                         exit()
-                    elif id == 6:
+                    elif id == 6:  # настройки
                         pass
 
         menuWin.render(screen)
