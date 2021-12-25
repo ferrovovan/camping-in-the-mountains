@@ -125,7 +125,9 @@ class Button(pygame.sprite.Sprite):
         else:
             text = text_dict[self.id]
         string_rendered = font.render(text, True, pygame.Color('red'))
-        screen.blit(string_rendered, self.rect)
+        blitRect = self.rect.copy()
+        blitRect.left = self.rect.left + (self.rect.width - string_rendered.get_width()) // 2
+        screen.blit(string_rendered, blitRect)
 
     # готов
     def is_click(self, *args):
