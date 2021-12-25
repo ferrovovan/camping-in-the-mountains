@@ -64,6 +64,7 @@ class SomeDisplay(pygame.Surface):
                 button.rect.y = new_coords[1]
             if new_im is not None:
                 button.image = new_im
+            button.image = pygame.transform.scale(button.image, (button.rect.width, button.rect.height))
 
     def click_id(self, event):
         """
