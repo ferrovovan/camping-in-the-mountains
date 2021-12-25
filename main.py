@@ -25,7 +25,8 @@ def start_screen(screen, FPS):
     screen.blit(menuIm, menuIm.get_rect())
     clock = pygame.time.Clock()
 
-    images = {'button1': load_image('gfx/buttons/button1.png')}
+    images = {'button1': load_image('gfx/buttons/button1.png'),
+              'button2': load_image('gfx/buttons/button2.png')}
 
     menu_id = [1, 2, 3, 4]  # id кнопок меню
     settings_id = [8, 8, 9, 9, 7]  # id кнопок настроек
@@ -60,7 +61,7 @@ def start_screen(screen, FPS):
             settingsWin.reset_button(9, sp_id=2, new_size=(40, 40),
                                      new_coords=(butt_indent + 160, 20))
         else:
-            pass
+            button.set_image(images['button2'])
 
     screens_dict = {'menuWin': menuWin,
                     'settingsWin': settingsWin,

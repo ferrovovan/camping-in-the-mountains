@@ -147,6 +147,12 @@ class Button(pygame.sprite.Sprite):
             return True
         return False
 
+    def set_image(self, image):
+        """
+        Ставит новое изображение
+        """
+        self.image = pygame.transform.scale(image, (self.rect.width, self.rect.height))
+
 
 class Interface:
     """
