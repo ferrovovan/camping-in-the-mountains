@@ -28,7 +28,7 @@ def start_screen(screen, FPS):
     images = {'button1': load_image('gfx/buttons/button1.png')}
 
     menu_id = [1, 2, 3, 4]  # id кнопок меню
-    settings_id = [1, 2, 3, 7]  # id кнопок настроек
+    settings_id = [8, 8, 8, 7]  # id кнопок настроек
 
     butt_indent = 20  # отступ от кнопок
     y_indent = 50  # отступ от верхнего края экрана
@@ -59,6 +59,8 @@ def start_screen(screen, FPS):
                     elif id == 4:  # выход
                         pygame.quit()
                         exit()
+                    elif id == 7:  # назад
+                        draw_screen = 'menuWin'
 
         screens_dict[draw_screen].render(screen)
         pygame.display.flip()
