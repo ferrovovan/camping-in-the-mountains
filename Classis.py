@@ -157,7 +157,7 @@ class Interface:
         # меню кнопки
         self.menuButt = Button(self.some_buttons, screenBoards[0] - cell_size // 2,
                                0, cell_size // 2, cell_size // 2)
-        x = [7, 6, 5]
+        x = [6, 12, 5]
         n = len(x)  # количество кнопок
         width = 240
         height = 120
@@ -176,7 +176,7 @@ class Interface:
         if not self.menu_close:
             id = self.menuButtonsGroup.click_id(event)
             if id is not None:
-                if id == 7:
+                if id == 6:  # выйти в лавное меню
                     return "return"
 
     def is_click(self, event):
