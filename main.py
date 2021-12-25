@@ -29,14 +29,17 @@ def start_screen(screen, FPS):
 
     menu_id = [1, 2, 3, 4]  # id кнопок меню
     settings_id = [8, 8, 8, 7]  # id кнопок настроек
+    load_id = [0, 0, 0, 7]  # а кто-то поверил...
 
     butt_indent = 20  # отступ от кнопок
     y_indent = 50  # отступ от верхнего края экрана
     menuWin = SomeDisplay(screen.get_size(), menu_id, images['button1'], t=y_indent, indent=butt_indent)
     settingsWin = SomeDisplay(screen.get_size(), settings_id, images['button1'], t=y_indent, indent=butt_indent)
+    loadWin = SomeDisplay(screen.get_size(), load_id, images['button1'], t=y_indent, indent=butt_indent)
 
     screens_dict = {'menuWin': menuWin,
-                    'settingsWin': settingsWin}
+                    'settingsWin': settingsWin,
+                    'loadWin': loadWin}
     draw_screen = 'menuWin'
 
     running = True
@@ -52,7 +55,7 @@ def start_screen(screen, FPS):
                     if id == 1:  # играть
                         return True
                     elif id == 2:  # загрузить
-                        pass
+                        draw_screen = 'loadWin'
                     elif id == 3:  # настройки
                         draw_screen = 'settingsWin'
                     # готово
