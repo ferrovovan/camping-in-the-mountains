@@ -37,6 +37,8 @@ def start_screen(screen, FPS):
     settingsWin = SomeDisplay(screen.get_size(), settings_id, images['button1'], t=y_indent, indent=butt_indent)
     loadWin = SomeDisplay(screen.get_size(), load_id, images['button1'], t=y_indent, indent=butt_indent)
 
+    settingsWin.reset_button(8, new_size=(100, 200))
+
     screens_dict = {'menuWin': menuWin,
                     'settingsWin': settingsWin,
                     'loadWin': loadWin}
