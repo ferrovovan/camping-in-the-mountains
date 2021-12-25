@@ -41,12 +41,13 @@ def start_screen(screen, FPS):
     for button in settingsWin.spriteGroup:
         if button.id == 8 and r == 0:
             r = 1
+            button.special_id = 1
         elif button.id == 8 and r == 1:
-            r = 0
+            button.special_id = 2
         elif button.id == 9 and r == 0:
-            r = 1
+            button.special_id = 1
         elif button.id == 9 and r == 1:
-            r = 0
+            button.special_id = 2
         else:
             pass
     # settingsWin.reset_button(8, new_coords=(100, 20), new_size=(50, 50))

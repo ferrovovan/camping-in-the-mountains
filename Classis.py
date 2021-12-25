@@ -111,7 +111,7 @@ class Button(pygame.sprite.Sprite):
     image = load_image('gfx/buttons/button1.png', colorkey=-1)
 
     # готов
-    def __init__(self, group, x, y, width, height, id=0, image=None):
+    def __init__(self, group, x, y, width, height, id=0, sp_id=None, image=None):
         """
         :param group: группа спрайтов
         :param x: left
@@ -123,6 +123,7 @@ class Button(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (width, height))
         self.rect = pygame.rect.Rect(x, y, width, height)
         self.id = id
+        self.special_id = sp_id
 
     # готов
     def draw_text(self, screen, text_dict=None, language='russian'):
