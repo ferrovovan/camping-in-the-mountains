@@ -1,11 +1,11 @@
 0; 
-1; text_1
-2; text_2
-3; text_3
-4; text_4
-5;
-6;
-7;
+1; play
+2; load
+3; settings
+4; exit
+5; save
+6; back into main menu
+7; back
 8;
 9;
 10;
