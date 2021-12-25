@@ -208,7 +208,7 @@ class Interface:
             button.draw_text(screen, language=self.language)
         if not self.menu_close:
             self.menuButtonsGroup.draw(screen)
-            self.menuButtonsGroup.draw_text(screen)
+            self.menuButtonsGroup.draw_text(screen, language=self.language)
 
 
 class Character:

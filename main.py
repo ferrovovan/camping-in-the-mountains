@@ -75,7 +75,7 @@ def main():
     # данные игры
     board = Map(16, 16, screenBoards=size)
     board.load_map('data/maps/main_map.txt', size)
-    interface = Interface(size, board.cell_size)
+    interface = Interface(size, board.cell_size, language=language)
     hero1 = Hero(board.board, 0, 7, is_in_circle=True)
     character = Character()
     mouseManager = MouseManager(screen, interface, board, character)
