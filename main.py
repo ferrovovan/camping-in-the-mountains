@@ -40,24 +40,27 @@ def start_screen(screen, FPS):
     # расставляем кнопки в меню настроек
     r = 0
     for button in settingsWin.spriteGroup:
-        if button.id == 8 and r == 0:
+        if button.id == 8 and r == 0:  # <-
             r = 1
             button.special_id = 1
-            settingsWin.reset_button(8, sp_id=1, new_size=None, new_coords=None)
-        elif button.id == 8 and r == 1:
+            settingsWin.reset_button(8, sp_id=1, new_size=(40, 40),
+                                     new_coords=(butt_indent + 100, 20))
+        elif button.id == 8 and r == 1:  # <-
             r = 0
             button.special_id = 2
-            settingsWin.reset_button(8, sp_id=2, new_size=None, new_coords=None)
-        elif button.id == 9 and r == 0:
+            settingsWin.reset_button(8, sp_id=2, new_size=(40, 40),
+                                     new_coords=(butt_indent + 100, 80))
+        elif button.id == 9 and r == 0:  # ->
             r = 1
             button.special_id = 1
-            settingsWin.reset_button(9, sp_id=1, new_size=None, new_coords=None)
-        elif button.id == 9 and r == 1:
+            settingsWin.reset_button(9, sp_id=1, new_size=(40, 40),
+                                     new_coords=(butt_indent + 160, 80))
+        elif button.id == 9 and r == 1:  # ->
             button.special_id = 2
-            settingsWin.reset_button(9, sp_id=2, new_size=None, new_coords=None)
+            settingsWin.reset_button(9, sp_id=2, new_size=(40, 40),
+                                     new_coords=(butt_indent + 160, 20))
         else:
             pass
-    # settingsWin.reset_button(8, new_coords=(100, 20), new_size=(50, 50))
 
     screens_dict = {'menuWin': menuWin,
                     'settingsWin': settingsWin,
