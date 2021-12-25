@@ -27,16 +27,11 @@ def start_screen(screen, FPS):
 
     images = {'button1': load_image('gfx/buttons/button1.png')}
 
-    button_sprites = ButtonGroup()
-    scr_size = screen.get_size()
-    butt_width = 300
-    butt_height = 100
-    x = [4, 3, 6, 1]
-    n = 4
-    for i in range(1, n + 1):
-        Button(button_sprites, scr_size[0] // 2 - butt_width // 2,
-               scr_size[1] // 2 + int((n // 2 - i) * butt_height * 1.2) + int(butt_height * 3 / n),
-               butt_width, butt_height, id=x[i - 1], image=images['button1'])
+    id_list = [1, 6, 3, 4]
+
+    butt_indent = 20  # отступ от кнопок
+    y_indent = 50  # отступ от верхнего края экрана
+    menuWindow = SomeDisplay(screen.get_size(), id_list, images['button1'], t=y_indent, indent=butt_indent)
 
     running = True
     while running:
@@ -45,7 +40,7 @@ def start_screen(screen, FPS):
                 pygame.quit()
                 quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                id = button_sprites.click_id(event)
+                id = menuWindow.click_id(event)
                 if id is not None:
                     # готово
                     if id == 1:
@@ -59,8 +54,7 @@ def start_screen(screen, FPS):
                     elif id == 6:
                         pass
 
-        button_sprites.draw(screen)
-        button_sprites.draw_text(screen)
+        menuWindow.render(screen)
         pygame.display.flip()
         clock.tick(FPS)
 

@@ -62,6 +62,50 @@ class Board:
                                   (self.cell_size, self.cell_size)), width=2)
 
 
+class SomeDisplay(pygame.Surface):
+    def __init__(self, size, id_list, butt_im, t=0, indent=0):
+        """
+        Менюшка на экране
+        """
+        size, coords = self._auto_data(size, t=t)
+        self.coords = coords
+        super().__init__(size)
+        self.spriteGroup = ButtonGroup()
+        self._made_buttons(id_list, butt_im, indent=indent)
+        self.fill('gray')
+
+    @staticmethod
+    def _auto_data(size, t=0):
+        size1 = (400, size[1] // 3)
+        coords1 = (size[0] // 2 - size1[0] // 2, size[1] // 3 + t)
+        return size1, coords1
+
+    def _made_buttons(self, id_list, butt_im, indent=20):
+        k = 4
+        scr_size = self.get_size()
+        n = len(id_list)
+        button_width = scr_size[0] - 2 * indent
+        button_height = (scr_size[1] - 2 * indent) * k // (n * (k + 1) - 1)
+        for i in range(1, n + 1):
+            Button(self.spriteGroup,
+                   indent,
+                   indent + (i - 1) * (button_height * (1 + k) // k),
+                   button_width, button_height,
+                   id=id_list[i - 1], image=butt_im)
+
+    def click_id(self, event):
+        """
+        :return button's id, if one of them was clicked? else return None
+        """
+        event.pos = (event.pos[0] - self.coords[0], event.pos[1] - self.coords[1])
+        return self.spriteGroup.click_id(event)
+
+    def render(self, screen):
+        screen.blit(self, self.coords)
+        self.spriteGroup.draw(self)
+        self.spriteGroup.draw_text(self)
+
+
 class ButtonGroup(pygame.sprite.Group):
     def draw_text(self, screen):
         for button in self:
@@ -104,7 +148,7 @@ class Button(pygame.sprite.Sprite):
             table = [r.split(';') for r in data.split('\n')]
             text = table[self.id][1]
         else:
-            text = text_dict[id]
+            text = text_dict[self.id]
         string_rendered = font.render(text, True, pygame.Color('red'))
         screen.blit(string_rendered, self.rect)
 
