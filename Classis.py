@@ -19,49 +19,6 @@ def load_image(name, colorkey=None):
     return image
 
 
-class Board:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.board = [[None] * width for _ in range(height)]
-        # значения по умолчанию
-        self.left = 10
-        self.top = 10
-        self.cell_size = 30
-
-    # настройка внешнего вида
-    def set_view(self, left, top, cell_size):
-        self.left = left
-        self.top = top
-        self.cell_size = cell_size
-
-    def is_click(self, mouse_pos):
-        if any((mouse_pos[0] <= self.left, mouse_pos[0] >= self.left + self.cell_size * self.width,
-                mouse_pos[1] <= self.top, mouse_pos[1] >= self.top + self.cell_size * self.height)):
-            return False
-        return True
-
-    def get_click(self, mouse_pos):
-        cell = self.get_cell(mouse_pos)
-        self.on_click(cell)
-
-    def get_cell(self, mouse_pos):
-        if self.is_click(mouse_pos):
-            return None
-        return ((mouse_pos[0] - self.left) // self.cell_size,
-                (mouse_pos[1] - self.top) // self.cell_size)
-
-    def on_click(self, cell_coord):
-        pass
-
-    def render(self, screen):
-        for i in range(self.width):
-            for j in range(self.height):
-                pygame.draw.rect(screen, 'white',
-                                 ((self.left + i * self.cell_size, self.top + j * self.cell_size),
-                                  (self.cell_size, self.cell_size)), width=2)
-
-
 class SomeDisplay(pygame.Surface):
     def __init__(self, size, id_list, butt_im, t=0, indent=0):
         """
@@ -254,6 +211,49 @@ class Item(pygame.sprite.Sprite):
 
     def render(self, screen, x=0, y=0):
         screen.blit(self.image, (x, y, self.image.get_width(), self.image.get_height()))
+
+
+class Board:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.board = [[None] * width for _ in range(height)]
+        # значения по умолчанию
+        self.left = 10
+        self.top = 10
+        self.cell_size = 30
+
+    # настройка внешнего вида
+    def set_view(self, left, top, cell_size):
+        self.left = left
+        self.top = top
+        self.cell_size = cell_size
+
+    def is_click(self, mouse_pos):
+        if any((mouse_pos[0] <= self.left, mouse_pos[0] >= self.left + self.cell_size * self.width,
+                mouse_pos[1] <= self.top, mouse_pos[1] >= self.top + self.cell_size * self.height)):
+            return False
+        return True
+
+    def get_click(self, mouse_pos):
+        cell = self.get_cell(mouse_pos)
+        self.on_click(cell)
+
+    def get_cell(self, mouse_pos):
+        if self.is_click(mouse_pos):
+            return None
+        return ((mouse_pos[0] - self.left) // self.cell_size,
+                (mouse_pos[1] - self.top) // self.cell_size)
+
+    def on_click(self, cell_coord):
+        pass
+
+    def render(self, screen):
+        for i in range(self.width):
+            for j in range(self.height):
+                pygame.draw.rect(screen, 'white',
+                                 ((self.left + i * self.cell_size, self.top + j * self.cell_size),
+                                  (self.cell_size, self.cell_size)), width=2)
 
 
 class Inventory(Board):
