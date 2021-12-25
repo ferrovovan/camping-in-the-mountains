@@ -38,6 +38,9 @@ class SomeDisplay(pygame.Surface):
         return size1, coords1
 
     def _made_buttons(self, id_list, butt_im, indent=20):
+        """
+        Ставит кнопки на себе
+        """
         k = 4
         scr_size = self.get_size()
         n = len(id_list)
