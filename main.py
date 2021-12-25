@@ -65,7 +65,7 @@ def start_screen(screen, FPS):
                     elif id == 7:  # назад
                         draw_screen = 'menuWin'
 
-        screens_dict[draw_screen].render(screen)
+        screens_dict[draw_screen].render(screen, language=language)
         pygame.display.flip()
         clock.tick(FPS)
 
