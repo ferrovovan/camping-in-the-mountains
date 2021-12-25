@@ -150,12 +150,13 @@ class Interface:
 
     menu_close = True
 
-    def __init__(self, screenBoards, cell_size):
+    def __init__(self, screenBoards, cell_size, language='russian'):
         """
         :param screenBoards: (width, height)
         :param cell_size: int
         """
         self.rect = pygame.rect.Rect(0, 0, *screenBoards)
+        self.language = language
         # группы спрайтов
         self.specificationsSpriteGroup = pygame.sprite.Group()  # рисунки, только отображающиеся
         self.some_buttons = pygame.sprite.Group()  # кнопки
@@ -204,7 +205,7 @@ class Interface:
         self.specificationsSpriteGroup.draw(screen)
         self.some_buttons.draw(screen)
         for button in self.some_buttons:
-            button.draw_text(screen)
+            button.draw_text(screen, language=self.language)
         if not self.menu_close:
             self.menuButtonsGroup.draw(screen)
             self.menuButtonsGroup.draw_text(screen)
