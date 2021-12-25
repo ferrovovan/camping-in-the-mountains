@@ -27,11 +27,17 @@ def start_screen(screen, FPS):
 
     images = {'button1': load_image('gfx/buttons/button1.png')}
 
-    id_list = [1, 6, 3, 4]
+    menu_id = [1, 2, 3, 4]  # id кнопок меню
+    settings_id = [1, 2, 3, 7]  # id кнопок настроек
 
     butt_indent = 20  # отступ от кнопок
     y_indent = 50  # отступ от верхнего края экрана
-    menuWin = SomeDisplay(screen.get_size(), id_list, images['button1'], t=y_indent, indent=butt_indent)
+    menuWin = SomeDisplay(screen.get_size(), menu_id, images['button1'], t=y_indent, indent=butt_indent)
+    settingsWin = SomeDisplay(screen.get_size(), settings_id, images['button1'], t=y_indent, indent=butt_indent)
+
+    screens_dict = {'menuWin': menuWin,
+                    'settingsWin': settingsWin}
+    draw_screen = 'menuWin'
 
     running = True
     while running:
@@ -40,21 +46,21 @@ def start_screen(screen, FPS):
                 pygame.quit()
                 quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                id = menuWin.click_id(event)
+                id = screens_dict[draw_screen].click_id(event)
                 if id is not None:
                     # готово
                     if id == 1:  # играть
                         return True
-                    elif id == 3:  # загрузить
+                    elif id == 2:  # загрузить
                         pass
+                    elif id == 3:  # настройки
+                        draw_screen = 'settingsWin'
                     # готово
                     elif id == 4:  # выход
                         pygame.quit()
                         exit()
-                    elif id == 6:  # настройки
-                        pass
 
-        menuWin.render(screen)
+        screens_dict[draw_screen].render(screen)
         pygame.display.flip()
         clock.tick(FPS)
 
