@@ -63,33 +63,42 @@ class Board:
 
 
 class SomeDisplay(pygame.Surface):
-    def __init__(self, size, spriteGroup, auto_data=(False, 0, 0), coords=(0, 0)):
+    def __init__(self, size, id_list, butt_im, t=0, indent=0):
         """
         Менюшка на экране
-        :param auto_data if you want to auto data: (True, indent, t)
-        :param coords: left top corner in screen
         """
-        self.spriteGroup = spriteGroup.copy()
-        if auto_data[0]:
-            size, coords = self._auto_data(*auto_data[1:], size)
-        super().__init__(size)
-        self.fill('gray')
-        for sprite in spriteGroup:
-            sprite.rect.x = sprite.rect.x - coords[0]
-            sprite.rect.y = sprite.rect.y - coords[1]
-        for sprite in spriteGroup:
-            del sprite
+        size, coords = self._auto_data(size, t=t)
         self.coords = coords
+        super().__init__(size)
+        self.spriteGroup = ButtonGroup()
+        self._made_buttons(id_list, butt_im, indent=indent)
+        self.fill('gray')
 
-    def _auto_data(self, indent, t, size):
-        butt_width = (sprite for sprite in self.spriteGroup).__next__().rect.width
-        butt_height = (sprite for sprite in self.spriteGroup).__next__().rect.height
-        n = len(self.spriteGroup)
-        size1 = (butt_width + indent * 2,
-                 2 * (n // 2 * butt_height * 1.2 + indent) - butt_height * 0.2)
-        coords1 = (size[0] // 2 - (butt_width // 2 + indent),
-                   size[1] // 2 - (n // 2 * butt_height * 1.2 - t + indent))
+    @staticmethod
+    def _auto_data(size, t=0):
+        size1 = (400, size[1] // 3)
+        coords1 = (size[0] // 2 - size1[0] // 2, size[1] // 3 + t)
         return size1, coords1
+
+    def _made_buttons(self, id_list, butt_im, indent=20):
+        k = 4
+        scr_size = self.get_size()
+        n = len(id_list)
+        button_width = scr_size[0] - 2 * indent
+        button_height = (scr_size[1] - 2 * indent) * k // (n * (k + 1) - 1)
+        for i in range(1, n + 1):
+            Button(self.spriteGroup,
+                   indent,
+                   indent + (i - 1) * (button_height * (1 + k) // k),
+                   button_width, button_height,
+                   id=id_list[i - 1], image=butt_im)
+
+    def click_id(self, event):
+        """
+        :return button's id, if one of them was clicked? else return None
+        """
+        event.pos = (event.pos[0] - self.coords[0], event.pos[1] - self.coords[1])
+        return self.spriteGroup.click_id(event)
 
     def render(self, screen):
         screen.blit(self, self.coords)
