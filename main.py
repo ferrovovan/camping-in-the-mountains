@@ -43,14 +43,18 @@ def start_screen(screen, FPS):
         if button.id == 8 and r == 0:
             r = 1
             button.special_id = 1
+            settingsWin.reset_button(8, sp_id=1, new_size=None, new_coords=None)
         elif button.id == 8 and r == 1:
             r = 0
             button.special_id = 2
+            settingsWin.reset_button(8, sp_id=2, new_size=None, new_coords=None)
         elif button.id == 9 and r == 0:
             r = 1
             button.special_id = 1
+            settingsWin.reset_button(9, sp_id=1, new_size=None, new_coords=None)
         elif button.id == 9 and r == 1:
             button.special_id = 2
+            settingsWin.reset_button(9, sp_id=2, new_size=None, new_coords=None)
         else:
             pass
     # settingsWin.reset_button(8, new_coords=(100, 20), new_size=(50, 50))

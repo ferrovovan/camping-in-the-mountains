@@ -53,8 +53,8 @@ class SomeDisplay(pygame.Surface):
                    button_width, button_height,
                    id=id_list[i - 1], image=butt_im)
 
-    def reset_button(self, id, new_size=None, new_coords=None, new_im=None):
-        button = self.spriteGroup.get_sprite(id)
+    def reset_button(self, id, sp_id=None, new_size=None, new_coords=None, new_im=None):
+        button = self.spriteGroup.get_sprite(id, sp_id=sp_id)
         if button is not None:
             if new_size is not None:
                 button.rect.width = new_size[0]
@@ -85,9 +85,9 @@ class ButtonGroup(pygame.sprite.Group):
             button.draw_text(screen, language=language)
 
     # готов
-    def get_sprite(self, id):
+    def get_sprite(self, id, sp_id=None):
         for button in self:
-            if button.id == id:
+            if button.id == id and button.spesial_id == sp_id:
                 return button
         return None
 
