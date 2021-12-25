@@ -6,8 +6,8 @@
 5; save
 6; back into main menu
 7; back
-8;
-9;
+8; <-
+9; ->
 10;
 11;
 12;

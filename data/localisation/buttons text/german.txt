@@ -6,8 +6,8 @@
 5; speichern
 6; zum Hauptmenü zurückkehren
 7; zurück
-8;
-9;
+8; <-
+9; ->
 10;
 11;
 12;
