@@ -53,7 +53,7 @@ class SomeDisplay(pygame.Surface):
                    button_width, button_height,
                    id=id_list[i - 1], image=butt_im)
 
-    def reset_buttons(self, id, new_size=None, new_im=None):
+    def reset_button(self, id, new_size=None, new_im=None):
         button = self.spriteGroup.get_sprite(id)
         if button is not None:
             if new_size is not None:
