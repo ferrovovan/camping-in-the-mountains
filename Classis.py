@@ -50,6 +50,15 @@ class SomeDisplay(pygame.Surface):
                    button_width, button_height,
                    id=id_list[i - 1], image=butt_im)
 
+    def reset_buttons(self, id, new_size=None, new_im=None):
+        button = self.spriteGroup.get_sprite(id)
+        if button is not None:
+            if new_size is not None:
+                button.rect.width = new_size[0]
+                button.rect.height = new_size[1]
+            if new_im is not None:
+                button.image = new_im
+
     def click_id(self, event):
         """
         :return button's id, if one of them was clicked? else return None
@@ -67,6 +76,12 @@ class ButtonGroup(pygame.sprite.Group):
     def draw_text(self, screen):
         for button in self:
             button.draw_text(screen)
+
+    def get_sprite(self, id):
+        for button in self:
+            if button.id == id:
+                return button
+        return None
 
     def click_id(self, event):
         """
