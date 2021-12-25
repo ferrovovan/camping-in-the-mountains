@@ -37,6 +37,7 @@ def start_screen(screen, FPS):
     settingsWin = SomeDisplay(screen.get_size(), settings_id, images['button1'], t=y_indent, indent=butt_indent)
     loadWin = SomeDisplay(screen.get_size(), load_id, images['button1'], t=y_indent, indent=butt_indent)
 
+    # расставляем кнопки в меню настроек
     r = 0
     for button in settingsWin.spriteGroup:
         if button.id == 8 and r == 0:
