@@ -44,8 +44,10 @@ def start_screen(screen, FPS):
             r = 1
             button.special_id = 1
         elif button.id == 8 and r == 1:
+            r = 0
             button.special_id = 2
         elif button.id == 9 and r == 0:
+            r = 1
             button.special_id = 1
         elif button.id == 9 and r == 1:
             button.special_id = 2
