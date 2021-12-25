@@ -121,10 +121,10 @@ class Button(pygame.sprite.Sprite):
         self.id = id
 
     # готов
-    def draw_text(self, screen, text_dict=None):
+    def draw_text(self, screen, text_dict=None, language='russian'):
         font = pygame.font.Font(None, 30)
         if text_dict is None:
-            data = open('data/localisation/buttons text/russian.txt', encoding='utf-8').read()
+            data = open(f'data/localisation/buttons text/{language}.txt', encoding='utf-8').read()
             table = [r.split(';') for r in data.split('\n')]
             text = table[self.id][1]
         else:
