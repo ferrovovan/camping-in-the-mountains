@@ -69,16 +69,16 @@ class SomeDisplay(pygame.Surface):
         event.pos = (event.pos[0] - self.coords[0], event.pos[1] - self.coords[1])
         return self.spriteGroup.click_id(event)
 
-    def render(self, screen):
+    def render(self, screen, language='russian'):
         screen.blit(self, self.coords)
         self.spriteGroup.draw(self)
-        self.spriteGroup.draw_text(self)
+        self.spriteGroup.draw_text(self, language=language)
 
 
 class ButtonGroup(pygame.sprite.Group):
-    def draw_text(self, screen):
+    def draw_text(self, screen, language='russian'):
         for button in self:
-            button.draw_text(screen)
+            button.draw_text(screen, language=language)
 
     # готов
     def get_sprite(self, id):
