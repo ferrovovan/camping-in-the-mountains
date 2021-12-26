@@ -107,7 +107,7 @@ class SettingsDisplay(SomeDisplay):
                    scr_size[0] // 2 + ((i % 2) * 2 - 1) * 180 - indent,
                    indent + (i // 2) * (button_height * (1 + k) // k),
                    40, 40,
-                   id=i % 2 + 8, image=butt_im)
+                   id=i % 2 + 8, sp_id=i % 2 + 1, image=butt_im)
 
         Button(self.spriteGroup,  # назад
                indent,
