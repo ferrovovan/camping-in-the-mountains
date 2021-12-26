@@ -125,7 +125,7 @@ class SettingsDisplay(SomeDisplay):
             if i % 2 == 0:
                 thisCoords = [0,
                               indent + (scr_size[1] - indent - 2 * (button_height * (1 + k) // k)) * (i // 2) // (
-                                          n // 2)]
+                                      n // 2)]
                 # название
                 StrokeSprite(self.otherGroup, set_list[i // 2], coords=thisCoords)
                 # значение
@@ -142,6 +142,9 @@ class SettingsDisplay(SomeDisplay):
                indent + 3 * (button_height * (1 + k) // k),
                button_width, button_height,
                id=7, image=butt_im)
+
+    def set_settings(self):
+        pass
 
     def render(self, screen, language='russian'):
         super().render(screen, language=language)
