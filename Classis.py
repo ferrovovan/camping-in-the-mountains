@@ -142,7 +142,7 @@ class SettingsDisplay(SomeDisplay):
 
     def render(self, screen, language='russian'):
         super().render(screen, language=language)
-        self.otherGroup.draw(screen)
+        self.otherGroup.draw(self)
 
 
 class ButtonGroup(pygame.sprite.Group):
