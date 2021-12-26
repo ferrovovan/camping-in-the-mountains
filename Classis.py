@@ -99,7 +99,7 @@ class SettingsDisplay(SomeDisplay):
         size, coords = self._auto_data(size, t=t)
         self.coords = coords
         super(SomeDisplay, self).__init__(size)
-        self.spriteGroup = ButtonGroup()
+        self.spriteGroup = ButtonGroup()  # группа кнопок
         self.otherGroup = pygame.sprite.Group()  # группа картинок
         self.settingsDict = settingsDict
         self._made_buttons(butt_im, indent=indent)
@@ -143,8 +143,39 @@ class SettingsDisplay(SomeDisplay):
                button_width, button_height,
                id=7, image=butt_im)
 
-    def set_settings(self):
+    def save_settings(self):
         pass
+
+    def manage_settings(self, event):
+        id, sp_id = self.spriteGroup.click_id(event, sp_id=True)
+        print(id, sp_id)
+        if id == 8:
+            self._change_settings(-1, sp_id)
+        else:
+            self._change_settings(1, sp_id)
+
+    def _change_settings(self, step, i):
+        """
+        Изменяет настоящие настройки
+        :return: True if settings was changed? else: False
+        """
+        set_list = list(self.all_settings)
+        i -= 1
+        # номер сейчас-него значения среди остальных в группе
+        print(self.all_settings[set_list[i]])
+        print(self.settingsDict[set_list[i]])
+        i1 = self.all_settings[set_list[i]].index(self.settingsDict[set_list[i]])
+        if 0 <= i1 + step < len(self.all_settings[set_list[i]]):  # если есть такое значение
+            self.settingsDict[set_list[i]] = self.all_settings[set_list[i]][i1 + step]
+            # ставим новое значение
+            i += 1
+            i *= 2
+            for strokeSprite in self.otherGroup:
+                i -= 1
+                if i == 0:
+                    strokeSprite.set_text(self.settingsDict[set_list[i]])
+            return True
+        return False
 
     def render(self, screen, language='russian'):
         super().render(screen, language=language)
@@ -164,12 +195,14 @@ class ButtonGroup(pygame.sprite.Group):
         return None
 
     # готов
-    def click_id(self, event):
+    def click_id(self, event, sp_id=False):
         """
         :return button's id, if one of them was clicked? else return None
         """
         for button in self:
             if button.is_click(event):
+                if sp_id:
+                    return button.id, button.special_id
                 return button.id
         return None
 
@@ -233,6 +266,12 @@ class StrokeSprite(pygame.sprite.Sprite):
 
     def __init__(self, group, blitObj, coords=None):
         super().__init__(group)
+        self.set_text(blitObj)
+        if coords is not None:
+            self.rect.x = coords[0]
+            self.rect.y = coords[1]
+
+    def set_text(self, blitObj):
         font = pygame.font.Font(None, 30)
         if isinstance(blitObj, int):
             blitObj = str(blitObj)
@@ -243,9 +282,6 @@ class StrokeSprite(pygame.sprite.Sprite):
         string_rendered = font.render(blitObj, True, pygame.Color('red'))
         self.image = string_rendered
         self.rect = pygame.Rect(0, 0, string_rendered.get_width(), string_rendered.get_height())
-        if coords is not None:
-            self.rect.x = coords[0]
-            self.rect.y = coords[1]
 
 
 class Interface:

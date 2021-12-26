@@ -63,11 +63,11 @@ def start_screen(screen, FPS):
                     elif id == 7:  # назад
                         draw_screen = 'menuWin'
                     elif id == 8:  # <-
-                        pass
+                        screens_dict[draw_screen].manage_settings(event)
                     elif id == 9:  # ->
-                        pass
+                        screens_dict[draw_screen].manage_settings(event)
                     elif id == 10:  # применить
-                        screens_dict[draw_screen].set_settings()
+                        screens_dict[draw_screen].save_settings()
 
         screens_dict[draw_screen].render(screen, language=language)
         pygame.display.flip()
