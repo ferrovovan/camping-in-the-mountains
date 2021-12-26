@@ -55,14 +55,17 @@ def start_screen(screen, FPS):
                     # готово
                     if id == 1:  # играть
                         return True
+                    # готово
                     elif id == 2:  # загрузить
                         draw_screen = 'loadWin'
+                    # готово
                     elif id == 3:  # настройки
                         draw_screen = 'settingsWin'
                     # готово
                     elif id == 4:  # выход
                         pygame.quit()
                         exit()
+                    # готово
                     elif id == 7:  # назад
                         draw_screen = 'menuWin'
 
