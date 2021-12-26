@@ -100,6 +100,7 @@ class SettingsDisplay(SomeDisplay):
         self.coords = coords
         super(SomeDisplay, self).__init__(size)
         self.spriteGroup = ButtonGroup()
+        self.otherGroup = pygame.sprite.Group()  # группа картинок
         self._made_buttons(butt_im, indent=indent)
         self.fill('gray')
 
@@ -119,11 +120,20 @@ class SettingsDisplay(SomeDisplay):
                    40, 40,
                    id=i % 2 + 8, sp_id=i % 2 + 1, image=butt_im)
 
+        Button(self.spriteGroup,  # применить
+               indent,
+               indent + 2 * (button_height * (1 + k) // k),
+               button_width, button_height,
+               id=10, image=butt_im)
         Button(self.spriteGroup,  # назад
                indent,
                indent + 3 * (button_height * (1 + k) // k),
                button_width, button_height,
                id=7, image=butt_im)
+
+    def render(self, screen, language='russian'):
+        super().render(screen, language=language)
+        self.otherGroup.draw(screen)
 
 
 class ButtonGroup(pygame.sprite.Group):
@@ -205,6 +215,7 @@ class StrokeSprite(pygame.sprite.Sprite):
     """
     Является спрайтом, получаемый из строки
     """
+
     def __init__(self, group, blitObj):
         super().__init__(group)
         font = pygame.font.Font(None, 30)
