@@ -1,0 +1,3 @@
+FPS = [60]
+language = [russian, english, german]
+display = [(1640, 1000)]
