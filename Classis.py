@@ -117,12 +117,14 @@ class SettingsDisplay(SomeDisplay):
         for i in range(n):
             Button(self.spriteGroup,
                    scr_size[0] // 2 + ((i % 2) * 2 - 1) * (scr_size[0] - 2 * indent) // 2 - indent,
-                   indent + (i // 2) * (button_height * (1 + k) // k),
+                   indent + (scr_size[1] - indent - 2 * (button_height * (1 + k) // k)) * (i // 2) // (n // 2),
                    40, 40,
                    id=i % 2 + 8, sp_id=i % 2 + 1, image=butt_im)
 
             if i % 2 == 0:
-                thisCoords = [indent, indent + (i // 2) * (button_height * (1 + k) // k)]
+                thisCoords = [indent,
+                              indent + (scr_size[1] - indent - 2 * (button_height * (1 + k) // k)) * (i // 2) // (
+                                          n // 2)]
                 # название
                 StrokeSprite(self.otherGroup, set_list[i // 2], coords=thisCoords)
                 # значение
