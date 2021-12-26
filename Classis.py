@@ -33,7 +33,7 @@ class SomeDisplay(pygame.Surface):
 
     @staticmethod
     def _auto_data(size, t=0):
-        size1 = (500, size[1] // 3)
+        size1 = (560, size[1] // 3)
         coords1 = (size[0] // 2 - size1[0] // 2, size[1] // 3 + t)
         return size1, coords1
 
