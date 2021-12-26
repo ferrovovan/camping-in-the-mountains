@@ -29,7 +29,6 @@ def start_screen(screen, FPS):
               'button2': load_image('gfx/buttons/button2.png')}
 
     menu_id = [1, 2, 3, 4]  # id кнопок меню
-    #    settings_id = [8, 8, 9, 9, 7]  # id кнопок настроек
     load_id = [0, 0, 0, 7]  # а кто-то поверил...
 
     butt_indent = 20  # отступ от кнопок
