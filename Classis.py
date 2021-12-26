@@ -121,13 +121,13 @@ class SettingsDisplay(SomeDisplay):
                    40, 40,
                    id=i % 2 + 8, sp_id=i % 2 + 1, image=butt_im)
 
-#            if i % 2 == 0:
-#                thisCoords = (scr_size[0] // 2 + ((i % 2) * 2 - 1) * (scr_size[0] - 2 * indent) // 2 - indent,
-#                   indent + (i // 2) * (button_height * (1 + k) // k))
+            if i % 2 == 0:
+                thisCoords = [indent, indent + (i // 2) * (button_height * (1 + k) // k)]
                 # название
-#                StrokeSprite(self.otherGroup, set_list[i // 2])
+                StrokeSprite(self.otherGroup, set_list[i // 2], coords=thisCoords)
                 # значение
-#                StrokeSprite(self.otherGroup, self.all_settings[set_list[i // 2]], coords=thisCoords)
+                x = StrokeSprite(self.otherGroup, self.all_settings[set_list[i // 2]], coords=thisCoords)
+                x.rect.x = scr_size[0] // 2 - x.rect.width // 2
 
         Button(self.spriteGroup,  # применить
                indent,
