@@ -108,7 +108,7 @@ class SettingsDisplay(SomeDisplay):
                 Ставит кнопки на себе
                 """
         k = 4
-        n = 6
+        n = len(self.all_settings) * 2
         scr_size = self.get_size()
         button_width = scr_size[0] - 2 * indent
         button_height = (scr_size[1] - 2 * indent) * k // (4 * (k + 1) - 1)
@@ -199,6 +199,23 @@ class Button(pygame.sprite.Sprite):
         Ставит новое изображение
         """
         self.image = pygame.transform.scale(image, (self.rect.width, self.rect.height))
+
+
+class StrokeSprite(pygame.sprite.Sprite):
+    """
+    Является спрайтом, получаемый из строки
+    """
+    def __init__(self, group, blitObj):
+        super().__init__(group)
+        font = pygame.font.Font(None, 30)
+        if isinstance(blitObj, int):
+            blitObj = str(blitObj)
+        elif isinstance(blitObj, tuple):
+            str(blitObj)
+        elif isinstance(blitObj, list):
+            str(tuple(blitObj))
+        string_rendered = font.render(blitObj, True, pygame.Color('red'))
+        self.image = string_rendered
 
 
 class Interface:
