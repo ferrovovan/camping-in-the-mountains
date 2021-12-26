@@ -62,6 +62,10 @@ def start_screen(screen, FPS):
                         exit()
                     elif id == 7:  # назад
                         draw_screen = 'menuWin'
+                    elif id == 8:  # <-
+                        pass
+                    elif id == 9:  # ->
+                        pass
                     elif id == 10:  # применить
                         screens_dict[draw_screen].set_settings()
 
