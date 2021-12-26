@@ -79,6 +79,43 @@ class SomeDisplay(pygame.Surface):
         self.spriteGroup.draw_text(self, language=language)
 
 
+class SettingsDisplay(SomeDisplay):
+    """
+    Меню настроек
+    """
+
+    # готов
+    def __init__(self, size, butt_im, t=0, indent=0):
+        size, coords = self._auto_data(size, t=t)
+        self.coords = coords
+        super(SomeDisplay, self).__init__(size)
+        self.spriteGroup = ButtonGroup()
+        self._made_buttons(butt_im, indent=indent)
+        self.fill('gray')
+
+    def _made_buttons(self, butt_im, indent=20):
+        """
+                Ставит кнопки на себе
+                """
+        k = 4
+        n = 6
+        scr_size = self.get_size()
+        button_width = scr_size[0] - 2 * indent
+        button_height = (scr_size[1] - 2 * indent) * k // (4 * (k + 1) - 1)
+        for i in range(n):
+            Button(self.spriteGroup,
+                   scr_size[0] // 2 + ((i % 2) * 2 - 1) * 180 - indent,
+                   indent + (i // 2) * (button_height * (1 + k) // k),
+                   40, 40,
+                   id=i % 2 + 8, image=butt_im)
+
+        Button(self.spriteGroup,  # назад
+               indent,
+               indent + 3 * (button_height * (1 + k) // k),
+               button_width, button_height,
+               id=7, image=butt_im)
+
+
 class ButtonGroup(pygame.sprite.Group):
     def draw_text(self, screen, language='russian'):
         for button in self:

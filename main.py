@@ -29,39 +29,14 @@ def start_screen(screen, FPS):
               'button2': load_image('gfx/buttons/button2.png')}
 
     menu_id = [1, 2, 3, 4]  # id кнопок меню
-    settings_id = [8, 8, 9, 9, 7]  # id кнопок настроек
+    #    settings_id = [8, 8, 9, 9, 7]  # id кнопок настроек
     load_id = [0, 0, 0, 7]  # а кто-то поверил...
 
     butt_indent = 20  # отступ от кнопок
     y_indent = 50  # отступ от верхнего края экрана
     menuWin = SomeDisplay(screen.get_size(), menu_id, images['button1'], t=y_indent, indent=butt_indent)
-    settingsWin = SomeDisplay(screen.get_size(), settings_id, images['button1'], t=y_indent, indent=butt_indent)
+    settingsWin = SettingsDisplay(screen.get_size(), images['button1'], t=y_indent, indent=butt_indent)
     loadWin = SomeDisplay(screen.get_size(), load_id, images['button1'], t=y_indent, indent=butt_indent)
-
-    # расставляем кнопки в меню настроек
-    r = 0
-    for button in settingsWin.spriteGroup:
-        if button.id == 8 and r == 0:  # <-
-            r = 1
-            button.special_id = 1
-            settingsWin.reset_button(8, sp_id=1, new_size=(40, 40),
-                                     new_coords=(butt_indent + 100, 20))
-        elif button.id == 8 and r == 1:  # <-
-            r = 0
-            button.special_id = 2
-            settingsWin.reset_button(8, sp_id=2, new_size=(40, 40),
-                                     new_coords=(butt_indent + 100, 80))
-        elif button.id == 9 and r == 0:  # ->
-            r = 1
-            button.special_id = 1
-            settingsWin.reset_button(9, sp_id=1, new_size=(40, 40),
-                                     new_coords=(butt_indent + 160, 80))
-        elif button.id == 9 and r == 1:  # ->
-            button.special_id = 2
-            settingsWin.reset_button(9, sp_id=2, new_size=(40, 40),
-                                     new_coords=(butt_indent + 160, 20))
-        else:
-            button.set_image(images['button2'])
 
     screens_dict = {'menuWin': menuWin,
                     'settingsWin': settingsWin,
