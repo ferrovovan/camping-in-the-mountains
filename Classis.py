@@ -84,6 +84,16 @@ class SettingsDisplay(SomeDisplay):
     Меню настроек
     """
 
+    open_settings = open('data/common/all_settings.txt')
+    all_settings = {}
+    for line in open_settings:
+        line = line.split(' = ')  # [param, '[value1, value2, value3]\n']
+        values = line[1][1:len(line[1]) - 2].split(', ')
+        all_settings[line[0]] = values
+    # настройка параметров, не соответсвующих стандарту
+    all_settings['display'] = list(
+        map(lambda value: tuple(value[1:len(value) - 1].split(',')), all_settings['display']))
+
     # готов
     def __init__(self, size, butt_im, t=0, indent=0):
         size, coords = self._auto_data(size, t=t)
