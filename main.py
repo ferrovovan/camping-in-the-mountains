@@ -51,22 +51,19 @@ def start_screen(screen, FPS):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 id = screens_dict[draw_screen].click_id(event)
                 if id is not None:
-                    # готово
                     if id == 1:  # играть
                         return True
-                    # готово
                     elif id == 2:  # загрузить
                         draw_screen = 'loadWin'
-                    # готово
                     elif id == 3:  # настройки
                         draw_screen = 'settingsWin'
-                    # готово
                     elif id == 4:  # выход
                         pygame.quit()
                         exit()
-                    # готово
                     elif id == 7:  # назад
                         draw_screen = 'menuWin'
+                    elif id == 10:  # применить
+                        screens_dict[draw_screen].set_settings()
 
         screens_dict[draw_screen].render(screen, language=language)
         pygame.display.flip()
