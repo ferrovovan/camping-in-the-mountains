@@ -34,7 +34,7 @@ def start_screen(screen, FPS):
     butt_indent = 20  # отступ от кнопок
     y_indent = 50  # отступ от верхнего края экрана
     menuWin = SomeDisplay(screen.get_size(), menu_id, images['button1'], t=y_indent, indent=butt_indent)
-    settingsWin = SettingsDisplay(screen.get_size(), images['button1'], t=y_indent, indent=butt_indent)
+    settingsWin = SettingsDisplay(screen.get_size(), settingsDict, images['button1'], t=y_indent, indent=butt_indent)
     loadWin = SomeDisplay(screen.get_size(), load_id, images['button1'], t=y_indent, indent=butt_indent)
 
     screens_dict = {'menuWin': menuWin,

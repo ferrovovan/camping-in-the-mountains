@@ -95,12 +95,13 @@ class SettingsDisplay(SomeDisplay):
         map(lambda value: tuple(value[1:len(value) - 1].split(',')), all_settings['display']))
 
     # готов
-    def __init__(self, size, butt_im, t=0, indent=0):
+    def __init__(self, size, settingsDict, butt_im, t=0, indent=0):
         size, coords = self._auto_data(size, t=t)
         self.coords = coords
         super(SomeDisplay, self).__init__(size)
         self.spriteGroup = ButtonGroup()
         self.otherGroup = pygame.sprite.Group()  # группа картинок
+        self.settingsDict = settingsDict
         self._made_buttons(butt_im, indent=indent)
         self.fill('gray')
 
@@ -128,7 +129,7 @@ class SettingsDisplay(SomeDisplay):
                 # название
                 StrokeSprite(self.otherGroup, set_list[i // 2], coords=thisCoords)
                 # значение
-                x = StrokeSprite(self.otherGroup, self.all_settings[set_list[i // 2]], coords=thisCoords)
+                x = StrokeSprite(self.otherGroup, self.settingsDict[set_list[i // 2]], coords=thisCoords)
                 x.rect.x = scr_size[0] // 2 - x.rect.width // 2
 
         Button(self.spriteGroup,  # применить
