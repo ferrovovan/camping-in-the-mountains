@@ -85,7 +85,7 @@ class SettingsDisplay(SomeDisplay):
     """
 
     open_settings = open('data/common/all_settings.txt')
-    all_settings = {}
+    all_settings = dict()
     for line in open_settings:
         line = line.split(' = ')  # [param, '[value1, value2, value3]\n']
         values = line[1][1:len(line[1]) - 2].split(', ')
@@ -113,12 +113,21 @@ class SettingsDisplay(SomeDisplay):
         scr_size = self.get_size()
         button_width = scr_size[0] - 2 * indent
         button_height = (scr_size[1] - 2 * indent) * k // (4 * (k + 1) - 1)
+        set_list = list(self.all_settings)
         for i in range(n):
             Button(self.spriteGroup,
-                   scr_size[0] // 2 + ((i % 2) * 2 - 1) * 180 - indent,
+                   scr_size[0] // 2 + ((i % 2) * 2 - 1) * (scr_size[0] - 2 * indent) // 2 - indent,
                    indent + (i // 2) * (button_height * (1 + k) // k),
                    40, 40,
                    id=i % 2 + 8, sp_id=i % 2 + 1, image=butt_im)
+
+#            if i % 2 == 0:
+#                thisCoords = (scr_size[0] // 2 + ((i % 2) * 2 - 1) * (scr_size[0] - 2 * indent) // 2 - indent,
+#                   indent + (i // 2) * (button_height * (1 + k) // k))
+                # название
+#                StrokeSprite(self.otherGroup, set_list[i // 2])
+                # значение
+#                StrokeSprite(self.otherGroup, self.all_settings[set_list[i // 2]], coords=thisCoords)
 
         Button(self.spriteGroup,  # применить
                indent,
@@ -216,17 +225,21 @@ class StrokeSprite(pygame.sprite.Sprite):
     Является спрайтом, получаемый из строки
     """
 
-    def __init__(self, group, blitObj):
+    def __init__(self, group, blitObj, coords=None):
         super().__init__(group)
         font = pygame.font.Font(None, 30)
         if isinstance(blitObj, int):
             blitObj = str(blitObj)
         elif isinstance(blitObj, tuple):
-            str(blitObj)
+            blitObj = str(blitObj)
         elif isinstance(blitObj, list):
-            str(tuple(blitObj))
+            blitObj = str(tuple(blitObj))
         string_rendered = font.render(blitObj, True, pygame.Color('red'))
         self.image = string_rendered
+        self.rect = pygame.Rect(0, 0, string_rendered.get_width(), string_rendered.get_height())
+        if coords is not None:
+            self.rect.x = coords[0]
+            self.rect.y = coords[1]
 
 
 class Interface:
