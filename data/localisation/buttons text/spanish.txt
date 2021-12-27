@@ -1,0 +1,14 @@
+0;
+1; tocar
+2; descargar
+3; ajustes
+4; Salida
+5; ahorrar
+6; salir al menú principal
+7; espalda
+8; <-
+9; ->
+10; Aplicar
+11;
+12;
+13;
