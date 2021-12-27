@@ -144,7 +144,14 @@ class SettingsDisplay(SomeDisplay):
                id=7, image=butt_im)
 
     def save_settings(self):
-        pass
+        settings1 = open('settings.txt', mode='w')
+        for key in self.settingsDict.keys():
+            if key == 'display':
+                line = key + ' = ' + f'({self.settingsDict[key][0]},{self.settingsDict[key][1]})'
+            else:
+                line = key + ' = ' + self.settingsDict[key]
+            line = line + '\n'
+            settings1.write(line)
 
     def manage_settings(self, event):
         id, sp_id = self.spriteGroup.click_id(event, sp_id=True)
