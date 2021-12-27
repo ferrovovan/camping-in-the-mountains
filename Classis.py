@@ -169,12 +169,11 @@ class SettingsDisplay(SomeDisplay):
             self.settingsDict[set_list[i]] = self.all_settings[set_list[i]][i1 + step]
             # ставим новое значение
             i += 1
-            i *= 2
+            j = i * 2
             for strokeSprite in self.otherGroup:
-                i -= 1
-                if i == 0:
-                    strokeSprite.set_text(self.settingsDict[set_list[i]],
-                                          coords=(strokeSprite.rect.x, strokeSprite.rect.y))
+                j -= 1
+                if j == 0:
+                    strokeSprite.set_text(self.settingsDict[set_list[i - 1]])
                     break
             return True
         return False
@@ -268,6 +267,7 @@ class StrokeSprite(pygame.sprite.Sprite):
 
     def __init__(self, group, blitObj, coords=None):
         super().__init__(group)
+        self.rect = pygame.Rect(0, 0, 0, 0)
         self.set_text(blitObj, coords=coords)
 
     def set_text(self, blitObj, coords=None):
@@ -280,7 +280,7 @@ class StrokeSprite(pygame.sprite.Sprite):
             blitObj = str(tuple(blitObj))
         string_rendered = font.render(blitObj, True, pygame.Color('red'))
         self.image = string_rendered
-        self.rect = pygame.Rect(0, 0, string_rendered.get_width(), string_rendered.get_height())
+        self.rect = pygame.Rect(self.rect.x, self.rect.y, string_rendered.get_width(), string_rendered.get_height())
         if coords is not None:
             self.rect.x = coords[0]
             self.rect.y = coords[1]
