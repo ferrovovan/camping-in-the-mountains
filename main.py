@@ -8,13 +8,16 @@ with open('settings.txt', 'r') as settings:
     for line in settings:
         x = line[:-1].split(' = ')
         settingsDict[x[0]] = x[1]
+# меняем display
+settingsDict['display'] = tuple(settingsDict['display'][1:-1].split(','))
 for key in settingsDict.keys():
     if key == 'FPS':
         FPS = int(settingsDict[key])
     elif key == 'language':
         language = settingsDict[key]
     elif key == 'display':
-        size = tuple(map(int, settingsDict[key].split(', ')))
+        print(settingsDict[key])
+        size = (int(settingsDict[key][0]), int(settingsDict[key][1]))
 
 screen = pygame.display.set_mode(size)
 
