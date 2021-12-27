@@ -1,0 +1,14 @@
+0; 
+1; jouer
+2; télécharger
+3; réglages
+4; sortir
+5; sauver
+6; charger le jeu
+7; sortie au menu principal
+8; retour
+9; <-
+10; ->
+11; postuler
+12;
+13;
