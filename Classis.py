@@ -161,9 +161,6 @@ class SettingsDisplay(SomeDisplay):
         set_list = list(self.all_settings)
         i -= 1
         # номер сейчас-него значения среди остальных в группе
-        print()
-        print(self.all_settings[set_list[i]])
-        print([self.settingsDict[set_list[i]]])
         i1 = self.all_settings[set_list[i]].index(self.settingsDict[set_list[i]])
         if 0 <= i1 + step < len(self.all_settings[set_list[i]]):  # если есть такое значение
             self.settingsDict[set_list[i]] = self.all_settings[set_list[i]][i1 + step]
