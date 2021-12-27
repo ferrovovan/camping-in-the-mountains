@@ -148,7 +148,6 @@ class SettingsDisplay(SomeDisplay):
 
     def manage_settings(self, event):
         id, sp_id = self.spriteGroup.click_id(event, sp_id=True)
-        print(id, sp_id)
         if id == 8:
             self._change_settings(-1, sp_id)
         else:
@@ -162,8 +161,9 @@ class SettingsDisplay(SomeDisplay):
         set_list = list(self.all_settings)
         i -= 1
         # номер сейчас-него значения среди остальных в группе
+        print()
         print(self.all_settings[set_list[i]])
-        print(self.settingsDict[set_list[i]])
+        print([self.settingsDict[set_list[i]]])
         i1 = self.all_settings[set_list[i]].index(self.settingsDict[set_list[i]])
         if 0 <= i1 + step < len(self.all_settings[set_list[i]]):  # если есть такое значение
             self.settingsDict[set_list[i]] = self.all_settings[set_list[i]][i1 + step]
@@ -173,7 +173,8 @@ class SettingsDisplay(SomeDisplay):
             for strokeSprite in self.otherGroup:
                 i -= 1
                 if i == 0:
-                    strokeSprite.set_text(self.settingsDict[set_list[i]])
+                    strokeSprite.set_text(self.settingsDict[set_list[i]],
+                                          coords=(strokeSprite.rect.x, strokeSprite.rect.y))
             return True
         return False
 
@@ -266,12 +267,9 @@ class StrokeSprite(pygame.sprite.Sprite):
 
     def __init__(self, group, blitObj, coords=None):
         super().__init__(group)
-        self.set_text(blitObj)
-        if coords is not None:
-            self.rect.x = coords[0]
-            self.rect.y = coords[1]
+        self.set_text(blitObj, coords=coords)
 
-    def set_text(self, blitObj):
+    def set_text(self, blitObj, coords=None):
         font = pygame.font.Font(None, 30)
         if isinstance(blitObj, int):
             blitObj = str(blitObj)
@@ -282,6 +280,9 @@ class StrokeSprite(pygame.sprite.Sprite):
         string_rendered = font.render(blitObj, True, pygame.Color('red'))
         self.image = string_rendered
         self.rect = pygame.Rect(0, 0, string_rendered.get_width(), string_rendered.get_height())
+        if coords is not None:
+            self.rect.x = coords[0]
+            self.rect.y = coords[1]
 
 
 class Interface:
