@@ -16,7 +16,6 @@ for key in settingsDict.keys():
     elif key == 'language':
         language = settingsDict[key]
     elif key == 'display':
-        print(settingsDict[key])
         size = (int(settingsDict[key][0]), int(settingsDict[key][1]))
 
 screen = pygame.display.set_mode(size)
