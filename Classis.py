@@ -175,6 +175,7 @@ class SettingsDisplay(SomeDisplay):
                 if i == 0:
                     strokeSprite.set_text(self.settingsDict[set_list[i]],
                                           coords=(strokeSprite.rect.x, strokeSprite.rect.y))
+                    break
             return True
         return False
 
