@@ -1,0 +1,12 @@
+
+0;
+1; play
+2; download
+3; settings
+4; exit
+5; save
+6; exit to the main menu
+7; back
+8; <-
+9; ->
+10; apply
