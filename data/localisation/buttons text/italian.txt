@@ -1,0 +1,14 @@
+0;
+1; giocare a
+2; Scarica
+3; impostazioni
+4; Uscita
+5; Salva
+6; esci dal menu principale
+7; indietro
+8; <-
+9; ->
+10; applicare
+11;
+12;
+13;
