@@ -363,8 +363,15 @@ class Character:
     Это класс, в котором игрок сможет увидеть свои вещи, свои навыки, летопись действий и прочее
     """
 
-    def __init__(self):
+    def __init__(self, hero_link=None):
         self.inventory = Inventory(6, 3)
+        # характеристики персонажа
+        self.healf = 10
+        self.defense = 10
+        self.attack = 10
+        if isinstance(hero_link, Hero):  # если дали ссылку
+            self.hero_link = hero_link
+            hero_link.character_link = self
 
     def get_click(self, mouse_pos):
         pass
@@ -655,6 +662,17 @@ class Wall(StaticObj):
     pass
 
 
+class Battle:
+    """
+    класс битвы, здесь происходит механика боя.
+    """
+    def battle(self, hero, enemy):
+        """
+        как-то меняет параметры вводных объектов
+        """
+        pass
+
+
 class MoveObj(StaticObj):
     """
     родитель всех двигающихся объектов.
@@ -735,9 +753,13 @@ class MoveObj(StaticObj):
 
 class Hero(MoveObj):
     """
-    класс главного героя, картинка.
+    класс главного героя.
     """
-    pass
+    def __init__(self, board, x, y, character_link=None):
+        super().__init__(board, x, y)
+        if isinstance(character_link, Character):  # если дали ссылку
+            self.character_link = character_link
+            character_link.hero_link = self
 
 
 class BadGroup(MoveObj):
