@@ -366,7 +366,7 @@ class Character:
     def __init__(self, hero_link=None):
         self.inventory = Inventory(6, 3)
         # характеристики персонажа
-        self.healf = 10
+        self.health = 10
         self.defense = 10
         self.attack = 10
         if isinstance(hero_link, Hero):  # если дали ссылку
@@ -670,7 +670,11 @@ class Battle:
         """
         как-то меняет параметры вводных объектов
         """
-        pass
+        sum1 = sum(hero.character_link.health, hero.character_link.defense, hero.character_link.attack)
+        sum2 = sum(enemy.health, enemy.defense, enemy.attack)
+        if sum1 >= sum2:
+            return hero
+        return enemy
 
 
 class MoveObj(StaticObj):
@@ -743,6 +747,8 @@ class MoveObj(StaticObj):
                 self.board[self.y][self.x] = None
                 self.x = x1
                 self.y = y1
+            else:
+                return False
         else:
             dY = vCoords[1]
             if 0 < self.x + dX < boardWight and 0 < self.y + dY < boardHeight and \
@@ -755,8 +761,8 @@ class Hero(MoveObj):
     """
     класс главного героя.
     """
-    def __init__(self, board, x, y, character_link=None):
-        super().__init__(board, x, y)
+    def __init__(self, board, x, y, is_in_circle=True, character_link=None):
+        super().__init__(board, x, y, is_in_circle=is_in_circle)
         if isinstance(character_link, Character):  # если дали ссылку
             self.character_link = character_link
             character_link.hero_link = self
@@ -771,3 +777,7 @@ class BadGroup(MoveObj):
     def __init__(self, board, x, y, group_size=1, is_in_circle=False):
         super().__init__(board, x, y, is_in_circle=is_in_circle)
         self.group_size = group_size
+        # характеристики
+        self.health = 12
+        self.defense = 4
+        self.attack = 2
