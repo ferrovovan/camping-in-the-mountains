@@ -107,8 +107,8 @@ class SettingsDisplay(SomeDisplay):
 
     def _made_buttons(self, butt_im, indent=20):
         """
-                Ставит кнопки на себе
-                """
+        Ставит кнопки на себе
+        """
         k = 4
         n = len(self.all_settings) * 2
         scr_size = self.get_size()
@@ -317,7 +317,7 @@ class Interface:
         n = len(x)  # количество кнопок
         width = 240
         height = 120
-        k = 1.2  # коэфициэнт удалённости кнопок
+        k = 1.2  # коэффициент удалённости кнопок
         for i in range(n):
             Button(self.menuButtonsGroup, (screenBoards[0] - width) // 2,
                    screenBoards[1] // 2 + int((n // 2 - i) * height * k),
@@ -332,7 +332,7 @@ class Interface:
         if not self.menu_close:
             id = self.menuButtonsGroup.click_id(event)
             if id is not None:
-                if id == 6:  # выйти в лавное меню
+                if id == 6:  # выйти в главное меню
                     return "return"
 
     def is_click(self, event):
@@ -492,7 +492,7 @@ class Map(Board):
     # готов
     def __init__(self, width, height, screenBoards=None):
         super().__init__(width, height)
-        if screenBoards is None:  # если не заданны координаты окна
+        if screenBoards is None:  # если не заданы координаты окна
             self.cell_size = self.zoom_sizes[len(self.zoom_sizes) // 2]
         else:
             # маштабирует равномерно
@@ -641,7 +641,7 @@ class StaticObj:
     """
 
     def __init__(self, board, x, y):
-        #  объекты могут обращаться к доске
+        # объекты могут обращаться к доске
         self.board = board  # это ссылка!!!
         self.x = x
         self.y = y
