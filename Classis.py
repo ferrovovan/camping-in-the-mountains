@@ -660,6 +660,7 @@ class KeyBoardManager:
         kPressed = pygame.key.get_pressed()  # нажатые кнопки
         if kPressed[pygame.K_ESCAPE]:
             self.interface._close_menu()
+        # стрелки
         if kPressed[pygame.K_UP]:
             self.map.move(y=-10)
         if kPressed[pygame.K_DOWN]:
@@ -668,27 +669,14 @@ class KeyBoardManager:
             self.map.move(x=10)
         if kPressed[pygame.K_LEFT]:
             self.map.move(x=-10)
+        #
         if kPressed[pygame.K_w]:
             self.character.hero_link.move((1, 0))
         elif kPressed[pygame.K_s]:
             self.character.hero_link.move((-1, 0))
 
     def manage_keyup(self, event):
-        kPressed = pygame.key.get_pressed()  # нажатые кнопки
-        if kPressed[pygame.K_ESCAPE]:
-            self.interface._close_menu()
-        if kPressed[pygame.K_UP]:
-            self.map.move(y=-10)
-        if kPressed[pygame.K_DOWN]:
-            self.map.move(y=10)
-        if kPressed[pygame.K_RIGHT]:
-            self.map.move(x=10)
-        if kPressed[pygame.K_LEFT]:
-            self.map.move(x=-10)
-        if kPressed[pygame.K_w]:
-            self.character.hero_link.move((1, 0))
-        elif kPressed[pygame.K_s]:
-            self.character.hero_link.move((-1, 0))
+        self.manage_keydown(event)
 
 
 class StaticObj:
