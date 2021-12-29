@@ -642,6 +642,39 @@ class MouseManager:
             self.map.zoom(event.y, self.screen.get_size())
 
 
+class KeyBoardManager:
+    modifications = {}
+
+    def __init__(self, screen, interface, map1, character):
+        self.screen = screen
+        self.interface = interface
+        interface.keyManager_linc = self
+        self.map = map1
+        map1.keyManager_linc = self
+        self.character = character
+        character.keyManager_linc = self
+
+    def manage_keydown(self, event):
+        kPressed = pygame.key.get_pressed()  # нажатые кнопки
+        if kPressed[pygame.K_ESCAPE]:
+            running = False
+        if kPressed[pygame.K_UP]:
+            self.map1.move(y=-10)
+        if kPressed[pygame.K_DOWN]:
+            self.map1.move(y=10)
+        if kPressed[pygame.K_RIGHT]:
+            self.map1.move(x=10)
+        if kPressed[pygame.K_LEFT]:
+            self.map1.move(x=-10)
+        if kPressed[pygame.K_w]:
+            self.character.hero_link.move((1, 0))
+        elif kPressed[pygame.K_s]:
+            self.character.hero_link.move((-1, 0))
+
+    def manage_keyup(self, event):
+        kPressed = pygame.key.get_pressed()  # нажатые кнопки
+
+
 class StaticObj:
     """
     родитель всех не перемещяющихся объектов
@@ -666,6 +699,7 @@ class Battle:
     """
     класс битвы, здесь происходит механика боя.
     """
+
     def battle(self, hero, enemy):
         """
         как-то меняет параметры вводных объектов
@@ -761,6 +795,7 @@ class Hero(MoveObj):
     """
     класс главного героя.
     """
+
     def __init__(self, board, x, y, is_in_circle=True, character_link=None):
         super().__init__(board, x, y, is_in_circle=is_in_circle)
         if isinstance(character_link, Character):  # если дали ссылку
