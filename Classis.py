@@ -645,12 +645,12 @@ class MouseManager:
 class KeyBoardManager:
     modifications = {}
 
-    def __init__(self, screen, interface, map1, character):
+    def __init__(self, screen, interface, map, character):
         self.screen = screen
         self.interface = interface
         interface.keyManager_linc = self
-        self.map = map1
-        map1.keyManager_linc = self
+        self.map = map
+        map.keyManager_linc = self
         self.character = character
         character.keyManager_linc = self
 
@@ -659,13 +659,13 @@ class KeyBoardManager:
         if kPressed[pygame.K_ESCAPE]:
             running = False
         if kPressed[pygame.K_UP]:
-            self.map1.move(y=-10)
+            self.map.move(y=-10)
         if kPressed[pygame.K_DOWN]:
-            self.map1.move(y=10)
+            self.map.move(y=10)
         if kPressed[pygame.K_RIGHT]:
-            self.map1.move(x=10)
+            self.map.move(x=10)
         if kPressed[pygame.K_LEFT]:
-            self.map1.move(x=-10)
+            self.map.move(x=-10)
         if kPressed[pygame.K_w]:
             self.character.hero_link.move((1, 0))
         elif kPressed[pygame.K_s]:
@@ -673,6 +673,20 @@ class KeyBoardManager:
 
     def manage_keyup(self, event):
         kPressed = pygame.key.get_pressed()  # нажатые кнопки
+        if kPressed[pygame.K_ESCAPE]:
+            running = False
+        if kPressed[pygame.K_UP]:
+            self.map.move(y=-10)
+        if kPressed[pygame.K_DOWN]:
+            self.map.move(y=10)
+        if kPressed[pygame.K_RIGHT]:
+            self.map.move(x=10)
+        if kPressed[pygame.K_LEFT]:
+            self.map.move(x=-10)
+        if kPressed[pygame.K_w]:
+            self.character.hero_link.move((1, 0))
+        elif kPressed[pygame.K_s]:
+            self.character.hero_link.move((-1, 0))
 
 
 class StaticObj:
