@@ -343,7 +343,9 @@ class Interface:
             return True
         return False
 
-    def _close_menu(self, a=True):
+    def _close_menu(self, a=None):
+        if a is None:
+            a = not self.menu_close
         self.menu_close = a
         self.mouseManager_linc.modifications['character'] = not a
         self.mouseManager_linc.modifications['map'] = not a
@@ -657,7 +659,7 @@ class KeyBoardManager:
     def manage_keydown(self, event):
         kPressed = pygame.key.get_pressed()  # нажатые кнопки
         if kPressed[pygame.K_ESCAPE]:
-            running = False
+            self.interface._close_menu()
         if kPressed[pygame.K_UP]:
             self.map.move(y=-10)
         if kPressed[pygame.K_DOWN]:
@@ -674,7 +676,7 @@ class KeyBoardManager:
     def manage_keyup(self, event):
         kPressed = pygame.key.get_pressed()  # нажатые кнопки
         if kPressed[pygame.K_ESCAPE]:
-            running = False
+            self.interface._close_menu()
         if kPressed[pygame.K_UP]:
             self.map.move(y=-10)
         if kPressed[pygame.K_DOWN]:
