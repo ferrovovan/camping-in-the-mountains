@@ -613,11 +613,11 @@ class MouseManager:
     # готов
     def __init__(self, screen, interface, map1, character):
         self.screen = screen
-        self.interface = interface
+        self.interface_lick = interface
         interface.mouseManager_linc = self
-        self.map = map1
+        self.map_linc = map1
         map1.mouseManager_linc = self
-        self.character = character
+        self.character_lick = character
         character.mouseManager_linc = self
 
     def manage_click(self, event):
@@ -647,28 +647,28 @@ class MouseManager:
 class KeyBoardManager:
     modifications = {}
 
-    def __init__(self, screen, interface, map, character):
+    def __init__(self, screen, interface, map1, character):
         self.screen = screen
-        self.interface = interface
+        self.interface_lick = interface
         interface.keyManager_linc = self
-        self.map = map
-        map.keyManager_linc = self
-        self.character = character
+        self.map_link = map1
+        map1.keyManager_linc = self
+        self.character_lick = character
         character.keyManager_linc = self
 
     def manage_keydown(self, event):
         kPressed = pygame.key.get_pressed()  # нажатые кнопки
         if kPressed[pygame.K_ESCAPE]:
-            self.interface._close_menu()
+            self.interface_linc._close_menu()
         # стрелки
         if kPressed[pygame.K_UP]:
-            self.map.move(y=-10)
+            self.map_link.move(y=-10)
         if kPressed[pygame.K_DOWN]:
-            self.map.move(y=10)
+            self.map_lick.move(y=10)
         if kPressed[pygame.K_RIGHT]:
-            self.map.move(x=10)
+            self.map_lick.move(x=10)
         if kPressed[pygame.K_LEFT]:
-            self.map.move(x=-10)
+            self.map_lick.move(x=-10)
         #
         if kPressed[pygame.K_w]:
             self.character.hero_link.move((1, 0))
