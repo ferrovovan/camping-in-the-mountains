@@ -365,21 +365,36 @@ class Character:
     Это класс, в котором игрок сможет увидеть свои вещи, свои навыки, летопись действий и прочее
     """
 
-    def __init__(self, hero_link=None):
+    def __init__(self, screenBoards, hero_link=None):
         self.inventory = Inventory(6, 3)
+        if isinstance(hero_link, Hero):  # если дали ссылку
+            self.hero_link = hero_link
+            hero_link.character_link = self
+        self.rect = pygame.Rect(screenBoards[0] / 8, screenBoards[1] / 5, screenBoards[0] * (3 / 4),
+                                screenBoards[1] * (3 / 5))
         # характеристики персонажа
         self.health = 10
         self.defense = 10
         self.attack = 10
-        if isinstance(hero_link, Hero):  # если дали ссылку
-            self.hero_link = hero_link
-            hero_link.character_link = self
+        # страницы
+        self.eventlog = pygame.sprite.Group()
+        self.stats = pygame.sprite.Group()
+        self.skills = pygame.sprite.Group()
+        #
+        self.pages = {'inventory': self.inventory,
+                      'stats': self.stats,
+                      'skills': self.skills,
+                      'eventlog': self.eventlog}
+        self.open_pages = ''
 
     def get_click(self, mouse_pos):
         pass
 
     def is_click(self, event):
         pass
+
+    def render(self, screen):
+        pygame.draw.rect(screen, 40, self.rect)
 
 
 class Item(pygame.sprite.Sprite):
