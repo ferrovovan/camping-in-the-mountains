@@ -27,7 +27,8 @@ class SomeDisplay(pygame.Surface):
         size, coords = self._auto_data(size, t=t)
         self.coords = coords
         super().__init__(size)
-        self.spriteGroup = ButtonGroup()
+        self.otherGroup = pygame.sprite.Group()
+        self.buttonGroup = ButtonGroup()
         self._made_buttons(id_list, butt_im, indent=indent)
         self.fill('gray')
 
@@ -47,14 +48,14 @@ class SomeDisplay(pygame.Surface):
         button_width = scr_size[0] - 2 * indent
         button_height = (scr_size[1] - 2 * indent) * k // (n * (k + 1) - 1)
         for i in range(1, n + 1):
-            Button(self.spriteGroup,
+            Button(self.buttonGroup,
                    indent,
                    indent + (i - 1) * (button_height * (1 + k) // k),
                    button_width, button_height,
                    id=id_list[i - 1], image=butt_im)
 
     def reset_button(self, id, sp_id=None, new_size=None, new_coords=None, new_im=None):
-        button = self.spriteGroup.get_sprite(id, sp_id=sp_id)
+        button = self.buttonGroup.get_sprite(id, sp_id=sp_id)
         if button is not None:
             if new_size is not None:
                 button.rect.width = new_size[0]
@@ -71,12 +72,12 @@ class SomeDisplay(pygame.Surface):
         :return button's id, if one of them was clicked? else return None
         """
         event.pos = (event.pos[0] - self.coords[0], event.pos[1] - self.coords[1])
-        return self.spriteGroup.click_id(event)
+        return self.buttonGroup.click_id(event)
 
     def render(self, screen, language='russian'):
         screen.blit(self, self.coords)
-        self.spriteGroup.draw(self)
-        self.spriteGroup.draw_text(self, language=language)
+        self.buttonGroup.draw(self)
+        self.buttonGroup.draw_text(self, language=language)
 
 
 class SettingsDisplay(SomeDisplay):
@@ -99,8 +100,8 @@ class SettingsDisplay(SomeDisplay):
         size, coords = self._auto_data(size, t=t)
         self.coords = coords
         super(SomeDisplay, self).__init__(size)
-        self.spriteGroup = ButtonGroup()  # группа кнопок
         self.otherGroup = pygame.sprite.Group()  # группа картинок
+        self.buttonGroup = ButtonGroup()  # группа кнопок
         self.settingsDict = settingsDict
         self._made_buttons(butt_im, indent=indent)
         self.fill('gray')
@@ -116,7 +117,7 @@ class SettingsDisplay(SomeDisplay):
         button_height = (scr_size[1] - 2 * indent) * k // (4 * (k + 1) - 1)
         set_list = list(self.all_settings)
         for i in range(n):
-            Button(self.spriteGroup,
+            Button(self.buttonGroup,
                    scr_size[0] // 2 + ((i % 2) * 2 - 1) * (scr_size[0] // 4) - indent,
                    indent + (scr_size[1] - indent - 2 * (button_height * (1 + k) // k)) * (i // 2) // (n // 2),
                    40, 40,
@@ -132,12 +133,12 @@ class SettingsDisplay(SomeDisplay):
                 x = StrokeSprite(self.otherGroup, self.settingsDict[set_list[i // 2]], coords=thisCoords)
                 x.rect.x = scr_size[0] // 2 - x.rect.width // 2
 
-        Button(self.spriteGroup,  # применить
+        Button(self.buttonGroup,  # применить
                indent,
                indent + 2 * (button_height * (1 + k) // k),
                button_width, button_height,
                id=10, image=butt_im)
-        Button(self.spriteGroup,  # назад
+        Button(self.buttonGroup,  # назад
                indent,
                indent + 3 * (button_height * (1 + k) // k),
                button_width, button_height,
@@ -154,7 +155,7 @@ class SettingsDisplay(SomeDisplay):
             settings1.write(line)
 
     def manage_settings(self, event):
-        id, sp_id = self.spriteGroup.click_id(event, sp_id=True)
+        id, sp_id = self.buttonGroup.click_id(event, sp_id=True)
         if id == 8:
             self._change_settings(-1, sp_id)
         else:
