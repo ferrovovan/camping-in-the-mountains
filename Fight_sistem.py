@@ -110,7 +110,7 @@ def main():
                         pygame.draw.rect(screen, 'white', Action_rect, 1)
                         Band_talk = 'None'
                 #кнопка угрозы
-                elif button_threat.collidepoint(mouse_pos):
+                elif button_threat.collidepoint(mouse_pos) and Action:
                     mercy = 0
                     chance = randint(0, 100)
                     if chance >= 60:
@@ -119,7 +119,7 @@ def main():
                         Band_scare = 'refuse'
                     Action = False
                 #кнопка разговора
-                elif button_talk.collidepoint(mouse_pos):
+                elif button_talk.collidepoint(mouse_pos) and Action:
                     chance = randint(0, 100)
                     if chance >= 20:
                         Band_talk = 'good'
