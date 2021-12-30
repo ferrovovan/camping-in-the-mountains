@@ -621,27 +621,27 @@ class MouseManager:
         character.mouseManager_linc = self
 
     def manage_click(self, event):
-        if self.interface.is_click(event) and self.modifications['interface']:  # интерфейс
-            message = self.interface.get_click(event)
+        if self.interface_lick.is_click(event) and self.modifications['interface']:  # интерфейс
+            message = self.interface_lick.get_click(event)
             if message is not None:
                 return message
-        elif self.character.is_click(event) and self.modifications['character']:  # инвентарь
-            self.character.get_click(pygame.mouse.get_pos())
-        elif self.map.is_click(pygame.mouse.get_pos()) and self.modifications['map']:  # карта
-            self.map.on_click(pygame.mouse.get_pos())
+        elif self.character_lick.is_click(event) and self.modifications['character']:  # инвентарь
+            self.character_lick.get_click(pygame.mouse.get_pos())
+        elif self.map_linc.is_click(pygame.mouse.get_pos()) and self.modifications['map']:  # карта
+            self.map_linc.on_click(pygame.mouse.get_pos())
 
     def manage_motion(self, event):
         pass
 
     def manage_wheel(self, event):
-        if self.interface.is_click(event) and self.modifications['interface']:  # интерфейс
+        if self.interface_lick.is_click(event) and self.modifications['interface']:  # интерфейс
             pass
             # self.interface.get_click(pygame.mouse.get_pos())
-        elif self.character.is_click(event) and self.modifications['character']:  # инвентарь
+        elif self.character_lick.is_click(event) and self.modifications['character']:  # инвентарь
             pass
             # self.character.get_click(pygame.mouse.get_pos())
-        elif self.map.is_click(pygame.mouse.get_pos()):
-            self.map.zoom(event.y, self.screen.get_size())
+        elif self.map_linc.is_click(pygame.mouse.get_pos()):
+            self.map_linc.zoom(event.y, self.screen.get_size())
 
 
 class KeyBoardManager:
@@ -671,9 +671,9 @@ class KeyBoardManager:
             self.map_lick.move(x=-10)
         #
         if kPressed[pygame.K_w]:
-            self.character.hero_link.move((1, 0))
+            self.character_lick.hero_link.move((1, 0))
         elif kPressed[pygame.K_s]:
-            self.character.hero_link.move((-1, 0))
+            self.character_lick.hero_link.move((-1, 0))
 
     def manage_keyup(self, event):
         self.manage_keydown(event)
