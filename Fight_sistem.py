@@ -10,7 +10,14 @@ def main():
     XP_band = 120
     XP_Hero = 120
     Action = False
+    end = False
+    Band_scare = 'None'
+    Band_talk = 'None'
+    heal = 40
+    dop_attack = 0
+    mercy = 0
     font = pygame.font.Font('freesansbold.ttf', 22)
+    font_small = pygame.font.Font('freesansbold.ttf', 18)
     screen = pygame.display.set_mode(size)
     words = '* Банда появляется!'
 
@@ -21,49 +28,62 @@ def main():
     Action_rect = pygame.Rect(10, 300, 480, 100)
 
     while True:
-        Band_scare = False
-        Your_hit = randint(5, 40)
-        Band_hit = randint(5, 30)
-        heal = 40
-        end = False
+        Your_hit = randint(10, 40)
+        Band_hit = randint(11, 30) + dop_attack
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
             if event.type == pygame.MOUSEBUTTONDOWN and not end:
                 mouse_pos = event.pos
                 if button_attack.collidepoint(mouse_pos) and not Action:
-                    words = '* Банда появляется!'
+                    mercy = 0
+                    words = '* Банда ждёт ваших действий!'
                     Band_scare = False
                     if XP_Hero - Band_hit <= 0:
                         XP_Hero = 0
                         words = 'Вы погибли!'
                         end = True
-                    else:
-                        XP_Hero -= Band_hit
-                        XP_band -= Your_hit
-                    if XP_band - Your_hit <= 0:
+                    elif XP_band - Your_hit <= 0:
                         XP_band = 0
                         words = 'Вы победили!'
                         end = True
+                    else:
+                        XP_Hero -= Band_hit + dop_attack
+                        XP_band -= Your_hit
+                    dop_attack = 0
                 elif button_action.collidepoint(mouse_pos):
+                    if mercy != 2:
+                        XP_Hero -= 20 + dop_attack
+                        dop_attack = 0
                     words = ''
                     Action = True
                 elif button_item.collidepoint(mouse_pos) and not Action:
-                    words = '* Банда появляется!'
                     Band_scare = False
                     if XP_Hero + heal >= 120:
                         XP_Hero = 120
-                        XP_Hero -= Band_hit
+                        XP_Hero -= Band_hit + dop_attack
                     else:
                         XP_Hero += heal
-                        XP_Hero -= Band_hit
+                        XP_Hero -= Band_hit + dop_attack
                     if XP_band < 120:
                         XP_band += 1
+                    dop_attack = 0
                 elif button_1.collidepoint(mouse_pos):
-                    Band_scare = True
+                    chance = randint(0, 100)
+                    if chance >= 60:
+                        Band_scare = 'good'
+                    else:
+                        Band_scare = 'refuse'
+                    Action = False
+                elif button_2.collidepoint(mouse_pos):
+                    chance = randint(0, 100)
+                    if chance >= 30:
+                        Band_talk = 'good'
+                    else:
+                        Band_talk = 'refuse'
                     Action = False
         screen.fill('black')
-        if Action:
+        if Action and not end:
             button_1 = pygame.Rect(20, 300, 120, 100)
             text = font.render('* Угрожать', True, 'white')
             textRect = text.get_rect()
@@ -84,21 +104,54 @@ def main():
             screen.blit(text, textRect)
             pygame.draw.rect(screen, 'white', Action_rect, 1)
         else:
-            if Band_scare:
-                if XP_band - Your_hit <= 0:
-                    XP_band = 0
-                    words = 'Вы победили!'
-                    end = True
-                else:
-                    XP_band -= 20
-                    words = 'Банда в испуге! -20XP банды'
-                    text = font.render(words, True, 'white')
+            if Band_scare == 'good':
+                dop_attack = -10
+                words = 'Банда в испуге! -10 к атаке банды'
+                text = font.render(words, True, 'white')
+                textRect = text.get_rect()
+                textRect.center = Action_rect.center
+                screen.blit(text, textRect)
+                pygame.draw.rect(screen, 'white', Action_rect, 1)
+                Band_scare = 'None'
+            elif Band_scare == 'refuse':
+                dop_attack = 10
+                words = 'Банда посмеялась над вами! +10 к атаке банды'
+                text = font_small.render(words, True, 'white')
+                textRect = text.get_rect()
+                textRect.center = Action_rect.center
+                screen.blit(text, textRect)
+                pygame.draw.rect(screen, 'white', Action_rect, 1)
+                Band_scare = 'None'
+            elif Band_talk == 'refuse':
+                dop_attack = 5
+                words = 'Банда не хочет с вами говорить. +5 к атаке банды'
+                text = font_small.render(words, True, 'white')
+                textRect = text.get_rect()
+                textRect.center = Action_rect.center
+                screen.blit(text, textRect)
+                pygame.draw.rect(screen, 'white', Action_rect, 1)
+                Band_scare = 'None'
+            elif Band_talk == 'good':
+                mercy += 1
+                if mercy != 3:
+                    words = 'Вы хорошо побеседовали с бандой.))'
+                    text = font_small.render(words, True, 'white')
                     textRect = text.get_rect()
                     textRect.center = Action_rect.center
                     screen.blit(text, textRect)
                     pygame.draw.rect(screen, 'white', Action_rect, 1)
+                    Band_talk = 'None'
+                elif mercy == 3:
+                    end = True
+                    words = 'Банда вас отпускает.)) Вы победили!)'
+                    text = font_small.render(words, True, 'white')
+                    textRect = text.get_rect()
+                    textRect.center = Action_rect.center
+                    screen.blit(text, textRect)
+                    pygame.draw.rect(screen, 'white', Action_rect, 1)
+                    Band_talk = 'None'
 
-        text = font.render(words, True, 'white')
+        text = font_small.render(words, True, 'white')
         textRect = text.get_rect()
         textRect.center = Action_rect.center
         screen.blit(text, textRect)
@@ -122,7 +175,7 @@ def main():
         screen.blit(text, textRect)
         pygame.draw.rect(screen, 'yellow', button_item, 1)
 
-        #XP главного героя
+        # XP главного героя
         XP_Hero_rect = pygame.Rect(10, 10, 120, 50)
 
         XP_str = pygame.Rect(10, 60, 120, 50)
@@ -136,7 +189,7 @@ def main():
 
         pygame.draw.rect(screen, 'yellow', (10, 10, XP_Hero, 50))
 
-        #XP банды
+        # XP банды
         XP_band_rect = pygame.Rect(340, 10, 120, 50)
 
         XP_str = pygame.Rect(340, 60, 120, 50)
