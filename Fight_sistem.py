@@ -11,6 +11,7 @@ def main():
     XP_Hero = 120
     Action = False
     end = False
+    item_col = 0
     Band_scare = 'None'
     Band_talk = 'None'
     heal = 40
@@ -73,7 +74,8 @@ def main():
                     dop_attack = 0
                     Action = True
                 #кнопка предмета
-                elif button_item.collidepoint(mouse_pos) and not Action:
+                elif button_item.collidepoint(mouse_pos) and not Action and item_col < 5:
+                    item_col += 1
                     words = '* Банда ждёт ваших действий!'
                     if dop_attack < 0:
                         dop_attack = 0
@@ -206,11 +208,19 @@ def main():
         screen.blit(text, textRect)
         pygame.draw.rect(screen, 'yellow', button_action, 1)
 
-        text = font.render('Предметы', True, 'yellow')
-        textRect = text.get_rect()
-        textRect.center = button_item.center
-        screen.blit(text, textRect)
-        pygame.draw.rect(screen, 'yellow', button_item, 1)
+        if item_col < 5:
+            text = font.render('Предметы', True, 'yellow')
+            textRect = text.get_rect()
+            textRect.center = button_item.center
+            screen.blit(text, textRect)
+            pygame.draw.rect(screen, 'yellow', button_item, 1)
+        else:
+            text = font.render('Предметы', True, 'white')
+            textRect = text.get_rect()
+            textRect.center = button_item.center
+            screen.blit(text, textRect)
+            pygame.draw.rect(screen, 'white', button_item, 1)
+
         if mercy < 4:
             text = font.render('Пощада', True, 'white')
             textRect = text.get_rect()
@@ -223,9 +233,9 @@ def main():
             textRect.center = button_mercy.center
             screen.blit(text, textRect)
             pygame.draw.rect(screen, 'yellow', button_mercy, 1)
+
         # XP главного героя
         XP_Hero_rect = pygame.Rect(500, 700, 120, 50)
-
         XP_str = pygame.Rect(640, 700, 120, 50)
         pygame.draw.rect(screen, 'black', XP_Hero_rect)
         text = font.render(str(XP_Hero) + '/120', True, 'white')
