@@ -613,20 +613,20 @@ class MouseManager:
     # готов
     def __init__(self, screen, interface, map1, character):
         self.screen = screen
-        self.interface_lick = interface
+        self.interface_linc = interface
         interface.mouseManager_linc = self
         self.map_linc = map1
         map1.mouseManager_linc = self
-        self.character_lick = character
+        self.character_linc = character
         character.mouseManager_linc = self
 
     def manage_click(self, event):
-        if self.interface_lick.is_click(event) and self.modifications['interface']:  # интерфейс
-            message = self.interface_lick.get_click(event)
+        if self.interface_linc.is_click(event) and self.modifications['interface']:  # интерфейс
+            message = self.interface_linc.get_click(event)
             if message is not None:
                 return message
-        elif self.character_lick.is_click(event) and self.modifications['character']:  # инвентарь
-            self.character_lick.get_click(pygame.mouse.get_pos())
+        elif self.character_linc.is_click(event) and self.modifications['character']:  # инвентарь
+            self.character_linc.get_click(pygame.mouse.get_pos())
         elif self.map_linc.is_click(pygame.mouse.get_pos()) and self.modifications['map']:  # карта
             self.map_linc.on_click(pygame.mouse.get_pos())
 
@@ -634,10 +634,10 @@ class MouseManager:
         pass
 
     def manage_wheel(self, event):
-        if self.interface_lick.is_click(event) and self.modifications['interface']:  # интерфейс
+        if self.interface_linc.is_click(event) and self.modifications['interface']:  # интерфейс
             pass
             # self.interface.get_click(pygame.mouse.get_pos())
-        elif self.character_lick.is_click(event) and self.modifications['character']:  # инвентарь
+        elif self.character_linc.is_click(event) and self.modifications['character']:  # инвентарь
             pass
             # self.character.get_click(pygame.mouse.get_pos())
         elif self.map_linc.is_click(pygame.mouse.get_pos()):
@@ -649,11 +649,11 @@ class KeyBoardManager:
 
     def __init__(self, screen, interface, map1, character):
         self.screen = screen
-        self.interface_lick = interface
+        self.interface_linc = interface
         interface.keyManager_linc = self
-        self.map_link = map1
+        self.map_linc = map1
         map1.keyManager_linc = self
-        self.character_lick = character
+        self.character_link = character
         character.keyManager_linc = self
 
     def manage_keydown(self, event):
@@ -662,18 +662,18 @@ class KeyBoardManager:
             self.interface_linc._close_menu()
         # стрелки
         if kPressed[pygame.K_UP]:
-            self.map_link.move(y=-10)
+            self.map_linc.move(y=-10)
         if kPressed[pygame.K_DOWN]:
-            self.map_lick.move(y=10)
+            self.map_linc.move(y=10)
         if kPressed[pygame.K_RIGHT]:
-            self.map_lick.move(x=10)
+            self.map_linc.move(x=10)
         if kPressed[pygame.K_LEFT]:
-            self.map_lick.move(x=-10)
+            self.map_linc.move(x=-10)
         #
         if kPressed[pygame.K_w]:
-            self.character_lick.hero_link.move((1, 0))
+            self.character_link.hero_link.move((1, 0))
         elif kPressed[pygame.K_s]:
-            self.character_lick.hero_link.move((-1, 0))
+            self.character_link.hero_link.move((-1, 0))
 
     def manage_keyup(self, event):
         self.manage_keydown(event)
