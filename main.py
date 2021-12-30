@@ -83,7 +83,7 @@ def main():
     board.load_map('data/maps/main_map.txt', size)
     interface = Interface(size, board.cell_size, language=language)
     hero1 = Hero(board.board, 0, 7, is_in_circle=True)
-    character = Character(hero_link=hero1)
+    character = Character(size, hero_link=hero1)
     mouseManager = MouseManager(screen, interface, board, character)
     keyManager = KeyBoardManager(screen, interface, board, character)
     # основной цикл
@@ -109,6 +109,8 @@ def main():
         screen.fill('black')
         board.render(screen)
         interface.render(screen)
+        if character.is_open:
+            character.render(screen, language=language)
         pygame.display.flip()
         clock.tick(FPS)
     if is_return:

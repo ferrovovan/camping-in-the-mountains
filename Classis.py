@@ -20,7 +20,7 @@ def load_image(name, colorkey=None):
 
 
 class SomeDisplay(pygame.Surface):
-    def __init__(self, size, id_list, butt_im, t=0, indent=0):
+    def __init__(self, size, id_list, butt_im=None, t=0, indent=0):
         """
         Менюшка на экране
         """
@@ -29,7 +29,7 @@ class SomeDisplay(pygame.Surface):
         super().__init__(size)
         self.otherGroup = pygame.sprite.Group()
         self.buttonGroup = ButtonGroup()
-        self._made_buttons(id_list, butt_im, indent=indent)
+        self._made_buttons(id_list, butt_im=None, indent=indent)
         self.fill('gray')
 
     @staticmethod
@@ -38,12 +38,14 @@ class SomeDisplay(pygame.Surface):
         coords1 = (size[0] // 2 - size1[0] // 2, size[1] // 3 + t)
         return size1, coords1
 
-    def _made_buttons(self, id_list, butt_im, indent=20):
+    def _made_buttons(self, id_list, butt_im=None, indent=20):
         """
         Ставит кнопки на себе
         """
         k = 4
         scr_size = self.get_size()
+        if butt_im is None:
+            butt_im = Button.image
         n = len(id_list)
         button_width = scr_size[0] - 2 * indent
         button_height = (scr_size[1] - 2 * indent) * k // (n * (k + 1) - 1)
@@ -367,6 +369,7 @@ class Character:
     """
 
     def __init__(self, screenBoards, hero_link=None):
+        self.is_open = False
         self.inventory = Inventory(6, 3)
         if isinstance(hero_link, Hero):  # если дали ссылку
             self.hero_link = hero_link
@@ -378,15 +381,15 @@ class Character:
         self.defense = 10
         self.attack = 10
         # страницы
-        self.eventlog = pygame.sprite.Group()
-        self.stats = pygame.sprite.Group()
-        self.skills = pygame.sprite.Group()
+        self.eventlog = SomeDisplay((self.rect.width, self.rect.height), [])
+        self.stats = SomeDisplay((self.rect.width, self.rect.height), [])
+        self.skills = SomeDisplay((self.rect.width, self.rect.height), [])
         #
         self.pages = {'inventory': self.inventory,
                       'stats': self.stats,
                       'skills': self.skills,
                       'eventlog': self.eventlog}
-        self.open_pages = ''
+        self.open_page = 'stats'
 
     def get_click(self, mouse_pos):
         pass
@@ -394,8 +397,17 @@ class Character:
     def is_click(self, event):
         pass
 
-    def render(self, screen):
+    def set_open(self, a=None):
+        """
+        :param a: True or False
+        """
+        if a is None:
+            a = not self.is_open
+        self.is_open = a
+
+    def render(self, screen, language='russian'):
         pygame.draw.rect(screen, 40, self.rect)
+        self.pages[self.open_page].render(screen, language=language)
 
 
 class Item(pygame.sprite.Sprite):
@@ -684,6 +696,8 @@ class KeyBoardManager:
             self.character_link.hero_link.move((1, 0))
         elif kPressed[pygame.K_s]:
             self.character_link.hero_link.move((-1, 0))
+        elif kPressed[pygame.K_i]:
+            self.character_link.set_open()
 
     def manage_keyup(self, event):
         self.manage_keydown(event)
