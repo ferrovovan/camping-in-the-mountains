@@ -634,14 +634,7 @@ class MouseManager:
         pass
 
     def manage_wheel(self, event):
-        if self.interface_linc.is_click(event) and self.modifications['interface']:  # интерфейс
-            pass
-            # self.interface.get_click(pygame.mouse.get_pos())
-        elif self.character_linc.is_click(event) and self.modifications['character']:  # инвентарь
-            pass
-            # self.character.get_click(pygame.mouse.get_pos())
-        elif self.map_linc.is_click(pygame.mouse.get_pos()):
-            self.map_linc.zoom(event.y, self.screen.get_size())
+        pass
 
 
 class KeyBoardManager:
