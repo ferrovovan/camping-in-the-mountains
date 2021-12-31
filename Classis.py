@@ -29,7 +29,7 @@ class SomeDisplay(pygame.Surface):
         super().__init__(size)
         self.otherGroup = pygame.sprite.Group()
         self.buttonGroup = ButtonGroup()
-        self._made_buttons(id_list, butt_im=None, indent=indent)
+        self._made_buttons(id_list, butt_im=butt_im, indent=indent)
         self.fill('gray')
 
     @staticmethod
@@ -370,7 +370,6 @@ class Character:
 
     def __init__(self, screenBoards, hero_link=None):
         self.is_open = False
-        self.inventory = Inventory(6, 3)
         if isinstance(hero_link, Hero):  # если дали ссылку
             self.hero_link = hero_link
             hero_link.character_link = self
@@ -381,9 +380,10 @@ class Character:
         self.defense = 10
         self.attack = 10
         # страницы
-        self.eventlog = SomeDisplay((self.rect.width, self.rect.height), [])
-        self.stats = SomeDisplay((self.rect.width, self.rect.height), [])
-        self.skills = SomeDisplay((self.rect.width, self.rect.height), [])
+        self.inventory = SomeDisplay(screenBoards, [], t=20)
+        self.eventlog = SomeDisplay(screenBoards, [], t=20)
+        self.stats = SomeDisplay(screenBoards, [], t=20)
+        self.skills = SomeDisplay(screenBoards, [], t=20)
         #
         self.pages = {'inventory': self.inventory,
                       'stats': self.stats,
