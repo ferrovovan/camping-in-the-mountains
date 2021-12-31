@@ -382,11 +382,18 @@ class Character:
         self.health = 10
         self.defense = 10
         self.attack = 10
-        # страницы
-        self.inventory = MenuDisplay(screenBoards, [], t=20)
-        self.eventlog = MenuDisplay(screenBoards, [], t=20)
-        self.stats = MenuDisplay(screenBoards, [], t=20)
-        self.skills = MenuDisplay(screenBoards, [], t=20)
+        # данные для построения страниц
+        page_size = (self.rect.width, self.rect.height)
+        coords = (self.rect.left, self.rect.top)
+        color = 'gray'
+        # строительство инвентаря
+        self.inventory = SomeDisplay(page_size, coords, color=color)
+        # строительство умений
+        self.skills = SomeDisplay(page_size, coords, color=color)
+        # строительство ?
+        self.stats = SomeDisplay(page_size, coords, color=color)
+        # строительство летописи
+        self.eventlog = SomeDisplay(page_size, coords, color=color)
         #
         self.pages = {'inventory': self.inventory,
                       'stats': self.stats,
