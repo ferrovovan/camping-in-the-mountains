@@ -20,17 +20,25 @@ def load_image(name, colorkey=None):
 
 
 class SomeDisplay(pygame.Surface):
-    def __init__(self, size, id_list, butt_im=None, t=0, indent=0):
-        """
-        Менюшка на экране
-        """
-        size, coords = self._auto_data(size, t=t)
-        self.coords = coords
+    def __init__(self, size, coords, color='gray'):
         super().__init__(size)
+        self.coords = coords
         self.otherGroup = pygame.sprite.Group()
         self.buttonGroup = ButtonGroup()
+        self.fill(color)
+
+    def render(self, screen, language='russian'):
+        screen.blit(self, self.coords)
+        self.buttonGroup.draw(self)
+        self.buttonGroup.draw_text(self, language=language)
+        self.otherGroup.draw(self)
+
+
+class MenuDisplay(SomeDisplay):
+    def __init__(self, size, id_list, butt_im=None, t=0, indent=0, color='gray'):
+        size, coords = self._auto_data(size, t=t)
+        super().__init__(size, coords, color=color)
         self._made_buttons(id_list, butt_im=butt_im, indent=indent)
-        self.fill('gray')
 
     @staticmethod
     def _auto_data(size, t=0):
@@ -76,13 +84,8 @@ class SomeDisplay(pygame.Surface):
         event.pos = (event.pos[0] - self.coords[0], event.pos[1] - self.coords[1])
         return self.buttonGroup.click_id(event)
 
-    def render(self, screen, language='russian'):
-        screen.blit(self, self.coords)
-        self.buttonGroup.draw(self)
-        self.buttonGroup.draw_text(self, language=language)
 
-
-class SettingsDisplay(SomeDisplay):
+class SettingsDisplay(MenuDisplay):
     """
     Меню настроек
     """
@@ -380,10 +383,10 @@ class Character:
         self.defense = 10
         self.attack = 10
         # страницы
-        self.inventory = SomeDisplay(screenBoards, [], t=20)
-        self.eventlog = SomeDisplay(screenBoards, [], t=20)
-        self.stats = SomeDisplay(screenBoards, [], t=20)
-        self.skills = SomeDisplay(screenBoards, [], t=20)
+        self.inventory = MenuDisplay(screenBoards, [], t=20)
+        self.eventlog = MenuDisplay(screenBoards, [], t=20)
+        self.stats = MenuDisplay(screenBoards, [], t=20)
+        self.skills = MenuDisplay(screenBoards, [], t=20)
         #
         self.pages = {'inventory': self.inventory,
                       'stats': self.stats,
