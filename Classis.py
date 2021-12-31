@@ -383,8 +383,9 @@ class Character:
         self.defense = 10
         self.attack = 10
         # данные для построения страниц
-        page_size = (self.rect.width, self.rect.height)
-        coords = (self.rect.left, self.rect.top)
+        indent = 20
+        page_size = (self.rect.width - 2 * indent, self.rect.height - 2 * indent)
+        coords = (self.rect.left + indent, self.rect.top + indent)
         color = 'gray'
         # строительство инвентаря
         self.inventory = SomeDisplay(page_size, coords, color=color)
@@ -416,7 +417,7 @@ class Character:
         self.is_open = a
 
     def render(self, screen, language='russian'):
-        pygame.draw.rect(screen, 40, self.rect)
+        pygame.draw.rect(screen, 'red', self.rect)
         self.pages[self.open_page].render(screen, language=language)
 
 
