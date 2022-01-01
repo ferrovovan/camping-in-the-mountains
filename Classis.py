@@ -94,7 +94,7 @@ class InventoryDisplay(SomeDisplay):
 
     def render(self, screen, language='russian'):
         super().render(screen, language=language)
-        self.inventory.render(self)
+        self.inventory.render()
 
 
 class SettingsDisplay(MenuDisplay):
@@ -504,14 +504,14 @@ class Inventory(Board):
         self.board = [None for _ in range(space[0] * space[1])]
         self.display_link = display_link
 
-    def render(self, screen):
-        super().render(screen)
+    def render(self):
+        super().render(self.display_link)
         for i in range(len(self.board)):
             item = self.board[i]
             if item is None:
                 break
             if isinstance(item, Item):
-                item.render(screen, x=(i % self.space[1]) * self.cell_size + self.cell_size // 2,
+                item.render(self.display_link, x=(i % self.space[1]) * self.cell_size + self.cell_size // 2,
                             y=(i // self.space[1]) * self.cell_size + self.cell_size // 2)
 
     def add_item(self, item):
