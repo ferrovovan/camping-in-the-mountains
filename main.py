@@ -3,6 +3,7 @@ from Classis import *
 pygame.init()
 pygame.display.set_caption('Поход по горам')
 
+# открытие настроек
 settingsDict = {}
 with open('settings.txt', 'r') as settings:
     for line in settings:
@@ -22,11 +23,11 @@ screen = pygame.display.set_mode(size)
 
 
 def start_screen(screen, FPS):
-    screen.fill([255, 255, 255])
-    menuIm = load_image('gfx/textures/interface/fone.png')
-    screen.blit(menuIm, menuIm.get_rect())
-    clock = pygame.time.Clock()
+    menuIm = load_image('gfx/textures/interface/fone.png')  # загружаем картинку
+    screen.blit(menuIm, menuIm.get_rect())  # ставим на экран
+    clock = pygame.time.Clock()  # часы
 
+    # изображения
     images = {'button1': load_image('gfx/buttons/button1.png'),
               'button2': load_image('gfx/buttons/button2.png')}
 
@@ -39,10 +40,11 @@ def start_screen(screen, FPS):
     settingsWin = SettingsDisplay(screen.get_size(), settingsDict, images['button1'], t=y_indent, indent=butt_indent)
     loadWin = MenuDisplay(screen.get_size(), load_id, images['button1'], t=y_indent, indent=butt_indent)
 
+    # страницы
     screens_dict = {'menuWin': menuWin,
                     'settingsWin': settingsWin,
                     'loadWin': loadWin}
-    draw_screen = 'menuWin'
+    draw_screen = 'menuWin'  # текущая страница
 
     running = True
     while running:
@@ -88,7 +90,7 @@ def main():
     keyManager = KeyBoardManager(screen, interface, board, character)  # создаём менеджера клавиатуры
     # основной цикл
     running = True
-    clock = pygame.time.Clock()
+    clock = pygame.time.Clock()  # часы
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
