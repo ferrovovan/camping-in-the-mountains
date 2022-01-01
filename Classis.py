@@ -723,9 +723,12 @@ class KeyBoardManager:
             self.character_link.hero_link.move((-1, 0))
         elif kPressed[pygame.K_i]:
             self.character_link.set_open()
-        elif kPressed[pygame.K_f]:
+        elif kPressed[pygame.K_f]:  # лопата
             group1 = self.character_link.inventory.otherGroup
             self.character_link.inventory.inventory.add_item(Item(group1, 'gfx/textures/items/shovel.png'))
+        elif kPressed[pygame.K_g]:  # щит
+            group1 = self.character_link.inventory.otherGroup
+            self.character_link.inventory.inventory.add_item(Item(group1, 'gfx/textures/items/shield.png'))
 
     def manage_keyup(self, event):
         self.manage_keydown(event)
