@@ -397,7 +397,7 @@ class Character:
         indent = 20
         page_size = (self.rect.width - 2 * indent, self.rect.height - 2 * indent)
         coords = (self.rect.left + indent, self.rect.top + indent)
-        color = 'gray'
+        color = 'orange'
         # строительство инвентаря
         self.inventory = InventoryDisplay(page_size, coords, color=color)
         # строительство умений
@@ -499,6 +499,7 @@ class Inventory(Board):
         super().__init__(*space)
         if cell_size is not None:
             self.cell_size = cell_size
+        self.space = space
         self.board = [None for _ in range(space[0] * space[1])]
 
     def render(self, screen):
@@ -508,7 +509,7 @@ class Inventory(Board):
             if item is None:
                 break
             if isinstance(item, Item):
-                item.render(screen, x=i * self.cell_size, y=i * self.cell_size)
+                item.render(screen, x=(i % self.space[1]) * self.cell_size, y=(i // self.space[1]) * self.cell_size)
 
     def add_item(self, item):
         if not isinstance(item, Item):
