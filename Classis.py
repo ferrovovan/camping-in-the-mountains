@@ -440,6 +440,7 @@ class Item(pygame.sprite.Sprite):
     def __init__(self, group, filename, id=0):
         super().__init__(group)
         self.image = load_image(filename, colorkey=-1)
+        self.rect = self.image.get_rect()
         self.id = id
 
     def render(self, screen, x=0, y=0):
@@ -721,6 +722,9 @@ class KeyBoardManager:
             self.character_link.hero_link.move((-1, 0))
         elif kPressed[pygame.K_i]:
             self.character_link.set_open()
+        elif kPressed[pygame.K_f]:
+            group1 = self.character_link.inventory.otherGroup
+            self.character_link.inventory.inventory.add_item(Item(group1, 'gfx/textures/items/shovel.png'))
 
     def manage_keyup(self, event):
         self.manage_keydown(event)
