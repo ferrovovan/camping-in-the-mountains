@@ -89,7 +89,7 @@ class InventoryDisplay(SomeDisplay):
     def __init__(self, size, coords, color='gray'):
         super().__init__(size, coords, color=color)
         spase_size = (10, 10)
-        self.inventory = Inventory(spase_size, cell_size=min(size[0] // spase_size[0], size[1] // spase_size[1]))
+        self.inventory = Inventory(spase_size, cell_size=min(size[0] // spase_size[0], size[1] // spase_size[1]), display_link=self)
 
     def render(self, screen, language='russian'):
         super().render(screen, language=language)
@@ -495,12 +495,13 @@ class Inventory(Board):
     Хранит в себе предметы персонажа
     """
 
-    def __init__(self, space=(5, 5), cell_size=None):
+    def __init__(self, space=(5, 5), cell_size=None, display_link=None):
         super().__init__(*space)
         if cell_size is not None:
             self.cell_size = cell_size
         self.space = space
         self.board = [None for _ in range(space[0] * space[1])]
+        self.display_link = display_link
 
     def render(self, screen):
         super().render(screen)
@@ -514,28 +515,32 @@ class Inventory(Board):
     def add_item(self, item):
         if not isinstance(item, Item):
             raise Exception('into inventory added not Item object')
-        i = self.board.index(None)
-        if i != -1:  # если осталось место
+        if None in self.board:  # если осталось место
+            i = self.board.index(None)
             self.board[i] = item
             self.sort_board()
+            if self.display_link is not None:
+                self.display_link.otherGroup.add(item)
         else:
             return False
 
-    def del_item(self, id):
-        x = self.board.index(None)
-        if x == -1:
+    def del_item(self, id=0):
+        if None in self.board:
+            x = self.board.index(None)
+        else:
             x = len(self.board)
         for i in range(x):
             if self.board[i].id == id:
-                x = self.board.pop(i)
+                self.display_link.otherGroup.remove(self.board.pop(i))
                 self.sort_board()
                 return x
         else:
             return None
 
     def sort_board(self):
-        x = self.board.index(None)
-        if x == -1:
+        if None in self.board:
+            x = self.board.index(None)
+        else:
             x = len(self.board)
         board = self.board[:x]
         board.sort(key=lambda item: item.id)
