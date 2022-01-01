@@ -729,6 +729,8 @@ class KeyBoardManager:
         elif kPressed[pygame.K_g]:  # щит
             group1 = self.character_link.inventory.otherGroup
             self.character_link.inventory.inventory.add_item(Item(group1, 'gfx/textures/items/shield.png'))
+        elif kPressed[pygame.K_r]:  # удалить элемент
+            self.character_link.inventory.inventory.del_item(0)
 
     def manage_keyup(self, event):
         self.manage_keydown(event)
