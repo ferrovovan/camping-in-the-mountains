@@ -19,7 +19,7 @@ for key in settingsDict.keys():
     elif key == 'display':
         size = (int(settingsDict[key][0]), int(settingsDict[key][1]))
 
-screen = pygame.display.set_mode(size)
+screen = pygame.display.set_mode(size)  # ставим размер экрана
 
 
 def start_screen(screen, FPS):
