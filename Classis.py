@@ -89,7 +89,8 @@ class InventoryDisplay(SomeDisplay):
     def __init__(self, size, coords, color='gray'):
         super().__init__(size, coords, color=color)
         spase_size = (10, 10)
-        self.inventory = Inventory(spase_size, cell_size=min(size[0] // spase_size[0], size[1] // spase_size[1]), display_link=self)
+        self.inventory = Inventory(spase_size, cell_size=min(size[0] // spase_size[0], size[1] // spase_size[1]),
+                                   display_link=self)
 
     def render(self, screen, language='russian'):
         super().render(screen, language=language)
@@ -510,7 +511,8 @@ class Inventory(Board):
             if item is None:
                 break
             if isinstance(item, Item):
-                item.render(screen, x=(i % self.space[1]) * self.cell_size, y=(i // self.space[1]) * self.cell_size)
+                item.render(screen, x=(i % self.space[1]) * self.cell_size + self.cell_size // 2,
+                            y=(i // self.space[1]) * self.cell_size + self.cell_size // 2)
 
     def add_item(self, item):
         if not isinstance(item, Item):
