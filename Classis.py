@@ -88,7 +88,8 @@ class MenuDisplay(SomeDisplay):
 class InventoryDisplay(SomeDisplay):
     def __init__(self, size, coords, color='gray'):
         super().__init__(size, coords, color=color)
-        self.inventory = Inventory(5, 6)
+        spase_size = (10, 10)
+        self.inventory = Inventory(spase_size, cell_size=min(size[0] // spase_size[0], size[1] // spase_size[1]))
 
     def render(self, screen, language='russian'):
         super().render(screen, language=language)
@@ -493,11 +494,11 @@ class Inventory(Board):
     Хранит в себе предметы персонажа
     """
 
-    def __init__(self, width, height, cell_size=None):
-        super().__init__(width, height)
+    def __init__(self, space=(5, 5), cell_size=None):
+        super().__init__(*space)
         if cell_size is not None:
             self.cell_size = cell_size
-        self.board = [None for _ in range(width * height)]
+        self.board = [None for _ in range(space[0] * space[1])]
 
     def render(self, screen):
         super().render(screen)
