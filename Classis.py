@@ -85,6 +85,16 @@ class MenuDisplay(SomeDisplay):
         return self.buttonGroup.click_id(event)
 
 
+class InventoryDisplay(SomeDisplay):
+    def __init__(self, size, coords, color='gray'):
+        super().__init__(size, coords, color=color)
+        self.inventory = Inventory(5, 6)
+
+    def render(self, screen, language='russian'):
+        super().render(screen, language=language)
+        self.inventory.render(self)
+
+
 class SettingsDisplay(MenuDisplay):
     """
     Меню настроек
@@ -388,7 +398,7 @@ class Character:
         coords = (self.rect.left + indent, self.rect.top + indent)
         color = 'gray'
         # строительство инвентаря
-        self.inventory = SomeDisplay(page_size, coords, color=color)
+        self.inventory = InventoryDisplay(page_size, coords, color=color)
         # строительство умений
         self.skills = SomeDisplay(page_size, coords, color=color)
         # строительство ?
@@ -400,7 +410,7 @@ class Character:
                       'stats': self.stats,
                       'skills': self.skills,
                       'eventlog': self.eventlog}
-        self.open_page = 'stats'
+        self.open_page = 'inventory'
 
     def get_click(self, mouse_pos):
         pass
