@@ -495,7 +495,8 @@ class Inventory(Board):
             item = self.board[i]
             if item is None:
                 break
-            item.render(screen, i * self.cell_size, i * self.cell_size)
+            if isinstance(item, Item):
+                item.render(screen, x=i * self.cell_size, y=i * self.cell_size)
 
     def add_item(self, item):
         if not isinstance(item, Item):
