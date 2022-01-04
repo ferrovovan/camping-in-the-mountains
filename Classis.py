@@ -517,12 +517,11 @@ class Inventory(Board):
     def add_item(self, item):
         if not isinstance(item, Item):
             raise Exception('into inventory added not Item object')
+        self.display_link.otherGroup.remove(item)
         if None in self.board:  # если осталось место
             i = self.board.index(None)
             self.board[i] = item
             self.sort_board()
-            if self.display_link is not None:
-                self.display_link.otherGroup.add(item)
         else:
             return False
 
@@ -533,7 +532,7 @@ class Inventory(Board):
             x = len(self.board)
         for i in range(x):
             if self.board[i].id == id:
-                self.display_link.otherGroup.remove(self.board.pop(i))
+                x = self.board.pop(i)
                 self.sort_board()
                 return x
         else:
