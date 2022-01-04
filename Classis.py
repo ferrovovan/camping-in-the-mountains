@@ -89,8 +89,8 @@ class MenuDisplay(SomeDisplay):
 class InventoryDisplay(SomeDisplay):
     def __init__(self, size, coords, color='gray'):
         super().__init__(size, coords, color=color)
-        spase_size = (10, 10)
-        self.inventory = Inventory(spase_size, cell_size=min(size[0] // spase_size[0], size[1] // spase_size[1]),
+        space_size = (10, 10)
+        self.inventory = Inventory(space_size, cell_size=min(size[0] // space_size[0], size[1] // space_size[1]),
                                    display_link=self)
 
     def render(self, screen, language='russian'):
