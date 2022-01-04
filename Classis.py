@@ -734,7 +734,7 @@ class KeyBoardManager:
         elif kPressed[pygame.K_f]:  # лопата
             self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shovel.png'))
         elif kPressed[pygame.K_g]:  # щит
-            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shield.png'))
+            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shield.png', id=1))
         elif kPressed[pygame.K_r]:  # удалить элемент
             self.character_link.inventory.inventory.del_item(0)
 
