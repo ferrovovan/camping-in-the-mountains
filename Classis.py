@@ -93,6 +93,9 @@ class InventoryDisplay(SomeDisplay):
         self.inventory = Inventory(space_size, cell_size=min(size[0] // space_size[0], size[1] // space_size[1]),
                                    display_link=self)
 
+    def get_click(self, mouse_pos):
+        self.inventory.get_click(mouse_pos)
+
     def render(self, screen, language='russian'):
         super().render(screen, language=language)
         self.inventory.render()
