@@ -389,8 +389,10 @@ class Character:
         if isinstance(hero_link, Hero):  # если дали ссылку
             self.hero_link = hero_link
             hero_link.character_link = self
+        # настройки экрана
         self.rect = pygame.Rect(screenBoards[0] / 8, screenBoards[1] / 5, screenBoards[0] * (3 / 4),
                                 screenBoards[1] * (3 / 5))
+        self.color = 'red'
         # характеристики персонажа
         self.health = 10
         self.defense = 10
@@ -430,7 +432,7 @@ class Character:
         self.is_open = a
 
     def render(self, screen, language='russian'):
-        pygame.draw.rect(screen, 'red', self.rect)
+        pygame.draw.rect(screen, self.color, self.rect)
         self.pages[self.open_page].render(screen, language=language)
 
 
