@@ -18,9 +18,13 @@ def main():
     dop_attack = 0
     mercy = 0
     v = 50
+    v_hit = 100
     time = 0
+    time_hit = 0
     Item = False
     Mercy = False
+    Hit = False
+    color = 'red'
     turn = 'player'
     items = ['Аптечка', 'Бутерброд', 'Бинт', 'Антибиотик', 'Обезболивающее', 'Консервы']
     heals = ['70', '50', '30', '60', '100', '10']
@@ -28,6 +32,11 @@ def main():
     font_small = pygame.font.Font('freesansbold.ttf', 27)
     screen = pygame.display.set_mode(size)
     words = '* Банда появляется!'
+
+    # снаряды врага
+    speed = 1
+    arm_poz_x = randint(350, 500)
+    arm_poz_y = 400
 
     # задание всех кнопок
     button_attack = pygame.Rect(20, 800, 160, 50)
@@ -48,12 +57,6 @@ def main():
 
     while True:
         screen.fill('black')
-        #Hit_height = randint(350, 550)
-        #if Hit_height != 350 or Hit_height != 550:
-            #Hit_weight = randint(400, 600)
-        #else:
-            #Hit_weight = 400
-
         # проверка на милосердие
         if mercy <= 1:
             Your_hit = randint(10, 40)
@@ -83,23 +86,21 @@ def main():
                         mercy = 0
                         Band_scare = False
                         words = '* Банда ждёт ваших действий!'
-                        if XP_Hero - (Band_hit + dop_attack) <= 0:
-                            XP_Hero = 0
-                            words = 'Вы погибли!'
-                            end = True
-                        elif XP_band - Your_hit <= 0:
+                        if XP_band - Your_hit <= 0:
                             XP_band = 0
                             words = 'Вы победили!'
                             end = True
                         else:
                             if abs(dop_attack) < Band_hit:
-                                XP_Hero -= Band_hit + dop_attack
+                                turn = 'enemy'
                                 XP_band -= Your_hit
                         dop_attack = 0
-                        turn = 'enemy'
-                        break
                     # кнопка перезапуска. Она только для проверки
                     elif button_restart.collidepoint(mouse_pos):
+                        arm_poz_x = randint(350, 500)
+                        arm_poz_y = 400
+                        time_hit = 0
+                        Hit = 0
                         turn = 'player'
                         words = '* Банда появляется!'
                         XP_band = 200
@@ -115,13 +116,7 @@ def main():
                         heals = ['70', '50', '30', '60', '100', '10']
                     # кнопка действия
                     elif button_action.collidepoint(mouse_pos) and not Action and not Item and not end:
-                        if XP_Hero - (Band_hit + dop_attack) <= 0:
-                            XP_Hero = 0
-                            words = 'Вы погибли!'
-                            end = True
-                        else:
-                            XP_Hero -= Band_hit + dop_attack
-                            words = ''
+                        words = ''
                         dop_attack = 0
                         Action = True
                     # кнопка предмета
@@ -129,13 +124,12 @@ def main():
                         Item = True
                         words = ''
                         Band_scare = False
-                        if XP_band < 120:
+                        if XP_band < 200:
                             XP_band += 1
                         dop_attack = 0
                     # кнопка пощады
                     elif button_mercy.collidepoint(mouse_pos) and not Action and not Item and not end:
                         Mercy = True
-                        turn = 'enemy'
                     # кнопка угрозы
                     elif button_threat.collidepoint(mouse_pos) and Action:
                         mercy = 0
@@ -160,11 +154,8 @@ def main():
                         heals[0] = ''
                         if XP_Hero + 70 >= 200:
                             XP_Hero = 200
-                            XP_Hero -= Band_hit + dop_attack
                         else:
                             XP_Hero += 70
-                            if abs(dop_attack) < Band_hit:
-                                XP_Hero -= Band_hit + dop_attack
                         Item = False
                         words = 'Банда ждёт ваших действий.'
                         turn = 'enemy'
@@ -173,11 +164,8 @@ def main():
                         heals[1] = ''
                         if XP_Hero + 50 >= 200:
                             XP_Hero = 200
-                            XP_Hero -= Band_hit + dop_attack
                         else:
                             XP_Hero += 50
-                            if abs(dop_attack) < Band_hit:
-                                XP_Hero -= Band_hit + dop_attack
                         Item = False
                         words = 'Банда ждёт ваших действий.'
                         turn = 'enemy'
@@ -186,11 +174,8 @@ def main():
                         heals[2] = ''
                         if XP_Hero + 30 >= 200:
                             XP_Hero = 200
-                            XP_Hero -= Band_hit + dop_attack
                         else:
                             XP_Hero += 30
-                            if abs(dop_attack) < Band_hit:
-                                XP_Hero -= Band_hit + dop_attack
                         Item = False
                         words = 'Банда ждёт ваших действий.'
                         turn = 'enemy'
@@ -199,11 +184,8 @@ def main():
                         heals[3] = ''
                         if XP_Hero + 60 >= 200:
                             XP_Hero = 200
-                            XP_Hero -= Band_hit + dop_attack
                         else:
                             XP_Hero += 60
-                            if abs(dop_attack) < Band_hit:
-                                XP_Hero -= Band_hit + dop_attack
                         Item = False
                         words = 'Банда ждёт ваших действий.'
                         turn = 'enemy'
@@ -212,11 +194,8 @@ def main():
                         heals[4] = ''
                         if XP_Hero + 100 >= 200:
                             XP_Hero = 200
-                            XP_Hero -= Band_hit + dop_attack
                         else:
                             XP_Hero += 100
-                            if abs(dop_attack) < Band_hit:
-                                XP_Hero -= Band_hit + dop_attack
                         Item = False
                         words = 'Банда ждёт ваших действий.'
                         turn = 'enemy'
@@ -225,11 +204,8 @@ def main():
                         heals[5] = ''
                         if XP_Hero + 20 >= 200:
                             XP_Hero = 200
-                            XP_Hero -= Band_hit + dop_attack
                         else:
                             XP_Hero += 20
-                            if abs(dop_attack) < Band_hit:
-                                XP_Hero -= Band_hit + dop_attack
                         Item = False
                         words = 'Банда ждёт ваших действий.'
                         turn = 'enemy'
@@ -278,6 +254,7 @@ def main():
                     pygame.draw.rect(screen, 'white', Action_rect, 1)
                     Band_talk = 'None'
                     Mercy = False
+                    turn = 'enemy'
             # механника действий
             if Action and not end:
                 text = font.render('* Угрожать', True, 'white')
@@ -377,10 +354,52 @@ def main():
         # экран, если ход противника
         if turn == 'enemy':
             # проверка на время
-            if time < 10:
+            if time < 8:
                 time += v * clock.tick() / 1000
-                # pygame.draw.circle(screen, 'white', (Hit_height, Hit_weight), 15)
-            elif time >= 10:
+                pygame.draw.rect(screen, 'white', Fight_rect, 1)
+                # проверка на нажатые кнопки
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_w] and weight_circle > 410:
+                    weight_circle -= 2
+                if keys[pygame.K_s] and weight_circle < 590:
+                    weight_circle += 2
+                if keys[pygame.K_a] and hight_circle > 360:
+                    hight_circle -= 2
+                if keys[pygame.K_d] and hight_circle < 540:
+                    hight_circle += 2
+                if (10 + 10) ** 2 >= ((hight_circle - arm_poz_x) ** 2 + (weight_circle - arm_poz_y) ** 2):
+                    Hit = True
+                pygame.draw.circle(screen, (255, 255, 255), (arm_poz_x, arm_poz_y), 10)
+                if arm_poz_y > 590:
+                    arm_poz_y = 400
+                    arm_poz_x = randint(350, 500)
+                else:
+                    arm_poz_y += speed
+                if time_hit <= 0 and Hit:
+                    time_hit = 0.5
+                    if abs(dop_attack) > Band_hit:
+                        XP_Hero -= Band_hit - dop_attack
+                    else:
+                        XP_Hero -= Band_hit + dop_attack
+                    # Нашему персонажу нанесён урон
+                elif time_hit > 0:
+                    if color == 'red':
+                        color = 'black'
+                    elif color == 'black':
+                        color = 'red'
+                    pygame.draw.circle(screen, color, (hight_circle, weight_circle), 10)
+                    time_hit -= v_hit * clock.tick() / 1000
+                else:
+                    pygame.draw.circle(screen, 'red', (hight_circle, weight_circle), 10)
+                Hit = False
+                # Наш персонаж
+                if XP_Hero - (Band_hit + dop_attack) <= 0:
+                    XP_Hero = 0
+                    words = 'Вы погибли!'
+                    end = True
+                    turn = 'player'
+            elif time >= 8:
+                time_hit = 0
                 time = 0
                 hight_circle = 450
                 weight_circle = 500
@@ -389,19 +408,7 @@ def main():
                 Action = False
                 Item = False
                 words = '* Банда ждёт ваших действий!'
-            pygame.draw.rect(screen, 'white', Fight_rect, 1)
-            # Наш персонаж
-            pygame.draw.circle(screen, 'red', (hight_circle, weight_circle), 10)
-            # проверка на нажатые кнопки
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_w] and weight_circle > 410:
-                weight_circle -= 2
-            if keys[pygame.K_s] and weight_circle < 590:
-                weight_circle += 2
-            if keys[pygame.K_a] and hight_circle > 360:
-                hight_circle -= 2
-            if keys[pygame.K_d] and hight_circle < 540:
-                hight_circle += 2
+                arm_poz_y = 400
 
         # кнопка атаки
         text = font.render('Атака', True, 'yellow')
