@@ -5,7 +5,7 @@ from random import *
 def main():
     pygame.init()
     clock = pygame.time.Clock()
-    fps = 60
+    FPS = 60
     size = 900, 900
     XP_band = 200
     XP_Hero = 200
@@ -20,6 +20,7 @@ def main():
     v = 50
     time = 0
     Item = False
+    Mercy = False
     turn = 'player'
     items = ['Аптечка', 'Бутерброд', 'Бинт', 'Антибиотик', 'Обезболивающее', 'Консервы']
     heals = ['70', '50', '30', '60', '100', '10']
@@ -28,6 +29,7 @@ def main():
     screen = pygame.display.set_mode(size)
     words = '* Банда появляется!'
 
+    # задание всех кнопок
     button_attack = pygame.Rect(20, 800, 160, 50)
     button_action = pygame.Rect(245, 800, 160, 50)
     button_item = pygame.Rect(470, 800, 160, 50)
@@ -45,6 +47,14 @@ def main():
     Fight_rect = pygame.Rect(350, 400, 200, 200)
 
     while True:
+        screen.fill('black')
+        #Hit_height = randint(350, 550)
+        #if Hit_height != 350 or Hit_height != 550:
+            #Hit_weight = randint(400, 600)
+        #else:
+            #Hit_weight = 400
+
+        # проверка на милосердие
         if mercy <= 1:
             Your_hit = randint(10, 40)
             Band_hit = randint(11, 30) + dop_attack
@@ -52,13 +62,17 @@ def main():
             dop_attack = 0
             Your_hit = randint(10, 40)
             Band_hit = 0
+
+        # проверка на события
         for event in pygame.event.get():
+
+            # события, если ход игрока
             if turn == 'player':
-                time = 0
                 if event.type == pygame.QUIT:
                     return False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
+                        Mercy = False
                         Action = False
                         Item = False
                         words = '* Банда ждёт ваших действий!'
@@ -120,23 +134,7 @@ def main():
                         dop_attack = 0
                     # кнопка пощады
                     elif button_mercy.collidepoint(mouse_pos) and not Action and not Item and not end:
-                        if mercy >= 4:
-                            end = True
-                            words = 'Банда вас отпускает.)) Вы победили!)'
-                            text = font.render(words, True, 'white')
-                            textRect = text.get_rect()
-                            textRect.center = Action_rect.center
-                            screen.blit(text, textRect)
-                            pygame.draw.rect(screen, 'white', Action_rect, 1)
-                            Band_talk = 'None'
-                        else:
-                            words = 'Ничего не произошло.'
-                            text = font.render(words, True, 'white')
-                            textRect = text.get_rect()
-                            textRect.center = Action_rect.center
-                            screen.blit(text, textRect)
-                            pygame.draw.rect(screen, 'white', Action_rect, 1)
-                            Band_talk = 'None'
+                        Mercy = True
                         turn = 'enemy'
                     # кнопка угрозы
                     elif button_threat.collidepoint(mouse_pos) and Action:
@@ -236,120 +234,10 @@ def main():
                         words = 'Банда ждёт ваших действий.'
                         turn = 'enemy'
 
-                screen.fill('black')
-                # механника действий
-                if Action and not end:
-                    text = font.render('* Угрожать', True, 'white')
-                    textRect = text.get_rect()
-                    textRect.center = button_threat.center
-                    screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'black', button_threat, 1)
-
-                    text = font.render('* Поговорить', True, 'white')
-                    textRect = text.get_rect()
-                    textRect.center = button_talk.center
-                    screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'black', button_talk, 1)
-
-                    text = font.render('', True, 'white')
-                    textRect = text.get_rect()
-                    textRect.center = Action_rect.center
-                    screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'white', Action_rect, 1)
-                else:
-                    # угрожать
-                    if Band_scare == 'good':
-                        dop_attack = -10
-                        words = 'Банда в испуге! Атаки банды стали слабее.'
-                        text = font.render(words, True, 'white')
-                        textRect = text.get_rect()
-                        textRect.center = Action_rect.center
-                        screen.blit(text, textRect)
-                        pygame.draw.rect(screen, 'white', Action_rect, 1)
-                        Band_scare = 'None'
-                    elif Band_scare == 'refuse':
-                        dop_attack = 10
-                        words = 'Банда посмеялась над вами! Атаки банды стали сильнее.'
-                        text = font_small.render(words, True, 'white')
-                        textRect = text.get_rect()
-                        textRect.center = Action_rect.center
-                        screen.blit(text, textRect)
-                        pygame.draw.rect(screen, 'white', Action_rect, 1)
-                        Band_scare = 'None'
-                    # поговорить
-                    elif Band_talk == 'refuse':
-                        dop_attack = 5
-                        words = 'Банда не хочет говорить. Атаки банды стали сильнее.'
-                        Band_scare = 'None'
-                    elif Band_talk == 'good':
-                        mercy += 1
-                        if mercy != 3:
-                            words = 'Вы хорошо побеседовали с бандой.))'
-                            Band_talk = 'None'
-                    Action = False
-                # механника предметов
-                if Item and not end:
-                    words = ''
-                    text = font.render('*' + items[0] + ' ' + heals[0], True, 'white')
-                    textRect = text.get_rect()
-                    textRect.center = button_id_1.center
-                    screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'black', button_id_1, 1)
-
-                    text = font.render('*' + items[1] + ' ' + heals[1], True, 'white')
-                    textRect = text.get_rect()
-                    textRect.center = button_id_2.center
-                    screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'black', button_id_2, 1)
-
-                    text = font.render('*' + items[2] + ' ' + heals[2], True, 'white')
-                    textRect = text.get_rect()
-                    textRect.center = button_id_3.center
-                    screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'black', button_id_3, 1)
-
-                    text = font.render('*' + items[3] + ' ' + heals[3], True, 'white')
-                    textRect = text.get_rect()
-                    textRect.center = button_id_4.center
-                    screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'black', button_id_4, 1)
-
-                    text = font.render('*' + items[4] + ' ' + heals[4], True, 'white')
-                    textRect = text.get_rect()
-                    textRect.center = button_id_5.center
-                    screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'black', button_id_5, 1)
-
-                    text = font.render('*' + items[5] + ' ' + heals[5], True, 'white')
-                    textRect = text.get_rect()
-                    textRect.center = button_id_6.center
-                    screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'black', button_id_6, 1)
-                text = font_small.render(words, True, 'white')
-                textRect = text.get_rect()
-                textRect.center = Action_rect.center
-                screen.blit(text, textRect)
-                pygame.draw.rect(screen, 'white', Action_rect, 1)
-
+            # события, если ход противника
             if turn == 'enemy':
-                if time < 400:
-                    time += v * clock.tick() / 1000
-                elif time >= 400:
-                    turn = 'player'
-                    col = 0
-                screen.fill((0, 0, 0))
-                keys = pygame.key.get_pressed()
                 if event.type == pygame.QUIT:
                     return False
-                elif event.type == pygame.KEYDOWN:
-                    if keys[pygame.K_w] and weight_circle > 410:
-                        weight_circle -= 3
-                    if keys[pygame.K_s] and weight_circle < 590:
-                        weight_circle += 3
-                    if keys[pygame.K_a] and hight_circle > 360:
-                        hight_circle -= 3
-                    if keys[pygame.K_d] and hight_circle < 540:
-                        hight_circle += 3
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = event.pos
                     if button_restart.collidepoint(mouse_pos):
@@ -364,82 +252,227 @@ def main():
                         dop_attack = 0
                         mercy = 0
                         Item = False
+                        Mercy = False
                         items = ['Аптечка', 'Бутерброд', 'Бинт', 'Антибиотик', 'Обезболивающее', 'Консервы']
                         heals = ['70', '50', '30', '60', '100', '10']
 
-                text = font_small.render('', True, 'white')
+        # экран, если ход игрока
+        if turn == 'player':
+            # механника пощады
+            if Mercy:
+                if mercy >= 4:
+                    end = True
+                    words = 'Банда вас отпускает.)) Вы победили!)'
+                    text = font.render(words, True, 'white')
+                    textRect = text.get_rect()
+                    textRect.center = Action_rect.center
+                    screen.blit(text, textRect)
+                    pygame.draw.rect(screen, 'white', Action_rect, 1)
+                    Band_talk = 'None'
+                else:
+                    words = 'Ничего не произошло.'
+                    text = font.render(words, True, 'white')
+                    textRect = text.get_rect()
+                    textRect.center = Action_rect.center
+                    screen.blit(text, textRect)
+                    pygame.draw.rect(screen, 'white', Action_rect, 1)
+                    Band_talk = 'None'
+                    Mercy = False
+            # механника действий
+            if Action and not end:
+                text = font.render('* Угрожать', True, 'white')
                 textRect = text.get_rect()
-                textRect.center = Fight_rect.center
+                textRect.center = button_threat.center
                 screen.blit(text, textRect)
-                pygame.draw.rect(screen, 'white', Fight_rect, 1)
+                pygame.draw.rect(screen, 'black', button_threat, 1)
 
-                pygame.draw.circle(screen, 'red', (hight_circle, weight_circle), 10)
-
-            text = font.render('Атака', True, 'yellow')
-            textRect = text.get_rect()
-            textRect.center = button_attack.center
-            screen.blit(text, textRect)
-            pygame.draw.rect(screen, 'yellow', button_attack, 1)
-
-            text = font.render('Действие', True, 'yellow')
-            textRect = text.get_rect()
-            textRect.center = button_action.center
-            screen.blit(text, textRect)
-            pygame.draw.rect(screen, 'yellow', button_action, 1)
-
-            text = font.render('Предметы', True, 'yellow')
-            textRect = text.get_rect()
-            textRect.center = button_item.center
-            screen.blit(text, textRect)
-            pygame.draw.rect(screen, 'yellow', button_item, 1)
-
-            if mercy < 3:
-                text = font.render('Пощада', True, 'white')
+                text = font.render('* Поговорить', True, 'white')
                 textRect = text.get_rect()
-                textRect.center = button_mercy.center
+                textRect.center = button_talk.center
                 screen.blit(text, textRect)
-                pygame.draw.rect(screen, 'white', button_mercy, 1)
+                pygame.draw.rect(screen, 'black', button_talk, 1)
+
+                text = font.render('', True, 'white')
+                textRect = text.get_rect()
+                textRect.center = Action_rect.center
+                screen.blit(text, textRect)
+                pygame.draw.rect(screen, 'white', Action_rect, 1)
             else:
-                text = font.render('Пощада', True, 'yellow')
+                # угрожать
+                if Band_scare == 'good':
+                    dop_attack = -10
+                    words = 'Банда в испуге! Атаки банды стали слабее.'
+                    text = font.render(words, True, 'white')
+                    textRect = text.get_rect()
+                    textRect.center = Action_rect.center
+                    screen.blit(text, textRect)
+                    pygame.draw.rect(screen, 'white', Action_rect, 1)
+                    Band_scare = 'None'
+                elif Band_scare == 'refuse':
+                    dop_attack = 10
+                    words = 'Банда посмеялась над вами! Атаки банды стали сильнее.'
+                    text = font_small.render(words, True, 'white')
+                    textRect = text.get_rect()
+                    textRect.center = Action_rect.center
+                    screen.blit(text, textRect)
+                    pygame.draw.rect(screen, 'white', Action_rect, 1)
+                    Band_scare = 'None'
+                # поговорить
+                elif Band_talk == 'refuse':
+                    dop_attack = 5
+                    words = 'Банда не хочет говорить. Атаки банды стали сильнее.'
+                    Band_scare = 'None'
+                elif Band_talk == 'good':
+                    mercy += 1
+                    if mercy != 3:
+                        words = 'Вы хорошо побеседовали с бандой.))'
+                        Band_talk = 'None'
+                Action = False
+            # механника предметов
+            if Item and not end:
+                words = ''
+                text = font.render('*' + items[0] + ' ' + heals[0], True, 'white')
                 textRect = text.get_rect()
-                textRect.center = button_mercy.center
+                textRect.center = button_id_1.center
                 screen.blit(text, textRect)
-                pygame.draw.rect(screen, 'yellow', button_mercy, 1)
+                pygame.draw.rect(screen, 'black', button_id_1, 1)
 
-            # XP главного героя
-            XP_Hero_rect = pygame.Rect(500, 700, 200, 50)
-            XP_str = pygame.Rect(650, 700, 200, 50)
-            pygame.draw.rect(screen, 'black', XP_Hero_rect)
-            text = font.render(str(XP_Hero) + '/200', True, 'white')
+                text = font.render('*' + items[1] + ' ' + heals[1], True, 'white')
+                textRect = text.get_rect()
+                textRect.center = button_id_2.center
+                screen.blit(text, textRect)
+                pygame.draw.rect(screen, 'black', button_id_2, 1)
+
+                text = font.render('*' + items[2] + ' ' + heals[2], True, 'white')
+                textRect = text.get_rect()
+                textRect.center = button_id_3.center
+                screen.blit(text, textRect)
+                pygame.draw.rect(screen, 'black', button_id_3, 1)
+
+                text = font.render('*' + items[3] + ' ' + heals[3], True, 'white')
+                textRect = text.get_rect()
+                textRect.center = button_id_4.center
+                screen.blit(text, textRect)
+                pygame.draw.rect(screen, 'black', button_id_4, 1)
+
+                text = font.render('*' + items[4] + ' ' + heals[4], True, 'white')
+                textRect = text.get_rect()
+                textRect.center = button_id_5.center
+                screen.blit(text, textRect)
+                pygame.draw.rect(screen, 'black', button_id_5, 1)
+
+                text = font.render('*' + items[5] + ' ' + heals[5], True, 'white')
+                textRect = text.get_rect()
+                textRect.center = button_id_6.center
+                screen.blit(text, textRect)
+                pygame.draw.rect(screen, 'black', button_id_6, 1)
+
+            # основное окно
+            text = font_small.render(words, True, 'white')
             textRect = text.get_rect()
-            textRect.center = XP_str.center
+            textRect.center = Action_rect.center
             screen.blit(text, textRect)
+            pygame.draw.rect(screen, 'white', Action_rect, 1)
 
-            pygame.draw.rect(screen, 'red', XP_Hero_rect)
+        # экран, если ход противника
+        if turn == 'enemy':
+            # проверка на время
+            if time < 10:
+                time += v * clock.tick() / 1000
+                # pygame.draw.circle(screen, 'white', (Hit_height, Hit_weight), 15)
+            elif time >= 10:
+                time = 0
+                hight_circle = 450
+                weight_circle = 500
+                turn = 'player'
+                Mercy = False
+                Action = False
+                Item = False
+                words = '* Банда ждёт ваших действий!'
+            pygame.draw.rect(screen, 'white', Fight_rect, 1)
+            # Наш персонаж
+            pygame.draw.circle(screen, 'red', (hight_circle, weight_circle), 10)
+            # проверка на нажатые кнопки
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_w] and weight_circle > 410:
+                weight_circle -= 2
+            if keys[pygame.K_s] and weight_circle < 590:
+                weight_circle += 2
+            if keys[pygame.K_a] and hight_circle > 360:
+                hight_circle -= 2
+            if keys[pygame.K_d] and hight_circle < 540:
+                hight_circle += 2
 
-            pygame.draw.rect(screen, 'yellow', (500, 700, XP_Hero, 50))
+        # кнопка атаки
+        text = font.render('Атака', True, 'yellow')
+        textRect = text.get_rect()
+        textRect.center = button_attack.center
+        screen.blit(text, textRect)
+        pygame.draw.rect(screen, 'yellow', button_attack, 1)
 
-            # XP банды
-            XP_band_rect = pygame.Rect(340, 10, 200, 50)
+        # кнопка действия
+        text = font.render('Действие', True, 'yellow')
+        textRect = text.get_rect()
+        textRect.center = button_action.center
+        screen.blit(text, textRect)
+        pygame.draw.rect(screen, 'yellow', button_action, 1)
 
-            XP_str = pygame.Rect(340, 60, 200, 50)
-            pygame.draw.rect(screen, 'black', XP_band_rect)
-            text = font.render(str(XP_band) + '/200', True, 'white')
+        # кнопка инвентаря
+        text = font.render('Предметы', True, 'yellow')
+        textRect = text.get_rect()
+        textRect.center = button_item.center
+        screen.blit(text, textRect)
+        pygame.draw.rect(screen, 'yellow', button_item, 1)
+
+        # Проверка кнопки милосердия
+        if mercy < 3:
+            text = font.render('Пощада', True, 'white')
             textRect = text.get_rect()
-            textRect.center = XP_str.center
+            textRect.center = button_mercy.center
             screen.blit(text, textRect)
-
-            pygame.draw.rect(screen, 'red', XP_band_rect)
-
-            pygame.draw.rect(screen, 'yellow', (340, 10, XP_band, 50))
-
-            text = font.render('R', True, 'red')
+            pygame.draw.rect(screen, 'white', button_mercy, 1)
+        else:
+            text = font.render('Пощада', True, 'yellow')
             textRect = text.get_rect()
-            textRect.center = button_restart.center
+            textRect.center = button_mercy.center
             screen.blit(text, textRect)
-            pygame.draw.rect(screen, 'blue', button_restart, 1)
-            pygame.display.update()
-            clock.tick(fps)
+            pygame.draw.rect(screen, 'yellow', button_mercy, 1)
+
+        # XP главного героя
+        XP_Hero_rect = pygame.Rect(500, 700, 200, 50)
+        XP_str = pygame.Rect(650, 700, 200, 50)
+        pygame.draw.rect(screen, 'black', XP_Hero_rect)
+        text = font.render(str(XP_Hero) + '/200', True, 'white')
+        textRect = text.get_rect()
+        textRect.center = XP_str.center
+        screen.blit(text, textRect)
+
+        pygame.draw.rect(screen, 'red', XP_Hero_rect)
+
+        pygame.draw.rect(screen, 'yellow', (500, 700, XP_Hero, 50))
+
+        # XP банды
+        XP_band_rect = pygame.Rect(340, 10, 200, 50)
+
+        XP_str = pygame.Rect(340, 60, 200, 50)
+        pygame.draw.rect(screen, 'black', XP_band_rect)
+        text = font.render(str(XP_band) + '/200', True, 'white')
+        textRect = text.get_rect()
+        textRect.center = XP_str.center
+        screen.blit(text, textRect)
+
+        pygame.draw.rect(screen, 'red', XP_band_rect)
+
+        pygame.draw.rect(screen, 'yellow', (340, 10, XP_band, 50))
+
+        # кнопка перезапуска
+        text = font.render('R', True, 'red')
+        textRect = text.get_rect()
+        textRect.center = button_restart.center
+        screen.blit(text, textRect)
+        pygame.draw.rect(screen, 'blue', button_restart, 1)
+        pygame.display.update()
+        clock.tick(FPS)
 
 
 pygame.quit()
