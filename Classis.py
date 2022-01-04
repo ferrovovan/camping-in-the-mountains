@@ -25,6 +25,7 @@ class SomeDisplay(pygame.Surface):
         self.coords = coords
         self.otherGroup = pygame.sprite.Group()
         self.buttonGroup = ButtonGroup()
+        self.color = color
         self.fill(color)
 
     def render(self, screen, language='russian'):
@@ -505,6 +506,7 @@ class Inventory(Board):
         self.display_link = display_link
 
     def render(self):
+        self.display_link.fill(self.display_link.color)
         super().render(self.display_link)
         for i in range(len(self.board)):
             item = self.board[i]
