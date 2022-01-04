@@ -436,13 +436,12 @@ class Character:
         self.pages[self.open_page].render(screen, language=language)
 
 
-class Item(pygame.sprite.Sprite):
+class Item:
     """
     Класс предмета
     """
 
-    def __init__(self, group, filename, id=0):
-        super().__init__(group)
+    def __init__(self, filename, id=0):
         self.image = load_image(filename, colorkey=-1)
         self.rect = self.image.get_rect()
         self.id = id
@@ -521,7 +520,6 @@ class Inventory(Board):
     def add_item(self, item):
         if not isinstance(item, Item):
             raise Exception('into inventory added not Item object')
-        self.display_link.otherGroup.remove(item)
         if None in self.board:  # если осталось место
             i = self.board.index(None)
             self.board[i] = item
@@ -734,11 +732,9 @@ class KeyBoardManager:
         elif kPressed[pygame.K_i]:
             self.character_link.set_open()
         elif kPressed[pygame.K_f]:  # лопата
-            group1 = self.character_link.inventory.otherGroup
-            self.character_link.inventory.inventory.add_item(Item(group1, 'gfx/textures/items/shovel.png'))
+            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shovel.png'))
         elif kPressed[pygame.K_g]:  # щит
-            group1 = self.character_link.inventory.otherGroup
-            self.character_link.inventory.inventory.add_item(Item(group1, 'gfx/textures/items/shield.png'))
+            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shield.png'))
         elif kPressed[pygame.K_r]:  # удалить элемент
             self.character_link.inventory.inventory.del_item(0)
 
