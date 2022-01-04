@@ -89,7 +89,7 @@ class MenuDisplay(SomeDisplay):
 class InventoryDisplay(SomeDisplay):
     def __init__(self, size, coords, color='gray'):
         super().__init__(size, coords, color=color)
-        space_size = (10, 10)
+        space_size = (12, 8)
         self.inventory = Inventory(space_size, cell_size=min(size[0] // space_size[0], size[1] // space_size[1]),
                                    display_link=self)
 
@@ -514,8 +514,8 @@ class Inventory(Board):
             if item is None:
                 break
             if isinstance(item, Item):
-                item.render(self.display_link, x=(i % self.space[1]) * self.cell_size + self.cell_size // 2,
-                            y=(i // self.space[1]) * self.cell_size + self.cell_size // 2)
+                item.render(self.display_link, x=(i % self.space[0]) * self.cell_size + self.cell_size // 2,
+                            y=(i // self.space[0]) * self.cell_size + self.cell_size // 2)
 
     def add_item(self, item):
         if not isinstance(item, Item):
