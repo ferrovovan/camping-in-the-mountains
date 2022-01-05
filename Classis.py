@@ -95,8 +95,10 @@ class InventoryDisplay(SomeDisplay):
         space_size = (5, 4)
         self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // space_size[1]),
                                    display_link=self)
-        self.item_show = SomeDisplay((100, 100), (space_size[0] * self.inventory.cell_size + 30, size[1] // 2))
-        self.item_lore = None
+        self.item_show = SomeDisplay((100, 100),
+                                     (space_size[0] * self.inventory.cell_size + 30, size[1] // 2))
+        self.item_lore = StrokeSprite(self.otherGroup, '',
+                                      coords=(space_size[0] * self.inventory.cell_size + 30, size[1] // 2 + 110))
 
     def is_click(self, mouse_pos):
         return self.inventory.is_click((mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1]))
@@ -567,7 +569,7 @@ class Inventory(Board):
     def get_cell(self, mouse_pos):
         if self.is_click(mouse_pos):
             return sum(((mouse_pos[0] - self.left) // self.cell_size,
-                       ((mouse_pos[1] - self.top) // self.cell_size) * self.space[1]))
+                        ((mouse_pos[1] - self.top) // self.cell_size) * self.space[1]))
         return None
 
     def on_click(self, cell_coord):
