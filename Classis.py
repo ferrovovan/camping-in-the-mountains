@@ -20,16 +20,26 @@ def load_image(name, colorkey=None):
 
 
 class SomeDisplay(pygame.Surface):
-    def __init__(self, size, id_list, butt_im, t=0, indent=0):
-        """
-        Менюшка на экране
-        """
-        size, coords = self._auto_data(size, t=t)
-        self.coords = coords
+    def __init__(self, size, coords, color='gray'):
         super().__init__(size)
-        self.spriteGroup = ButtonGroup()
-        self._made_buttons(id_list, butt_im, indent=indent)
-        self.fill('gray')
+        self.coords = coords
+        self.otherGroup = pygame.sprite.Group()
+        self.buttonGroup = ButtonGroup()
+        self.color = color
+        self.fill(color)
+
+    def render(self, screen, language='russian'):
+        screen.blit(self, self.coords)
+        self.buttonGroup.draw(self)
+        self.buttonGroup.draw_text(self, language=language)
+        self.otherGroup.draw(self)
+
+
+class MenuDisplay(SomeDisplay):
+    def __init__(self, size, id_list, butt_im=None, t=0, indent=0, color='gray'):
+        size, coords = self._auto_data(size, t=t)
+        super().__init__(size, coords, color=color)
+        self._made_buttons(id_list, butt_im=butt_im, indent=indent)
 
     @staticmethod
     def _auto_data(size, t=0):
@@ -37,24 +47,26 @@ class SomeDisplay(pygame.Surface):
         coords1 = (size[0] // 2 - size1[0] // 2, size[1] // 3 + t)
         return size1, coords1
 
-    def _made_buttons(self, id_list, butt_im, indent=20):
+    def _made_buttons(self, id_list, butt_im=None, indent=20):
         """
         Ставит кнопки на себе
         """
         k = 4
         scr_size = self.get_size()
+        if butt_im is None:
+            butt_im = Button.image
         n = len(id_list)
         button_width = scr_size[0] - 2 * indent
         button_height = (scr_size[1] - 2 * indent) * k // (n * (k + 1) - 1)
         for i in range(1, n + 1):
-            Button(self.spriteGroup,
+            Button(self.buttonGroup,
                    indent,
                    indent + (i - 1) * (button_height * (1 + k) // k),
                    button_width, button_height,
                    id=id_list[i - 1], image=butt_im)
 
     def reset_button(self, id, sp_id=None, new_size=None, new_coords=None, new_im=None):
-        button = self.spriteGroup.get_sprite(id, sp_id=sp_id)
+        button = self.buttonGroup.get_sprite(id, sp_id=sp_id)
         if button is not None:
             if new_size is not None:
                 button.rect.width = new_size[0]
@@ -71,15 +83,27 @@ class SomeDisplay(pygame.Surface):
         :return button's id, if one of them was clicked? else return None
         """
         event.pos = (event.pos[0] - self.coords[0], event.pos[1] - self.coords[1])
-        return self.spriteGroup.click_id(event)
+        return self.buttonGroup.click_id(event)
+
+
+class InventoryDisplay(SomeDisplay):
+    def __init__(self, size, coords, color='gray', indent=20):
+        super().__init__(size, coords, color=color)
+        space_size = (5, 4)
+        self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // space_size[1]),
+                                   display_link=self)
+        self.item_show = None
+        self.item_lore = None
+
+    def get_click(self, mouse_pos):
+        self.inventory.get_click(mouse_pos)
 
     def render(self, screen, language='russian'):
-        screen.blit(self, self.coords)
-        self.spriteGroup.draw(self)
-        self.spriteGroup.draw_text(self, language=language)
+        super().render(screen, language=language)
+        self.inventory.render()
 
 
-class SettingsDisplay(SomeDisplay):
+class SettingsDisplay(MenuDisplay):
     """
     Меню настроек
     """
@@ -99,8 +123,8 @@ class SettingsDisplay(SomeDisplay):
         size, coords = self._auto_data(size, t=t)
         self.coords = coords
         super(SomeDisplay, self).__init__(size)
-        self.spriteGroup = ButtonGroup()  # группа кнопок
         self.otherGroup = pygame.sprite.Group()  # группа картинок
+        self.buttonGroup = ButtonGroup()  # группа кнопок
         self.settingsDict = settingsDict
         self._made_buttons(butt_im, indent=indent)
         self.fill('gray')
@@ -116,7 +140,7 @@ class SettingsDisplay(SomeDisplay):
         button_height = (scr_size[1] - 2 * indent) * k // (4 * (k + 1) - 1)
         set_list = list(self.all_settings)
         for i in range(n):
-            Button(self.spriteGroup,
+            Button(self.buttonGroup,
                    scr_size[0] // 2 + ((i % 2) * 2 - 1) * (scr_size[0] // 4) - indent,
                    indent + (scr_size[1] - indent - 2 * (button_height * (1 + k) // k)) * (i // 2) // (n // 2),
                    40, 40,
@@ -132,12 +156,12 @@ class SettingsDisplay(SomeDisplay):
                 x = StrokeSprite(self.otherGroup, self.settingsDict[set_list[i // 2]], coords=thisCoords)
                 x.rect.x = scr_size[0] // 2 - x.rect.width // 2
 
-        Button(self.spriteGroup,  # применить
+        Button(self.buttonGroup,  # применить
                indent,
                indent + 2 * (button_height * (1 + k) // k),
                button_width, button_height,
                id=10, image=butt_im)
-        Button(self.spriteGroup,  # назад
+        Button(self.buttonGroup,  # назад
                indent,
                indent + 3 * (button_height * (1 + k) // k),
                button_width, button_height,
@@ -154,7 +178,7 @@ class SettingsDisplay(SomeDisplay):
             settings1.write(line)
 
     def manage_settings(self, event):
-        id, sp_id = self.spriteGroup.click_id(event, sp_id=True)
+        id, sp_id = self.buttonGroup.click_id(event, sp_id=True)
         if id == 8:
             self._change_settings(-1, sp_id)
         else:
@@ -365,15 +389,39 @@ class Character:
     Это класс, в котором игрок сможет увидеть свои вещи, свои навыки, летопись действий и прочее
     """
 
-    def __init__(self, hero_link=None):
-        self.inventory = Inventory(6, 3)
+    def __init__(self, screenBoards, hero_link=None):
+        self.is_open = False
+        if isinstance(hero_link, Hero):  # если дали ссылку
+            self.hero_link = hero_link
+            hero_link.character_link = self
+        # настройки экрана
+        self.rect = pygame.Rect(screenBoards[0] / 8, screenBoards[1] / 5, screenBoards[0] * (3 / 4),
+                                screenBoards[1] * (3 / 5))
+        self.color = 'red'
         # характеристики персонажа
         self.health = 10
         self.defense = 10
         self.attack = 10
-        if isinstance(hero_link, Hero):  # если дали ссылку
-            self.hero_link = hero_link
-            hero_link.character_link = self
+        self.coins = 0
+        # данные для построения страниц
+        indent = 20
+        page_size = (self.rect.width - 2 * indent, self.rect.height - 2 * indent)
+        coords = (self.rect.left + indent, self.rect.top + indent)
+        color = 'orange'
+        # строительство инвентаря
+        self.inventory = InventoryDisplay(page_size, coords, color=color, indent=indent)
+        # строительство умений
+        self.skills = SomeDisplay(page_size, coords, color=color)
+        # строительство ?
+        self.stats = SomeDisplay(page_size, coords, color=color)
+        # строительство летописи
+        self.eventlog = SomeDisplay(page_size, coords, color=color)
+        #
+        self.pages = {'inventory': self.inventory,
+                      'stats': self.stats,
+                      'skills': self.skills,
+                      'eventlog': self.eventlog}
+        self.open_page = 'inventory'
 
     def get_click(self, mouse_pos):
         pass
@@ -381,15 +429,27 @@ class Character:
     def is_click(self, event):
         pass
 
+    def set_open(self, a=None):
+        """
+        :param a: True or False
+        """
+        if a is None:
+            a = not self.is_open
+        self.is_open = a
 
-class Item(pygame.sprite.Sprite):
+    def render(self, screen, language='russian'):
+        pygame.draw.rect(screen, self.color, self.rect)
+        self.pages[self.open_page].render(screen, language=language)
+
+
+class Item:
     """
     Класс предмета
     """
 
-    def __init__(self, group, filename, id=0):
-        super().__init__(group)
+    def __init__(self, filename, id=0):
         self.image = load_image(filename, colorkey=-1)
+        self.rect = self.image.get_rect()
         self.id = id
 
     def render(self, screen, x=0, y=0):
@@ -444,33 +504,39 @@ class Inventory(Board):
     Хранит в себе предметы персонажа
     """
 
-    def __init__(self, width, height, cell_size=None):
-        super().__init__(width, height)
+    def __init__(self, space=(5, 5), cell_size=None, display_link=None):
+        super().__init__(*space)
         if cell_size is not None:
             self.cell_size = cell_size
-        self.board = [None for _ in range(width * height)]
+        self.space = space
+        self.board = [None for _ in range(space[0] * space[1])]
+        self.display_link = display_link
 
-    def render(self, screen):
-        super().render(screen)
+    def render(self):
+        self.display_link.fill(self.display_link.color)
+        super().render(self.display_link)
         for i in range(len(self.board)):
             item = self.board[i]
             if item is None:
                 break
-            item.render(screen, i * self.cell_size, i * self.cell_size)
+            if isinstance(item, Item):
+                item.render(self.display_link, x=(i % self.space[0]) * self.cell_size + self.cell_size // 2,
+                            y=(i // self.space[0]) * self.cell_size + self.cell_size // 2)
 
     def add_item(self, item):
         if not isinstance(item, Item):
             raise Exception('into inventory added not Item object')
-        i = self.board.index(None)
-        if i != -1:  # если осталось место
+        if None in self.board:  # если осталось место
+            i = self.board.index(None)
             self.board[i] = item
             self.sort_board()
         else:
             return False
 
-    def del_item(self, id):
-        x = self.board.index(None)
-        if x == -1:
+    def del_item(self, id=0):
+        if None in self.board:
+            x = self.board.index(None)
+        else:
             x = len(self.board)
         for i in range(x):
             if self.board[i].id == id:
@@ -481,8 +547,9 @@ class Inventory(Board):
             return None
 
     def sort_board(self):
-        x = self.board.index(None)
-        if x == -1:
+        if None in self.board:
+            x = self.board.index(None)
+        else:
             x = len(self.board)
         board = self.board[:x]
         board.sort(key=lambda item: item.id)
@@ -668,6 +735,14 @@ class KeyBoardManager:
             self.character_link.hero_link.move((1, 0))
         elif kPressed[pygame.K_s]:
             self.character_link.hero_link.move((-1, 0))
+        elif kPressed[pygame.K_i]:
+            self.character_link.set_open()
+        elif kPressed[pygame.K_f]:  # лопата
+            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shovel.png'))
+        elif kPressed[pygame.K_g]:  # щит
+            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shield.png', id=1))
+        elif kPressed[pygame.K_r]:  # удалить элемент
+            self.character_link.inventory.inventory.del_item(0)
 
     def manage_keyup(self, event):
         self.manage_keydown(event)
@@ -690,6 +765,10 @@ class Wall(StaticObj):
     """
     класс стены.
     """
+    pass
+
+
+class Shop(StaticObj):
     pass
 
 
