@@ -95,8 +95,14 @@ class InventoryDisplay(SomeDisplay):
         space_size = (5, 4)
         self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // space_size[1]),
                                    display_link=self)
-        self.item_show = SomeDisplay((100, 100),
-                                     (space_size[0] * self.inventory.cell_size + 30, size[1] // 2))
+        # настройка изображения предмета
+        self.item_show = pygame.sprite.Sprite(self.otherGroup)
+        self.item_show.image = pygame.Surface((0, 0))
+        self.item_show.rect = pygame.Rect(space_size[0] * self.inventory.cell_size + 30, size[1] // 2 - 30, 40, 40)
+        # настройка строки названия
+        self.item_lore = StrokeSprite(self.otherGroup, 'None',
+                                      coords=(space_size[0] * self.inventory.cell_size + 130, size[1] // 2 + 110))
+        # настройка строки описания
         self.item_lore = StrokeSprite(self.otherGroup, '',
                                       coords=(space_size[0] * self.inventory.cell_size + 30, size[1] // 2 + 110))
 
@@ -109,7 +115,6 @@ class InventoryDisplay(SomeDisplay):
     def render(self, screen, language='russian'):
         super().render(screen, language=language)
         self.inventory.render()
-        self.item_show.render(self)
 
 
 class SettingsDisplay(MenuDisplay):
@@ -575,8 +580,8 @@ class Inventory(Board):
     def on_click(self, cell_coord):
         if cell_coord is not None:
             item = self.board[cell_coord]
-            if isinstance(item, Item):
-                self.display_link.item_show = item.image
+            if isinstance(item, Item) and self.display_link.item_show.image != item.image:
+                self.display_link.item_show.image = item.image
 
 
 class Map(Board):
