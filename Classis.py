@@ -95,7 +95,7 @@ class InventoryDisplay(SomeDisplay):
         space_size = (5, 4)
         self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // space_size[1]),
                                    display_link=self)
-        self.item_show = None
+        self.item_show = SomeDisplay((100, 100), (space_size[0] * self.inventory.cell_size + 30, size[1] // 2))
         self.item_lore = None
 
     def is_click(self, mouse_pos):
@@ -107,6 +107,7 @@ class InventoryDisplay(SomeDisplay):
     def render(self, screen, language='russian'):
         super().render(screen, language=language)
         self.inventory.render()
+        self.item_show.render(self)
 
 
 class SettingsDisplay(MenuDisplay):
@@ -520,7 +521,6 @@ class Inventory(Board):
         self.display_link = display_link
 
     def render(self):
-        self.display_link.fill(self.display_link.color)
         super().render(self.display_link)
         for i in range(len(self.board)):
             item = self.board[i]
