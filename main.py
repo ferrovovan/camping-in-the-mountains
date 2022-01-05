@@ -23,9 +23,9 @@ screen = pygame.display.set_mode(size)  # ставим размер экрана
 
 
 def start_screen(screen, FPS):
+    # инициализация
     menuIm = load_image('gfx/textures/interface/fone.png')  # загружаем картинку
     screen.blit(menuIm, menuIm.get_rect())  # ставим на экран
-    clock = pygame.time.Clock()  # часы
 
     # изображения
     images = {'button1': load_image('gfx/buttons/button1.png'),
@@ -45,15 +45,16 @@ def start_screen(screen, FPS):
                     'settingsWin': settingsWin,
                     'loadWin': loadWin}
     draw_screen = 'menuWin'  # текущая страница
-
+    # цикл
     running = True
+    clock = pygame.time.Clock()  # часы
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                id = screens_dict[draw_screen].click_id(event)
+                id = screens_dict[draw_screen].click_id(event)  # id нажатой кнопки
                 if id is not None:
                     if id == 1:  # играть
                         return True
@@ -72,13 +73,14 @@ def start_screen(screen, FPS):
                         screens_dict[draw_screen].manage_settings(event)
                     elif id == 10:  # применить
                         screens_dict[draw_screen].save_settings()
-
+        # рендер
         screens_dict[draw_screen].render(screen, language=language)
         pygame.display.flip()
         clock.tick(FPS)
 
 
 def main():
+    # инициализация
     is_return = False  # если нужно вернуться
     # данные игры
     board = Map(16, 16, screenBoards=size)  # создаём доску
@@ -88,7 +90,7 @@ def main():
     character = Character(size, hero_link=hero1)  # создаём интерфейс героя
     mouseManager = MouseManager(screen, interface, board, character)  # создаём менеджера мыши
     keyManager = KeyBoardManager(screen, interface, board, character)  # создаём менеджера клавиатуры
-    # основной цикл
+    # цикл
     running = True
     clock = pygame.time.Clock()  # часы
     while running:
@@ -110,7 +112,7 @@ def main():
                     running = False
             elif event.type == pygame.MOUSEMOTION:
                 mouseManager.manage_motion(event)
-
+        # рендер
         screen.fill('black')  # перекрашиваем экран
         board.render(screen)  # рисуем доску
         if character.is_open:
@@ -118,8 +120,9 @@ def main():
         interface.render(screen)  # рисуем интерфейс
         pygame.display.flip()
         clock.tick(FPS)
-    if is_return:
-        if start_screen(screen, FPS):
+
+    if is_return:  # если нужно вернуться
+        if start_screen(screen, FPS):  # запускаем заново стартовый экран
             main()
 
 
