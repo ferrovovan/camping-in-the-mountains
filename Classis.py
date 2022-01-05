@@ -95,16 +95,18 @@ class InventoryDisplay(SomeDisplay):
         space_size = (5, 4)
         self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // space_size[1]),
                                    display_link=self)
+        coords = (space_size[0] * self.inventory.cell_size,
+                  size[1] // 2)
         # настройка изображения предмета
         self.item_show = pygame.sprite.Sprite(self.otherGroup)
         self.item_show.image = pygame.Surface((0, 0))
-        self.item_show.rect = pygame.Rect(space_size[0] * self.inventory.cell_size + 30, size[1] // 2 - 30, 40, 40)
+        self.item_show.rect = pygame.Rect(coords[0] + 70, coords[1] - 20, 40, 40)
         # настройка строки названия
         self.item_lore = StrokeSprite(self.otherGroup, 'None',
-                                      coords=(space_size[0] * self.inventory.cell_size + 130, size[1] // 2 + 110))
+                                      coords=(coords[0] + 50, coords[1] + 40))
         # настройка строки описания
         self.item_lore = StrokeSprite(self.otherGroup, '',
-                                      coords=(space_size[0] * self.inventory.cell_size + 30, size[1] // 2 + 110))
+                                      coords=(coords[0] + 50, coords[1] + 50))
 
     def is_click(self, mouse_pos):
         return self.inventory.is_click((mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1]))
