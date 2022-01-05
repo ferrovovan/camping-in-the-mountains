@@ -92,6 +92,8 @@ class InventoryDisplay(SomeDisplay):
         space_size = (5, 4)
         self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // space_size[1]),
                                    display_link=self)
+        self.item_show = None
+        self.item_lore = None
 
     def get_click(self, mouse_pos):
         self.inventory.get_click(mouse_pos)
@@ -763,6 +765,10 @@ class Wall(StaticObj):
     """
     класс стены.
     """
+    pass
+
+
+class Shop(StaticObj):
     pass
 
 
