@@ -28,6 +28,9 @@ class SomeDisplay(pygame.Surface):
         self.color = color
         self.fill(color)
 
+    def is_click(self, mouse_pos):
+        pass
+
     def render(self, screen, language='russian'):
         screen.blit(self, self.coords)
         self.buttonGroup.draw(self)
@@ -94,6 +97,9 @@ class InventoryDisplay(SomeDisplay):
                                    display_link=self)
         self.item_show = None
         self.item_lore = None
+
+    def is_click(self, mouse_pos):
+        return self.inventory.is_click((mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1]))
 
     def get_click(self, mouse_pos):
         self.inventory.get_click(mouse_pos)
@@ -424,10 +430,11 @@ class Character:
         self.open_page = 'inventory'
 
     def get_click(self, mouse_pos):
-        pass
+        if self.open_page == 'inventory':
+            self.inventory.get_click(mouse_pos)
 
     def is_click(self, event):
-        pass
+        return self.pages[self.open_page].is_click(event.pos)
 
     def set_open(self, a=None):
         """
@@ -559,12 +566,15 @@ class Inventory(Board):
 
     def get_cell(self, mouse_pos):
         if self.is_click(mouse_pos):
-            return sum((mouse_pos[0] - self.left) // self.cell_size,
-                       ((mouse_pos[1] - self.top) // self.cell_size) * self.space[1])
+            return sum(((mouse_pos[0] - self.left) // self.cell_size,
+                       ((mouse_pos[1] - self.top) // self.cell_size) * self.space[1]))
         return None
 
     def on_click(self, cell_coord):
-        pass
+        if cell_coord is not None:
+            item = self.board[cell_coord]
+            if isinstance(item, Item):
+                self.display_link.item_show = item.image
 
 
 class Map(Board):
