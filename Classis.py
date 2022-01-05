@@ -87,10 +87,10 @@ class MenuDisplay(SomeDisplay):
 
 
 class InventoryDisplay(SomeDisplay):
-    def __init__(self, size, coords, color='gray'):
+    def __init__(self, size, coords, color='gray', indent=20):
         super().__init__(size, coords, color=color)
-        space_size = (12, 8)
-        self.inventory = Inventory(space_size, cell_size=min(size[0] // space_size[0], size[1] // space_size[1]),
+        space_size = (5, 4)
+        self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // space_size[1]),
                                    display_link=self)
 
     def get_click(self, mouse_pos):
@@ -406,7 +406,7 @@ class Character:
         coords = (self.rect.left + indent, self.rect.top + indent)
         color = 'orange'
         # строительство инвентаря
-        self.inventory = InventoryDisplay(page_size, coords, color=color)
+        self.inventory = InventoryDisplay(page_size, coords, color=color, indent=indent)
         # строительство умений
         self.skills = SomeDisplay(page_size, coords, color=color)
         # строительство ?
