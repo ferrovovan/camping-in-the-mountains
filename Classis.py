@@ -557,6 +557,15 @@ class Inventory(Board):
         for i in range(self.width * self.height - x):
             self.board.append(None)
 
+    def get_cell(self, mouse_pos):
+        if self.is_click(mouse_pos):
+            return sum((mouse_pos[0] - self.left) // self.cell_size,
+                       ((mouse_pos[1] - self.top) // self.cell_size) * self.space[1])
+        return None
+
+    def on_click(self, cell_coord):
+        pass
+
 
 class Map(Board):
     """
