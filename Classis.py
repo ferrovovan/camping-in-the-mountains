@@ -400,6 +400,7 @@ class Character:
         self.health = 10
         self.defense = 10
         self.attack = 10
+        self.coins = 0
         # данные для построения страниц
         indent = 20
         page_size = (self.rect.width - 2 * indent, self.rect.height - 2 * indent)
