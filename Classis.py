@@ -334,6 +334,12 @@ class StrokeSprite(pygame.sprite.Sprite):
     def set_color(self, new_color):
         self.color = new_color
 
+    def set_in_center(self, coords):
+        """
+        ставит себя по центру
+        """
+        self.rect = pygame.Rect(coords[0] - self.rect.width // 2, coords[1], self.rect.width, self.rect.height)
+
 
 class Interface:
     """
