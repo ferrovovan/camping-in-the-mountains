@@ -33,6 +33,7 @@ class SomeDisplay(pygame.Surface):
 
     def render(self, screen, language='russian'):
         screen.blit(self, self.coords)
+        self.fill(self.color)
         self.buttonGroup.draw(self)
         self.buttonGroup.draw_text(self, language=language)
         self.otherGroup.draw(self)
