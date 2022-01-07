@@ -461,6 +461,7 @@ class Character:
         self.open_page = 'inventory'
 
     def get_click(self, mouse_pos):
+        mouse_pos = (mouse_pos[0] - self.rect.x, mouse_pos[1] - self.rect.y)
         if self.open_page == 'inventory':
             self.inventory.get_click(mouse_pos)
 
@@ -604,8 +605,7 @@ class Inventory(Board):
         if cell_coord is not None:
             item = self.board[cell_coord]
             if isinstance(item, Item) and self.display_link.item_show.image != item.image:
-                self.display_link.item_show.image = pygame.transform.scale(item.image,
-                                                                           self.display_link.item_show.image.get_rect())
+                pass
 
 
 class Map(Board):
