@@ -75,7 +75,7 @@ def start_screen(screen, FPS):
                         screens_dict[draw_screen].manage_settings(event)
                     elif id == 10:  # применить
                         screens_dict[draw_screen].save_settings()
-                        messageWin = MessageWin((300, size[1] // 5), message='Настройки сохранены, перезапустите игру')
+                        messageWin = MessageWin((300, size[1] // 5), message='Настройки сохранены, перезапустите игру', auto_words_size=True)
         # рендер
         screens_dict[draw_screen].render(screen, language=language)
         if messageWin is not None:

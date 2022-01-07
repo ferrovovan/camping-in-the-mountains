@@ -233,17 +233,23 @@ class MessageWin(pygame.Surface):
     """
     Всплывающее сообщение
     """
-    def __init__(self, size, message='', color='red', word_size=60):
+    def __init__(self, size, message='', color='red', word_size=60, auto_words_size=False):
         super().__init__(size)
+        self.rect = pygame.Rect(0, 0, size[0], size[1])
+        # рисуем надпись
+        if auto_words_size:
+            word_size = self._auto_words_size(message)
         font = pygame.font.Font(None, word_size)
         string_rendered = font.render(message, True, pygame.Color(color))
-        self.rect = pygame.Rect(0, 0, size[0], size[1])
         message_rect = string_rendered.get_rect()
-        # ставим координаты надписи
+        # ставим координаты
         message_rect.x = (size[0] - message_rect.width) // 2
         message_rect.y = (size[1] - message_rect.height) // 2
         # рисуем надпись на экране
         self.blit(string_rendered, message_rect)
+
+    def _auto_words_size(self, message):
+        return int(2.5 * self.rect.width // len(message))
 
     def render(self, screen, coords=(0, 0)):
         screen.blit(self, coords)
