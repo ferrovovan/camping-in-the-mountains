@@ -20,9 +20,9 @@ def load_image(name, colorkey=None):
 
 
 def load_localisation(directory, language='russian'):
-    with open(f'data/localisation/{directory}/{language}.txt', encoding='utf-8').read() as data:
-        table = [r.split(';') for r in data.split('\n')]
-        return table
+    data = open(f'data/localisation/{directory}/{language}.txt', encoding='utf-8').read()
+    table = [r.split(';') for r in data.split('\n')]
+    return table
 
 
 class SomeDisplay(pygame.Surface):
@@ -229,9 +229,13 @@ class SettingsDisplay(MenuDisplay):
 
 
 class ButtonGroup(pygame.sprite.Group):
-    def draw_text(self, screen, language='russian'):
-        for button in self:
-            button.draw_text(screen, language=language)
+    def draw_text(self, screen, language='russian', text_dict=None):
+        if text_dict is None:
+            for button in self:
+                button.draw_text(screen, language=language)
+        else:
+            for button in self:
+                button.draw_text(screen, text_dict=text_dict)
 
     # готов
     def get_sprite(self, id, sp_id=None):
@@ -284,7 +288,7 @@ class Button(pygame.sprite.Sprite):
             table = [r.split(';') for r in data.split('\n')]
             text = table[self.id][1]
         else:
-            text = text_dict[self.id]
+            text = text_dict[self.id][1]
         string_rendered = font.render(text, True, pygame.Color('red'))
         blitRect = self.rect.copy()
         blitRect.top = self.rect.top + (self.rect.height - string_rendered.get_height()) // 5
@@ -358,15 +362,15 @@ class Interface:
         :param cell_size: int
         """
         self.rect = pygame.rect.Rect(0, 0, *screenBoards)
-        self.language = language
+        self.localisation = load_localisation('buttons text', language=language)
         # группы спрайтов
         self.specificationsSpriteGroup = pygame.sprite.Group()  # рисунки, только отображающиеся
-        self.some_buttons = pygame.sprite.Group()  # кнопки
+        self.menuButtGr = ButtonGroup()  # кнопка меню
         self.menuButtonsGroup = ButtonGroup()
         # распределение кнопок
 
         # меню кнопки
-        self.menuButt = Button(self.some_buttons, screenBoards[0] - cell_size // 2,
+        self.menuButt = Button(self.menuButtGr, screenBoards[0] - cell_size // 2,
                                0, cell_size // 2, cell_size // 2)
         x = [6, 12, 5]
         n = len(x)  # количество кнопок
@@ -391,7 +395,7 @@ class Interface:
                     return "return"
 
     def is_click(self, event):
-        for button in self.some_buttons:
+        for button in self.menuButtGr:
             if button.is_click(event):
                 return True
         if not self.menu_close and self.menuButtonsGroup.click_id(event):
@@ -407,12 +411,11 @@ class Interface:
 
     def render(self, screen):
         self.specificationsSpriteGroup.draw(screen)
-        self.some_buttons.draw(screen)
-        for button in self.some_buttons:
-            button.draw_text(screen, language=self.language)
+        self.menuButtGr.draw(screen)
+        self.menuButtGr.draw_text(screen, text_dict=self.localisation)
         if not self.menu_close:
             self.menuButtonsGroup.draw(screen)
-            self.menuButtonsGroup.draw_text(screen, language=self.language)
+            self.menuButtonsGroup.draw_text(screen, text_dict=self.localisation)
 
 
 class Character:
