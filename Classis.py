@@ -20,8 +20,9 @@ def load_image(name, colorkey=None):
 
 
 def load_localisation(directory, language='russian'):
-    with open(f'data/localisation/{directory}/{language}') as file1:
-        pass
+    with open(f'data/localisation/{directory}/{language}.txt', encoding='utf-8').read() as data:
+        table = [r.split(';') for r in data.split('\n')]
+        return table
 
 
 class SomeDisplay(pygame.Surface):
