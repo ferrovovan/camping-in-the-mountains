@@ -98,7 +98,7 @@ class InventoryDisplay(SomeDisplay):
                                    display_link=self)
         coords = ((size[0] + space_size[0] * self.inventory.cell_size) // 2, 0)
         # настройка строки названия
-        self.item_name = StrokeSprite(self.otherGroup, '12', size=50, color=(230, 100, 130))
+        self.item_name = StrokeSprite(self.otherGroup, '12', size=50, color=pygame.color.Color(230, 100, 130))
         self.item_name.set_in_center((coords[0], coords[1] + 30))
         # настройка строки описания
         self.item_lore = StrokeSprite(self.otherGroup, '3', coords=(coords[0] - 60, coords[1] + size[1] * (1/2)))
@@ -304,7 +304,7 @@ class StrokeSprite(pygame.sprite.Sprite):
     Является спрайтом, получаемый из строки
     """
 
-    def __init__(self, group, blitObj, coords=None, size=30, color='red'):
+    def __init__(self, group, blitObj, coords=None, size=30, color=pygame.color.Color('red')):
         super().__init__(group)
         self.rect = pygame.Rect(0, 0, 0, 0)
         self.size = size
