@@ -342,10 +342,12 @@ class StrokeSprite(pygame.sprite.Sprite):
     def set_color(self, new_color):
         self.color = new_color
 
-    def set_in_center(self, coords):
+    def set_in_center(self, coords=None):
         """
         ставит себя по центру
         """
+        if coords is None:
+            coords = (self.rect.x, self.rect.y)
         self.rect = pygame.Rect(coords[0] - self.rect.width // 2, coords[1], self.rect.width, self.rect.height)
 
 
@@ -608,6 +610,7 @@ class Inventory(Board):
             item = self.board[cell_coord]
             if isinstance(item, Item):
                 self.display_link.item_name.set_text(self.character_link.item_names[item.id][1])
+                self.display_link.item_name.set_in_center(((self.display_link.get_size()[0] + self.space[0] * self.cell_size) // 2, 30))
                 self.display_link.item_lore.set_text(self.character_link.items_depiction[item.id][1])
 
 
