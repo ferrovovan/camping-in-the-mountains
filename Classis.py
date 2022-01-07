@@ -96,14 +96,12 @@ class InventoryDisplay(SomeDisplay):
         space_size = (5, 4)
         self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // space_size[1]),
                                    display_link=self)
-        coords = ((size[0] + space_size[0] * self.inventory.cell_size) // 2,
-                  0)
+        coords = ((size[0] + space_size[0] * self.inventory.cell_size) // 2, 0)
         # настройка строки названия
-        self.item_lore = StrokeSprite(self.otherGroup, '',
-                                      coords=(coords[0], coords[1] + 30))
+        self.item_name = StrokeSprite(self.otherGroup, '12', size=50, color=(230, 100, 130))
+        self.item_name.set_in_center((coords[0], coords[1] + 30))
         # настройка строки описания
-        self.item_lore = StrokeSprite(self.otherGroup, '',
-                                      coords=(coords[0], coords[1] + 50))
+        self.item_lore = StrokeSprite(self.otherGroup, '3', coords=(coords[0] - 60, coords[1] + size[1] * (1/2)))
 
     def is_click(self, mouse_pos):
         return self.inventory.is_click((mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1]))
