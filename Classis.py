@@ -430,7 +430,7 @@ class Character:
             hero_link.character_link = self
         # загружаем локализацию
         self.item_names = load_localisation('items name', language=language)
-        self.items_depiction = load_localisation('items name', language=language)
+        self.items_depiction = load_localisation('items depiction', language=language)
         # настройки экрана
         self.rect = pygame.Rect(screenBoards[0] / 8, screenBoards[1] / 5, screenBoards[0] * (3 / 4),
                                 screenBoards[1] * (3 / 5))
@@ -447,6 +447,7 @@ class Character:
         color = 'orange'
         # строительство инвентаря
         self.inventory = InventoryDisplay(page_size, coords, color=color, indent=indent)
+        self.inventory.inventory.character_link = self
         # строительство умений
         self.skills = SomeDisplay(page_size, coords, color=color)
         # строительство ?
@@ -543,13 +544,14 @@ class Inventory(Board):
     Хранит в себе предметы персонажа
     """
 
-    def __init__(self, space=(5, 5), cell_size=None, display_link=None):
+    def __init__(self, space=(5, 5), cell_size=None, display_link=None, character_link=None):
         super().__init__(*space)
         if cell_size is not None:
             self.cell_size = cell_size
         self.space = space
         self.board = [None for _ in range(space[0] * space[1])]
         self.display_link = display_link
+        self.character_link = character_link
 
     def render(self):
         super().render(self.display_link)
@@ -604,8 +606,9 @@ class Inventory(Board):
     def on_click(self, cell_coord):
         if cell_coord is not None:
             item = self.board[cell_coord]
-            if isinstance(item, Item) and self.display_link.item_show.image != item.image:
-                pass
+            if isinstance(item, Item):
+                self.display_link.item_name.set_text(self.character_link.item_names[item.id][1])
+                self.display_link.item_lore.set_text(self.character_link.items_depiction[item.id][1])
 
 
 class Map(Board):
@@ -787,10 +790,12 @@ class KeyBoardManager:
             self.character_link.hero_link.move((-1, 0))
         elif kPressed[pygame.K_i]:
             self.character_link.set_open()
+        elif kPressed[pygame.K_d]:  # черенок
+            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/stalk.png', id=1))
         elif kPressed[pygame.K_f]:  # лопата
-            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shovel.png'))
+            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shovel.png', id=2))
         elif kPressed[pygame.K_g]:  # щит
-            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shield.png', id=1))
+            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shield.png', id=3))
         elif kPressed[pygame.K_r]:  # удалить элемент
             self.character_link.inventory.inventory.del_item(0)
 
