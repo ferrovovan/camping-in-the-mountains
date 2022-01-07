@@ -19,6 +19,11 @@ def load_image(name, colorkey=None):
     return image
 
 
+def load_localisation(directory, language='russian'):
+    with open(f'data/localisation/{directory}/{language}') as file1:
+        pass
+
+
 class SomeDisplay(pygame.Surface):
     def __init__(self, size, coords, color='gray'):
         super().__init__(size)
@@ -101,7 +106,7 @@ class InventoryDisplay(SomeDisplay):
         self.item_name = StrokeSprite(self.otherGroup, '12', size=50, color=pygame.color.Color(230, 100, 130))
         self.item_name.set_in_center((coords[0], coords[1] + 30))
         # настройка строки описания
-        self.item_lore = StrokeSprite(self.otherGroup, '3', coords=(coords[0] - 60, coords[1] + size[1] * (1/2)))
+        self.item_lore = StrokeSprite(self.otherGroup, '3', coords=(coords[0] - 60, coords[1] + size[1] * (1 / 2)))
 
     def is_click(self, mouse_pos):
         return self.inventory.is_click((mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1]))
