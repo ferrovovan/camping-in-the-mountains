@@ -423,11 +423,14 @@ class Character:
     Это класс, в котором игрок сможет увидеть свои вещи, свои навыки, летопись действий и прочее
     """
 
-    def __init__(self, screenBoards, hero_link=None):
+    def __init__(self, screenBoards, hero_link=None, language='russian'):
         self.is_open = False
         if isinstance(hero_link, Hero):  # если дали ссылку
             self.hero_link = hero_link
             hero_link.character_link = self
+        # загружаем локализацию
+        self.item_names = load_localisation('items name', language=language)
+        self.items_depiction = load_localisation('items name', language=language)
         # настройки экрана
         self.rect = pygame.Rect(screenBoards[0] / 8, screenBoards[1] / 5, screenBoards[0] * (3 / 4),
                                 screenBoards[1] * (3 / 5))
