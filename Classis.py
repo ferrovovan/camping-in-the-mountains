@@ -136,7 +136,7 @@ class SettingsDisplay(MenuDisplay):
         map(lambda value: tuple(value[1:len(value) - 1].split(',')), all_settings['display']))
 
     # готов
-    def __init__(self, size, settingsDict, butt_im, t=0, indent=0):
+    def __init__(self, size, settingsDict, butt_im, t=0, indent=0, color='gray'):
         size, coords = self._auto_data(size, t=t)
         self.coords = coords
         super(SomeDisplay, self).__init__(size)
@@ -144,7 +144,8 @@ class SettingsDisplay(MenuDisplay):
         self.buttonGroup = ButtonGroup()  # группа кнопок
         self.settingsDict = settingsDict
         self._made_buttons(butt_im, indent=indent)
-        self.fill('gray')
+        self.color = color
+        self.fill(color)
 
     def _made_buttons(self, butt_im, indent=20):
         """
@@ -405,7 +406,7 @@ class Interface:
                    width, height, id=x[i])
 
     def get_click(self, event):
-        for button in self.some_buttons:
+        for button in self.menuButtGr:
             if button.is_click(event):
                 if button == self.menuButt:
                     self._close_menu(not self.menu_close)
