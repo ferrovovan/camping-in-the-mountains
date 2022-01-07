@@ -228,6 +228,26 @@ class SettingsDisplay(MenuDisplay):
         self.otherGroup.draw(self)
 
 
+class MessageWin(pygame.Surface):
+    """
+    Всплывающее сообщение
+    """
+    def __init__(self, size, message='', color='red', word_size=60):
+        super().__init__(size)
+        font = pygame.font.Font(None, word_size)
+        string_rendered = font.render(message, True, pygame.Color(color))
+        self.rect = pygame.Rect(0, 0, size[0], size[1])
+        message_rect = string_rendered.get_rect()
+        # ставим координаты надписи
+        message_rect.x = (size[0] - message_rect.width) // 2
+        message_rect.y = (size[1] - message_rect.height) // 2
+        # рисуем надпись на экране
+        self.blit(string_rendered, message_rect)
+
+    def render(self, screen, coords=(0, 0)):
+        screen.blit(self, coords)
+
+
 class ButtonGroup(pygame.sprite.Group):
     def draw_text(self, screen, language='russian', text_dict=None):
         if text_dict is None:
