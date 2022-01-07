@@ -608,7 +608,7 @@ class Inventory(Board):
     def on_click(self, cell_coord):
         if cell_coord is not None:
             item = self.board[cell_coord]
-            if isinstance(item, Item):
+            if isinstance(item, Item) and self.character_link.item_names[item.id][1] != self.display_link.item_name:
                 self.display_link.item_name.set_text(self.character_link.item_names[item.id][1])
                 self.display_link.item_name.set_in_center(((self.display_link.get_size()[0] + self.space[0] * self.cell_size) // 2, 30))
                 self.display_link.item_lore.set_text(self.character_link.items_depiction[item.id][1])
