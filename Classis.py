@@ -28,6 +28,9 @@ class SomeDisplay(pygame.Surface):
         self.color = color
         self.fill(color)
 
+    def is_click(self, mouse_pos):
+        pass
+
     def render(self, screen, language='russian'):
         screen.blit(self, self.coords)
         self.buttonGroup.draw(self)
@@ -92,8 +95,21 @@ class InventoryDisplay(SomeDisplay):
         space_size = (5, 4)
         self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // space_size[1]),
                                    display_link=self)
-        self.item_show = None
-        self.item_lore = None
+        coords = (space_size[0] * self.inventory.cell_size,
+                  size[1] // 2)
+        # настройка изображения предмета
+        self.item_show = pygame.sprite.Sprite(self.otherGroup)
+        self.item_show.image = pygame.Surface((0, 0))
+        self.item_show.rect = pygame.Rect(coords[0] + 70, coords[1] - 20, 40, 40)
+        # настройка строки названия
+        self.item_lore = StrokeSprite(self.otherGroup, 'None',
+                                      coords=(coords[0] + 50, coords[1] + 40))
+        # настройка строки описания
+        self.item_lore = StrokeSprite(self.otherGroup, '',
+                                      coords=(coords[0] + 50, coords[1] + 50))
+
+    def is_click(self, mouse_pos):
+        return self.inventory.is_click((mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1]))
 
     def get_click(self, mouse_pos):
         self.inventory.get_click(mouse_pos)
@@ -424,10 +440,11 @@ class Character:
         self.open_page = 'inventory'
 
     def get_click(self, mouse_pos):
-        pass
+        if self.open_page == 'inventory':
+            self.inventory.get_click(mouse_pos)
 
     def is_click(self, event):
-        pass
+        return self.pages[self.open_page].is_click(event.pos)
 
     def set_open(self, a=None):
         """
@@ -513,7 +530,6 @@ class Inventory(Board):
         self.display_link = display_link
 
     def render(self):
-        self.display_link.fill(self.display_link.color)
         super().render(self.display_link)
         for i in range(len(self.board)):
             item = self.board[i]
@@ -556,6 +572,18 @@ class Inventory(Board):
         self.board = board
         for i in range(self.width * self.height - x):
             self.board.append(None)
+
+    def get_cell(self, mouse_pos):
+        if self.is_click(mouse_pos):
+            return sum(((mouse_pos[0] - self.left) // self.cell_size,
+                        ((mouse_pos[1] - self.top) // self.cell_size) * self.space[1]))
+        return None
+
+    def on_click(self, cell_coord):
+        if cell_coord is not None:
+            item = self.board[cell_coord]
+            if isinstance(item, Item) and self.display_link.item_show.image != item.image:
+                self.display_link.item_show.image = pygame.transform.scale(item.image, self.display_link.item_show.image.get_rect())
 
 
 class Map(Board):
