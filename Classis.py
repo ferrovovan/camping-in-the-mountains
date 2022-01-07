@@ -98,10 +98,6 @@ class InventoryDisplay(SomeDisplay):
                                    display_link=self)
         coords = (space_size[0] * self.inventory.cell_size,
                   size[1] // 2)
-        # настройка изображения предмета
-        self.item_show = pygame.sprite.Sprite(self.otherGroup)
-        self.item_show.image = pygame.Surface((0, 0))
-        self.item_show.rect = pygame.Rect(coords[0] + 70, coords[1] - 20, 40, 40)
         # настройка строки названия
         self.item_lore = StrokeSprite(self.otherGroup, 'None',
                                       coords=(coords[0] + 50, coords[1] + 40))
@@ -310,20 +306,22 @@ class StrokeSprite(pygame.sprite.Sprite):
     Является спрайтом, получаемый из строки
     """
 
-    def __init__(self, group, blitObj, coords=None):
+    def __init__(self, group, blitObj, coords=None, size=30, color='red'):
         super().__init__(group)
         self.rect = pygame.Rect(0, 0, 0, 0)
+        self.size = size
+        self.color = color
         self.set_text(blitObj, coords=coords)
 
     def set_text(self, blitObj, coords=None):
-        font = pygame.font.Font(None, 30)
+        font = pygame.font.Font(None, self.size)
         if isinstance(blitObj, int):
             blitObj = str(blitObj)
         elif isinstance(blitObj, tuple):
             blitObj = str(blitObj)
         elif isinstance(blitObj, list):
             blitObj = str(tuple(blitObj))
-        string_rendered = font.render(blitObj, True, pygame.Color('red'))
+        string_rendered = font.render(blitObj, True, pygame.Color(self.color))
         self.image = string_rendered
         self.rect = pygame.Rect(self.rect.x, self.rect.y, string_rendered.get_width(), string_rendered.get_height())
         if coords is not None:
