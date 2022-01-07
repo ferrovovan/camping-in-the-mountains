@@ -77,9 +77,10 @@ def start_screen(screen, FPS):
                         screens_dict[draw_screen].save_settings()
                         messageWin = MessageWin((300, size[1] // 5), message='Настройки сохранены, перезапустите игру', auto_words_size=True)
         # рендер
-        screens_dict[draw_screen].render(screen, language=language)
         if messageWin is not None:
-            messageWin.render(screen, coords=screens_dict[draw_screen].coords)
+            scrRect = screens_dict[draw_screen].get_rect()
+            messageWin.render(screens_dict[draw_screen], coords=((scrRect.width - messageWin.get_width()) // 2, (scrRect.height - messageWin.get_height()) // 2))
+        screens_dict[draw_screen].render(screen, language=language)
         pygame.display.flip()
         clock.tick(FPS)
 
