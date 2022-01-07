@@ -96,14 +96,14 @@ class InventoryDisplay(SomeDisplay):
         space_size = (5, 4)
         self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // space_size[1]),
                                    display_link=self)
-        coords = (space_size[0] * self.inventory.cell_size,
-                  size[1] // 2)
+        coords = ((size[0] + space_size[0] * self.inventory.cell_size) // 2,
+                  0)
         # настройка строки названия
-        self.item_lore = StrokeSprite(self.otherGroup, 'None',
-                                      coords=(coords[0] + 50, coords[1] + 40))
+        self.item_lore = StrokeSprite(self.otherGroup, '',
+                                      coords=(coords[0], coords[1] + 30))
         # настройка строки описания
         self.item_lore = StrokeSprite(self.otherGroup, '',
-                                      coords=(coords[0] + 50, coords[1] + 50))
+                                      coords=(coords[0], coords[1] + 50))
 
     def is_click(self, mouse_pos):
         return self.inventory.is_click((mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1]))
@@ -327,6 +327,12 @@ class StrokeSprite(pygame.sprite.Sprite):
         if coords is not None:
             self.rect.x = coords[0]
             self.rect.y = coords[1]
+
+    def set_size(self, new_size):
+        self.size = new_size
+
+    def set_color(self, new_color):
+        self.color = new_color
 
 
 class Interface:
@@ -582,7 +588,8 @@ class Inventory(Board):
         if cell_coord is not None:
             item = self.board[cell_coord]
             if isinstance(item, Item) and self.display_link.item_show.image != item.image:
-                self.display_link.item_show.image = pygame.transform.scale(item.image, self.display_link.item_show.image.get_rect())
+                self.display_link.item_show.image = pygame.transform.scale(item.image,
+                                                                           self.display_link.item_show.image.get_rect())
 
 
 class Map(Board):
