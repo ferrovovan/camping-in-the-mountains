@@ -26,6 +26,7 @@ def start_screen(screen, FPS):
     # инициализация
     menuIm = load_image('gfx/textures/interface/fone.png')  # загружаем картинку
     screen.blit(menuIm, menuIm.get_rect())  # ставим на экран
+    messageWin = None
 
     # изображения
     images = {'button1': load_image('gfx/buttons/button1.png'),
@@ -54,6 +55,7 @@ def start_screen(screen, FPS):
                 pygame.quit()
                 quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                messageWin = None
                 id = screens_dict[draw_screen].click_id(event)  # id нажатой кнопки
                 if id is not None:
                     if id == 1:  # играть
@@ -73,8 +75,11 @@ def start_screen(screen, FPS):
                         screens_dict[draw_screen].manage_settings(event)
                     elif id == 10:  # применить
                         screens_dict[draw_screen].save_settings()
+                        messageWin = MessageWin((300, size[1] // 5), message='Настройки сохранены, перезапустите игру')
         # рендер
         screens_dict[draw_screen].render(screen, language=language)
+        if messageWin is not None:
+            messageWin.render(screen, coords=screens_dict[draw_screen].coords)
         pygame.display.flip()
         clock.tick(FPS)
 
