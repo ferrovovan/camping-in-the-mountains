@@ -69,8 +69,8 @@ def main():
     pygame.mixer.init()
     clock = pygame.time.Clock()
     FPS = 60
-    size = 900, 900
-    screen = pygame.display.set_mode(size)
+    infoObject = pygame.display.Info()
+    screen = pygame.display.set_mode((infoObject.current_w, infoObject.current_h))
     XP_band = 200
     XP_Hero = 200
     Action = False
@@ -94,15 +94,19 @@ def main():
     turn = 'player'
     items = ['Аптечка', 'Бутерброд', 'Бинт', 'Антибиотик', 'Обезболивающее', 'Консервы']
     heals = ['70', '50', '30', '60', '100', '10']
-    font = pygame.font.Font('freesansbold.ttf', 20)
-    font_small = pygame.font.Font('freesansbold.ttf', 27)
+    font = pygame.font.Font('freesansbold.ttf', 35)
+    font_small = pygame.font.Font('freesansbold.ttf', 20)
     words = '* Банда появляется!'
 
     # задание всех кнопок
-    button_attack = pygame.Rect(20, 800, 160, 50)
-    button_action = pygame.Rect(245, 800, 160, 50)
-    button_item = pygame.Rect(470, 800, 160, 50)
-    button_mercy = pygame.Rect(695, 800, 160, 50)
+    button_attack = pygame.Rect(infoObject.current_w // 5.6, infoObject.current_h - infoObject.current_h // 14,
+                                infoObject.current_w // 8, infoObject.current_h // 14)
+    button_action = pygame.Rect(infoObject.current_w // 2.8, infoObject.current_h - infoObject.current_h // 14,
+                                infoObject.current_w // 8, infoObject.current_h // 14)
+    button_item = pygame.Rect(infoObject.current_w // 1.85, infoObject.current_h - infoObject.current_h // 14,
+                              infoObject.current_w // 8, infoObject.current_h // 14)
+    button_mercy = pygame.Rect(infoObject.current_w // 1.4, infoObject.current_h - infoObject.current_h // 14,
+                               infoObject.current_w // 8, infoObject.current_h // 14)
     button_talk = pygame.Rect(650, 510, 140, 60)
     button_threat = pygame.Rect(80, 510, 120, 60)
     button_information = pygame.Rect(80, 580, 120, 60)
@@ -113,11 +117,11 @@ def main():
     button_id_4 = pygame.Rect(300, 540, 100, 80)
     button_id_5 = pygame.Rect(520, 480, 100, 80)
     button_id_6 = pygame.Rect(520, 540, 100, 80)
-    Action_rect = pygame.Rect(20, 500, 870, 150)
-    Fight_rect = pygame.Rect(300, 400, 250, 250)
+    Action_rect = pygame.Rect(infoObject.current_w // 6, infoObject.current_h // 1.5, infoObject.current_w // 1.47, infoObject.current_h // 7)
+    Fight_rect = pygame.Rect(300, 400, infoObject.current_w // 8, 250)
     button_continue = pygame.Rect(700, 600, 20, 50)
-    Enemy_XP_rect = pygame.Rect(430, 10, 20, 20)
-    Hero_XP_rect = pygame.Rect(590, 675, 20, 20)
+    Enemy_XP_rect = pygame.Rect(infoObject.current_w // 2, infoObject.current_h // 899, 20, 20)
+    Hero_XP_rect = pygame.Rect(infoObject.current_w // 1.5, infoObject.current_h // 1.22, 20, 20)
     global player_img
     global meteor_img
     player_img = pygame.image.load(path.join("heart.jpg")).convert()
@@ -421,37 +425,37 @@ def main():
             # механника предметов
             if Item and not end:
                 words = ''
-                text = font.render('*' + items[0] + ' ' + heals[0], True, 'white')
+                text = font_small.render('*' + items[0] + ' ' + heals[0], True, 'white')
                 textRect = text.get_rect()
                 textRect.center = button_id_1.center
                 screen.blit(text, textRect)
                 pygame.draw.rect(screen, 'black', button_id_1, 1)
 
-                text = font.render('*' + items[1] + ' ' + heals[1], True, 'white')
+                text = font_small.render('*' + items[1] + ' ' + heals[1], True, 'white')
                 textRect = text.get_rect()
                 textRect.center = button_id_2.center
                 screen.blit(text, textRect)
                 pygame.draw.rect(screen, 'black', button_id_2, 1)
 
-                text = font.render('*' + items[2] + ' ' + heals[2], True, 'white')
+                text = font_small.render('*' + items[2] + ' ' + heals[2], True, 'white')
                 textRect = text.get_rect()
                 textRect.center = button_id_3.center
                 screen.blit(text, textRect)
                 pygame.draw.rect(screen, 'black', button_id_3, 1)
 
-                text = font.render('*' + items[3] + ' ' + heals[3], True, 'white')
+                text = font_small.render('*' + items[3] + ' ' + heals[3], True, 'white')
                 textRect = text.get_rect()
                 textRect.center = button_id_4.center
                 screen.blit(text, textRect)
                 pygame.draw.rect(screen, 'black', button_id_4, 1)
 
-                text = font.render('*' + items[4] + ' ' + heals[4], True, 'white')
+                text = font_small.render('*' + items[4] + ' ' + heals[4], True, 'white')
                 textRect = text.get_rect()
                 textRect.center = button_id_5.center
                 screen.blit(text, textRect)
                 pygame.draw.rect(screen, 'black', button_id_5, 1)
 
-                text = font.render('*' + items[5] + ' ' + heals[5], True, 'white')
+                text = font_small.render('*' + items[5] + ' ' + heals[5], True, 'white')
                 textRect = text.get_rect()
                 textRect.center = button_id_6.center
                 screen.blit(text, textRect)
@@ -545,43 +549,43 @@ def main():
             pygame.draw.rect(screen, 'yellow', button_mercy, 1)
 
         # XP главного героя
-        XP_Hero_rect = pygame.Rect(500, 700, 200, 50)
-        XP_str = pygame.Rect(650, 700, 200, 50)
+        XP_Hero_rect = pygame.Rect(infoObject.current_w // 1.62, infoObject.current_h // 1.15, 200, 50)
+        XP_str = pygame.Rect(infoObject.current_w // 1.63, infoObject.current_h // 1.2, 200, 50)
         pygame.draw.rect(screen, 'black', XP_Hero_rect)
-        text = font.render(str(XP_Hero) + '/200', True, 'white')
+        text = font_small.render(str(XP_Hero) + '/200', True, 'white')
         textRect = text.get_rect()
         textRect.center = XP_str.center
         screen.blit(text, textRect)
 
         pygame.draw.rect(screen, 'black', Hero_XP_rect)
-        text = font.render('Ваше здоровье', True, 'white')
+        text = font_small.render('Ваше здоровье', True, 'white')
         textRect = text.get_rect()
         textRect.center = Hero_XP_rect.center
         screen.blit(text, textRect)
 
         pygame.draw.rect(screen, 'red', XP_Hero_rect)
 
-        pygame.draw.rect(screen, 'yellow', (500, 700, XP_Hero, 50))
+        pygame.draw.rect(screen, 'yellow', (int(infoObject.current_w // 1.62), int(infoObject.current_h // 1.15), XP_Hero, 50))
 
         # XP банды
-        XP_band_rect = pygame.Rect(340, 30, 200, 50)
+        XP_band_rect = pygame.Rect(infoObject.current_w // 2.2, infoObject.current_h // 15, 200, 50)
 
-        XP_str = pygame.Rect(340, 80, 200, 50)
+        XP_str = pygame.Rect(infoObject.current_w // 2.2, infoObject.current_h // 60, 200, 50)
         pygame.draw.rect(screen, 'black', XP_band_rect)
-        text = font.render(str(XP_band) + '/200', True, 'white')
+        text = font_small.render(str(XP_band) + '/200', True, 'white')
         textRect = text.get_rect()
         textRect.center = XP_str.center
         screen.blit(text, textRect)
 
         pygame.draw.rect(screen, 'black', Enemy_XP_rect)
-        text = font.render('Здоровье врага', True, 'white')
+        text = font_small.render('Здоровье врага', True, 'white')
         textRect = text.get_rect()
         textRect.center = Enemy_XP_rect.center
         screen.blit(text, textRect)
 
         pygame.draw.rect(screen, 'red', XP_band_rect)
 
-        pygame.draw.rect(screen, 'yellow', (340, 30, XP_band, 50))
+        pygame.draw.rect(screen, 'yellow', (int(infoObject.current_w // 2.2), int(infoObject.current_h // 15), XP_band, 50))
 
         # кнопка перезапуска
         text = font.render('R', True, 'red')
