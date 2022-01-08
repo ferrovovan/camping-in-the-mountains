@@ -3,10 +3,16 @@ from random import *
 
 
 def main():
+    global Victory
     pygame.init()
+    pygame.time.set_timer(pygame.USEREVENT, 500)
     clock = pygame.time.Clock()
     FPS = 60
     size = 900, 900
+    screen = pygame.display.set_mode(size)
+    enemy_attacks_images = ['Enemy_fire.jpg', 'Enemy_fire_2.jpg']
+    global attack
+    attack = [pygame.image.load(path).convert_alpha() for path in enemy_attacks_images]
     XP_band = 200
     XP_Hero = 200
     Action = False
@@ -21,30 +27,28 @@ def main():
     v_hit = 100
     time = 0
     time_hit = 0
+    time_read = 5
     Item = False
     Mercy = False
     Hit = False
+    Analysis = False
     color = 'red'
     turn = 'player'
     items = ['Аптечка', 'Бутерброд', 'Бинт', 'Антибиотик', 'Обезболивающее', 'Консервы']
     heals = ['70', '50', '30', '60', '100', '10']
     font = pygame.font.Font('freesansbold.ttf', 20)
     font_small = pygame.font.Font('freesansbold.ttf', 27)
-    screen = pygame.display.set_mode(size)
     words = '* Банда появляется!'
-
-    # снаряды врага
-    speed = 1
-    arm_poz_x = randint(350, 500)
-    arm_poz_y = 400
+    enemy_attacks_group = pygame.sprite.Group()
 
     # задание всех кнопок
     button_attack = pygame.Rect(20, 800, 160, 50)
     button_action = pygame.Rect(245, 800, 160, 50)
     button_item = pygame.Rect(470, 800, 160, 50)
     button_mercy = pygame.Rect(695, 800, 160, 50)
-    button_talk = pygame.Rect(650, 500, 120, 100)
-    button_threat = pygame.Rect(80, 500, 120, 100)
+    button_talk = pygame.Rect(650, 510, 140, 60)
+    button_threat = pygame.Rect(80, 510, 120, 60)
+    button_information = pygame.Rect(80, 580, 120, 60)
     button_restart = pygame.Rect(10, 10, 20, 20)
     button_id_1 = pygame.Rect(80, 480, 100, 80)
     button_id_2 = pygame.Rect(80, 540, 100, 80)
@@ -56,14 +60,19 @@ def main():
     Fight_rect = pygame.Rect(350, 400, 200, 200)
 
     while True:
+        # if end and XP_Hero > 0:
+        # Victory = True
+        # return False
+        # elif end and XP_Hero == 0:
+        # return False
         screen.fill('black')
         # проверка на милосердие
         if mercy <= 1:
-            Your_hit = randint(10, 40)
+            Your_hit = randint(30, 70)
             Band_hit = randint(11, 30) + dop_attack
         else:
             dop_attack = 0
-            Your_hit = randint(10, 40)
+            Your_hit = randint(30, 70)
             Band_hit = 0
 
         # проверка на события
@@ -97,8 +106,6 @@ def main():
                         dop_attack = 0
                     # кнопка перезапуска. Она только для проверки
                     elif button_restart.collidepoint(mouse_pos):
-                        arm_poz_x = randint(350, 500)
-                        arm_poz_y = 400
                         time_hit = 0
                         Hit = 0
                         turn = 'player'
@@ -107,6 +114,7 @@ def main():
                         XP_Hero = 200
                         Action = False
                         end = False
+                        Analysis = False
                         Band_scare = 'None'
                         Band_talk = 'None'
                         dop_attack = 0
@@ -130,6 +138,7 @@ def main():
                     # кнопка пощады
                     elif button_mercy.collidepoint(mouse_pos) and not Action and not Item and not end:
                         Mercy = True
+                        turn = 'enemy'
                     # кнопка угрозы
                     elif button_threat.collidepoint(mouse_pos) and Action:
                         mercy = 0
@@ -149,6 +158,9 @@ def main():
                             Band_talk = 'refuse'
                         Action = False
                         turn = 'enemy'
+                    # кнопка анализа
+                    elif button_information.collidepoint(mouse_pos) and Action:
+                        Analysis = True
                     elif button_id_1.collidepoint(mouse_pos) and Item and items[0] != 'Пусто':
                         items[0] = 'Пусто'
                         heals[0] = ''
@@ -218,11 +230,14 @@ def main():
                     mouse_pos = event.pos
                     if button_restart.collidepoint(mouse_pos):
                         turn = 'player'
+                        Analysis = False
                         words = '* Банда появляется!'
                         XP_band = 200
                         XP_Hero = 200
                         Action = False
                         end = False
+                        time_hit = 0
+                        Hit = False
                         Band_scare = 'None'
                         Band_talk = 'None'
                         dop_attack = 0
@@ -231,6 +246,8 @@ def main():
                         Mercy = False
                         items = ['Аптечка', 'Бутерброд', 'Бинт', 'Антибиотик', 'Обезболивающее', 'Консервы']
                         heals = ['70', '50', '30', '60', '100', '10']
+                elif event.type == pygame.USEREVENT:
+                    attacks(enemy_attacks_group)
 
         # экран, если ход игрока
         if turn == 'player':
@@ -239,7 +256,7 @@ def main():
                 if mercy >= 4:
                     end = True
                     words = 'Банда вас отпускает.)) Вы победили!)'
-                    text = font.render(words, True, 'white')
+                    text = font_small.render(words, True, 'white')
                     textRect = text.get_rect()
                     textRect.center = Action_rect.center
                     screen.blit(text, textRect)
@@ -261,13 +278,19 @@ def main():
                 textRect = text.get_rect()
                 textRect.center = button_threat.center
                 screen.blit(text, textRect)
-                pygame.draw.rect(screen, 'black', button_threat, 1)
+                pygame.draw.rect(screen, 'white', button_threat, 1)
 
                 text = font.render('* Поговорить', True, 'white')
                 textRect = text.get_rect()
                 textRect.center = button_talk.center
                 screen.blit(text, textRect)
-                pygame.draw.rect(screen, 'black', button_talk, 1)
+                pygame.draw.rect(screen, 'white', button_talk, 1)
+
+                text = font.render('* Анализ', True, 'white')
+                textRect = text.get_rect()
+                textRect.center = button_information.center
+                screen.blit(text, textRect)
+                pygame.draw.rect(screen, 'white', button_information, 1)
 
                 text = font.render('', True, 'white')
                 textRect = text.get_rect()
@@ -343,6 +366,11 @@ def main():
                 textRect.center = button_id_6.center
                 screen.blit(text, textRect)
                 pygame.draw.rect(screen, 'black', button_id_6, 1)
+            # механника анализа
+            if Analysis and not end:
+                words = 'Банда - ' + str(Band_hit) + ' атаки; ' + str(XP_band) + ' - здоровья'
+                Analysis = False
+                Action = False
 
             # основное окно
             text = font_small.render(words, True, 'white')
@@ -354,7 +382,9 @@ def main():
         # экран, если ход противника
         if turn == 'enemy':
             # проверка на время
-            if time < 8:
+            if time < 9:
+                enemy_attacks_group.draw(screen)
+                enemy_attacks_group.update(600, hight_circle, weight_circle)
                 time += v * clock.tick() / 1000
                 pygame.draw.rect(screen, 'white', Fight_rect, 1)
                 # проверка на нажатые кнопки
@@ -367,14 +397,6 @@ def main():
                     hight_circle -= 2
                 if keys[pygame.K_d] and hight_circle < 540:
                     hight_circle += 2
-                if (10 + 10) ** 2 >= ((hight_circle - arm_poz_x) ** 2 + (weight_circle - arm_poz_y) ** 2):
-                    Hit = True
-                pygame.draw.circle(screen, (255, 255, 255), (arm_poz_x, arm_poz_y), 10)
-                if arm_poz_y > 590:
-                    arm_poz_y = 400
-                    arm_poz_x = randint(350, 500)
-                else:
-                    arm_poz_y += speed
                 if time_hit <= 0 and Hit:
                     time_hit = 0.5
                     if abs(dop_attack) > Band_hit:
@@ -398,7 +420,8 @@ def main():
                     words = 'Вы погибли!'
                     end = True
                     turn = 'player'
-            elif time >= 8:
+            elif time >= 9:
+                enemy_attacks_group.update(400)
                 time_hit = 0
                 time = 0
                 hight_circle = 450
@@ -407,9 +430,8 @@ def main():
                 Mercy = False
                 Action = False
                 Item = False
+                Analysis = False
                 words = '* Банда ждёт ваших действий!'
-                arm_poz_y = 400
-
         # кнопка атаки
         text = font.render('Атака', True, 'yellow')
         textRect = text.get_rect()
@@ -484,5 +506,36 @@ def main():
 
 pygame.quit()
 
+
+class Enemy_attacks(pygame.sprite.Sprite):
+    def __init__(self, arm_poz_x, speed, surf, group):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = surf
+        self.rect = self.image.get_rect(center=(arm_poz_x, 400))
+        self.speed = speed
+        self.add(group)
+
+    def update(self, *args):
+        if self.rect.y < args[0] - 20:
+            self.rect.y += self.speed
+        else:
+            self.kill()
+        #if (10 + 10) ** 2 >= ((args[1] - self.rect.y) ** 2 + (args[2] - self.rect.y) ** 2):
+            #Hit = True
+
+
+def attacks(group):
+    id = randint(0, len(attack) - 1)
+    arm_poz_x = randint(370, 500)
+    speed = randint(1, 3)
+
+    return Enemy_attacks(arm_poz_x, speed, attack[id], group)
+
+
 if __name__ == '__main__':
+    Victory = False
     main()
+    if Victory:
+        print('Победа!')
+    else:
+        print('Ну всё....')
