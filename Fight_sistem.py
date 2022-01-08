@@ -1,24 +1,81 @@
 import pygame
-from random import *
+import random
+from os import path
+from random import randint
+
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.transform.scale(player_img, (20, 20))
+        self.image.set_colorkey('black')
+        self.rect = self.image.get_rect()
+        self.radius = 9
+        # pygame.draw.circle(self.image, 'red', self.rect.center, self.radius)
+        self.rect.centerx = 425
+        self.rect.bottom = 545
+        self.speedx = 0
+        self.speedy = 0
+
+    def update(self):
+        self.speedx = 0
+        self.speedy = 0
+        keystate = pygame.key.get_pressed()
+        if keystate[pygame.K_a]:
+            self.speedx = -3
+        if keystate[pygame.K_d]:
+            self.speedx = 3
+        if keystate[pygame.K_s]:
+            self.speedy = 3
+        if keystate[pygame.K_w]:
+            self.speedy = -3
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+        if self.rect.right > 550:
+            self.rect.right = 550
+        if self.rect.left < 300:
+            self.rect.left = 300
+        if self.rect.top < 400:
+            self.rect.top = 400
+        if self.rect.bottom > 650:
+            self.rect.bottom = 650
+
+
+class Enemy_attacks(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = meteor_img
+        self.image.set_colorkey('black')
+        self.rect = self.image.get_rect()
+        self.radius = int(self.rect.width * .85 / 2)
+        # pygame.draw.circle(self.image, 'red', self.rect.center, self.radius)
+        self.rect.x = randint(300, 500)
+        self.rect.y = 400
+        self.speedy = random.randrange(1, 4)
+        self.speedx = random.randrange(-3, 3)
+
+    def update(self):
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+        if self.rect.top > 650 + 10 or self.rect.left < -25 or self.rect.right > 650 + 20:
+            self.rect.x = randint(300, 500)# random.randrange(1000 - self.rect.width)
+            self.rect.y = 400
+            self.speedy = random.randrange(1, 4)
 
 
 def main():
     global Victory
     pygame.init()
-    pygame.time.set_timer(pygame.USEREVENT, 500)
+    pygame.mixer.init()
+    img_dir = path.join(path.dirname(__file__), 'img')
     clock = pygame.time.Clock()
     FPS = 60
     size = 900, 900
     screen = pygame.display.set_mode(size)
-    enemy_attacks_images = ['Enemy_fire.jpg', 'Enemy_fire_2.jpg']
-    global attack
-    attack = [pygame.image.load(path).convert_alpha() for path in enemy_attacks_images]
     XP_band = 200
     XP_Hero = 200
     Action = False
     end = False
-    hight_circle = 450
-    weight_circle = 500
     Band_scare = 'None'
     Band_talk = 'None'
     dop_attack = 0
@@ -32,6 +89,7 @@ def main():
     Mercy = False
     Hit = False
     Analysis = False
+    global color
     color = 'red'
     turn = 'player'
     items = ['Аптечка', 'Бутерброд', 'Бинт', 'Антибиотик', 'Обезболивающее', 'Консервы']
@@ -57,7 +115,20 @@ def main():
     button_id_5 = pygame.Rect(520, 480, 100, 80)
     button_id_6 = pygame.Rect(520, 540, 100, 80)
     Action_rect = pygame.Rect(20, 500, 870, 150)
-    Fight_rect = pygame.Rect(350, 400, 200, 200)
+    Fight_rect = pygame.Rect(300, 400, 250, 250)
+    global player_img
+    global meteor_img
+    player_img = pygame.image.load(path.join("heard.jpg")).convert()
+    meteor_img = pygame.image.load(path.join("Enemy_fire.jpg")).convert()
+
+    all_sprites = pygame.sprite.Group()
+    attacks = pygame.sprite.Group()
+    player = Player()
+    all_sprites.add(player)
+    for i in range(5):
+        attack = Enemy_attacks()
+        all_sprites.add(attack)
+        attacks.add(attack)
 
     while True:
         # if end and XP_Hero > 0:
@@ -106,6 +177,7 @@ def main():
                         dop_attack = 0
                     # кнопка перезапуска. Она только для проверки
                     elif button_restart.collidepoint(mouse_pos):
+                        pygame.mouse.set_visible(True)
                         time_hit = 0
                         Hit = 0
                         turn = 'player'
@@ -229,6 +301,7 @@ def main():
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = event.pos
                     if button_restart.collidepoint(mouse_pos):
+                        pygame.mouse.set_visible(True)
                         turn = 'player'
                         Analysis = False
                         words = '* Банда появляется!'
@@ -246,8 +319,6 @@ def main():
                         Mercy = False
                         items = ['Аптечка', 'Бутерброд', 'Бинт', 'Антибиотик', 'Обезболивающее', 'Консервы']
                         heals = ['70', '50', '30', '60', '100', '10']
-                elif event.type == pygame.USEREVENT:
-                    attacks(enemy_attacks_group)
 
         # экран, если ход игрока
         if turn == 'player':
@@ -383,36 +454,24 @@ def main():
         if turn == 'enemy':
             # проверка на время
             if time < 9:
-                enemy_attacks_group.draw(screen)
-                enemy_attacks_group.update(600, hight_circle, weight_circle)
+                all_sprites.update()
+                # Проверка, не ударил ли моб игрока
+                hits = pygame.sprite.spritecollide(player, attacks, False, pygame.sprite.collide_circle)
+                if hits:
+                    Hit = True
+                all_sprites.draw(screen)
+                pygame.mouse.set_visible(False)
                 time += v * clock.tick() / 1000
                 pygame.draw.rect(screen, 'white', Fight_rect, 1)
-                # проверка на нажатые кнопки
-                keys = pygame.key.get_pressed()
-                if keys[pygame.K_w] and weight_circle > 410:
-                    weight_circle -= 2
-                if keys[pygame.K_s] and weight_circle < 590:
-                    weight_circle += 2
-                if keys[pygame.K_a] and hight_circle > 360:
-                    hight_circle -= 2
-                if keys[pygame.K_d] and hight_circle < 540:
-                    hight_circle += 2
                 if time_hit <= 0 and Hit:
-                    time_hit = 0.5
+                    time_hit = 0.3
                     if abs(dop_attack) > Band_hit:
                         XP_Hero -= Band_hit - dop_attack
                     else:
                         XP_Hero -= Band_hit + dop_attack
                     # Нашему персонажу нанесён урон
                 elif time_hit > 0:
-                    if color == 'red':
-                        color = 'black'
-                    elif color == 'black':
-                        color = 'red'
-                    pygame.draw.circle(screen, color, (hight_circle, weight_circle), 10)
                     time_hit -= v_hit * clock.tick() / 1000
-                else:
-                    pygame.draw.circle(screen, 'red', (hight_circle, weight_circle), 10)
                 Hit = False
                 # Наш персонаж
                 if XP_Hero - (Band_hit + dop_attack) <= 0:
@@ -421,11 +480,10 @@ def main():
                     end = True
                     turn = 'player'
             elif time >= 9:
-                enemy_attacks_group.update(400)
+                pygame.mouse.set_visible(True)
+                all_sprites.update()
                 time_hit = 0
                 time = 0
-                hight_circle = 450
-                weight_circle = 500
                 turn = 'player'
                 Mercy = False
                 Action = False
@@ -505,32 +563,6 @@ def main():
 
 
 pygame.quit()
-
-
-class Enemy_attacks(pygame.sprite.Sprite):
-    def __init__(self, arm_poz_x, speed, surf, group):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = surf
-        self.rect = self.image.get_rect(center=(arm_poz_x, 400))
-        self.speed = speed
-        self.add(group)
-
-    def update(self, *args):
-        if self.rect.y < args[0] - 20:
-            self.rect.y += self.speed
-        else:
-            self.kill()
-        #if (10 + 10) ** 2 >= ((args[1] - self.rect.y) ** 2 + (args[2] - self.rect.y) ** 2):
-            #Hit = True
-
-
-def attacks(group):
-    id = randint(0, len(attack) - 1)
-    arm_poz_x = randint(370, 500)
-    speed = randint(1, 3)
-
-    return Enemy_attacks(arm_poz_x, speed, attack[id], group)
-
 
 if __name__ == '__main__':
     Victory = False
