@@ -49,16 +49,16 @@ class Enemy_attacks(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.radius = int(self.rect.width * .85 / 2)
         # pygame.draw.circle(self.image, 'red', self.rect.center, self.radius)
-        self.rect.x = randint(300, 500)
+        self.rect.x = randint(400, 500)
         self.rect.y = 400
-        self.speedy = random.randrange(1, 4)
+        self.speedy = random.randrange(2, 5)
         self.speedx = random.randrange(-3, 3)
 
     def update(self):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
-        if self.rect.top > 650 + 10 or self.rect.left < -25 or self.rect.right > 650 + 20:
-            self.rect.x = randint(300, 500)# random.randrange(1000 - self.rect.width)
+        if self.rect.top > 630 or self.rect.left < 300 or self.rect.right > 550:
+            self.rect.x = randint(300, 500)
             self.rect.y = 400
             self.speedy = random.randrange(1, 4)
 
@@ -67,7 +67,6 @@ def main():
     global Victory
     pygame.init()
     pygame.mixer.init()
-    img_dir = path.join(path.dirname(__file__), 'img')
     clock = pygame.time.Clock()
     FPS = 60
     size = 900, 900
@@ -84,11 +83,12 @@ def main():
     v_hit = 100
     time = 0
     time_hit = 0
-    time_read = 5
+    Attack = False
     Item = False
     Mercy = False
     Hit = False
     Analysis = False
+    Cont = False
     global color
     color = 'red'
     turn = 'player'
@@ -97,7 +97,6 @@ def main():
     font = pygame.font.Font('freesansbold.ttf', 20)
     font_small = pygame.font.Font('freesansbold.ttf', 27)
     words = '* Банда появляется!'
-    enemy_attacks_group = pygame.sprite.Group()
 
     # задание всех кнопок
     button_attack = pygame.Rect(20, 800, 160, 50)
@@ -116,16 +115,19 @@ def main():
     button_id_6 = pygame.Rect(520, 540, 100, 80)
     Action_rect = pygame.Rect(20, 500, 870, 150)
     Fight_rect = pygame.Rect(300, 400, 250, 250)
+    button_continue = pygame.Rect(700, 600, 20, 50)
+    Enemy_XP_rect = pygame.Rect(430, 10, 20, 20)
+    Hero_XP_rect = pygame.Rect(590, 675, 20, 20)
     global player_img
     global meteor_img
-    player_img = pygame.image.load(path.join("heard.jpg")).convert()
+    player_img = pygame.image.load(path.join("heart.jpg")).convert()
     meteor_img = pygame.image.load(path.join("Enemy_fire.jpg")).convert()
 
     all_sprites = pygame.sprite.Group()
     attacks = pygame.sprite.Group()
     player = Player()
     all_sprites.add(player)
-    for i in range(5):
+    for i in range(7):
         attack = Enemy_attacks()
         all_sprites.add(attack)
         attacks.add(attack)
@@ -159,24 +161,23 @@ def main():
                         Action = False
                         Item = False
                         words = '* Банда ждёт ваших действий!'
+                    elif event.key == pygame.K_RETURN:
+                        if turn == 'player' and not Action and not Item and not end and not Attack \
+                                and not Mercy and words != '* Банда появляется!' \
+                                and words != '* Банда ждёт ваших действий!':
+                            turn = 'enemy'
+                            Cont = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = event.pos
                     # кнопка атаки
-                    if button_attack.collidepoint(mouse_pos) and not Action and not Item and not end:
-                        mercy = 0
-                        Band_scare = False
-                        words = '* Банда ждёт ваших действий!'
-                        if XP_band - Your_hit <= 0:
-                            XP_band = 0
-                            words = 'Вы победили!'
-                            end = True
-                        else:
-                            if abs(dop_attack) < Band_hit:
-                                turn = 'enemy'
-                                XP_band -= Your_hit
-                        dop_attack = 0
+                    if button_attack.collidepoint(
+                            mouse_pos) and not Action and not Item and not end and not Attack and not Mercy and not Cont:
+                        Attack = True
+                        Cont = True
                     # кнопка перезапуска. Она только для проверки
                     elif button_restart.collidepoint(mouse_pos):
+                        Cont = False
+                        Attack = False
                         pygame.mouse.set_visible(True)
                         time_hit = 0
                         Hit = 0
@@ -195,12 +196,12 @@ def main():
                         items = ['Аптечка', 'Бутерброд', 'Бинт', 'Антибиотик', 'Обезболивающее', 'Консервы']
                         heals = ['70', '50', '30', '60', '100', '10']
                     # кнопка действия
-                    elif button_action.collidepoint(mouse_pos) and not Action and not Item and not end:
+                    elif button_action.collidepoint(mouse_pos) and not Action and not Item and not end and not Attack and not Cont:
                         words = ''
                         dop_attack = 0
                         Action = True
                     # кнопка предмета
-                    elif button_item.collidepoint(mouse_pos) and not Action and not Item and not end:
+                    elif button_item.collidepoint(mouse_pos) and not Action and not Item and not end and not Attack and not Cont:
                         Item = True
                         words = ''
                         Band_scare = False
@@ -208,9 +209,9 @@ def main():
                             XP_band += 1
                         dop_attack = 0
                     # кнопка пощады
-                    elif button_mercy.collidepoint(mouse_pos) and not Action and not Item and not end:
+                    elif button_mercy.collidepoint(mouse_pos) and not Action and not Item and not end and not Attack and not Cont:
                         Mercy = True
-                        turn = 'enemy'
+                        Cont = True
                     # кнопка угрозы
                     elif button_threat.collidepoint(mouse_pos) and Action:
                         mercy = 0
@@ -220,7 +221,7 @@ def main():
                         else:
                             Band_scare = 'refuse'
                         Action = False
-                        turn = 'enemy'
+                        Cont = True
                     # кнопка разговора
                     elif button_talk.collidepoint(mouse_pos) and Action:
                         chance = randint(0, 100)
@@ -229,10 +230,11 @@ def main():
                         else:
                             Band_talk = 'refuse'
                         Action = False
-                        turn = 'enemy'
+                        Cont = True
                     # кнопка анализа
                     elif button_information.collidepoint(mouse_pos) and Action:
                         Analysis = True
+                        Cont = True
                     elif button_id_1.collidepoint(mouse_pos) and Item and items[0] != 'Пусто':
                         items[0] = 'Пусто'
                         heals[0] = ''
@@ -241,8 +243,8 @@ def main():
                         else:
                             XP_Hero += 70
                         Item = False
-                        words = 'Банда ждёт ваших действий.'
-                        turn = 'enemy'
+                        words = '* Вы использовали аптечку. +70ХР'
+                        Cont = True
                     elif button_id_2.collidepoint(mouse_pos) and Item and items[1] != 'Пусто':
                         items[1] = 'Пусто'
                         heals[1] = ''
@@ -251,8 +253,8 @@ def main():
                         else:
                             XP_Hero += 50
                         Item = False
-                        words = 'Банда ждёт ваших действий.'
-                        turn = 'enemy'
+                        words = 'Вы сьели бутерброд. +50ХР'
+                        Cont = True
                     elif button_id_3.collidepoint(mouse_pos) and Item and items[2] != 'Пусто':
                         items[2] = 'Пусто'
                         heals[2] = ''
@@ -261,8 +263,8 @@ def main():
                         else:
                             XP_Hero += 30
                         Item = False
-                        words = 'Банда ждёт ваших действий.'
-                        turn = 'enemy'
+                        words = 'Вы использовали бинт. +30ХР'
+                        Cont = True
                     elif button_id_4.collidepoint(mouse_pos) and Item and items[3] != 'Пусто':
                         items[3] = 'Пусто'
                         heals[3] = ''
@@ -271,8 +273,8 @@ def main():
                         else:
                             XP_Hero += 60
                         Item = False
-                        words = 'Банда ждёт ваших действий.'
-                        turn = 'enemy'
+                        words = 'Вы приняли антибиотик. +60ХР'
+                        Cont = True
                     elif button_id_5.collidepoint(mouse_pos) and Item and items[4] != 'Пусто':
                         items[4] = 'Пусто'
                         heals[4] = ''
@@ -281,8 +283,8 @@ def main():
                         else:
                             XP_Hero += 100
                         Item = False
-                        words = 'Банда ждёт ваших действий.'
-                        turn = 'enemy'
+                        words = 'Вы приняли обезболивающее. +100ХР'
+                        Cont = True
                     elif button_id_6.collidepoint(mouse_pos) and Item and items[5] != 'Пусто':
                         items[5] = 'Пусто'
                         heals[5] = ''
@@ -291,8 +293,8 @@ def main():
                         else:
                             XP_Hero += 20
                         Item = False
-                        words = 'Банда ждёт ваших действий.'
-                        turn = 'enemy'
+                        words = 'Вы сьели консервы. +20ХР'
+                        Cont = True
 
             # события, если ход противника
             if turn == 'enemy':
@@ -302,6 +304,8 @@ def main():
                     mouse_pos = event.pos
                     if button_restart.collidepoint(mouse_pos):
                         pygame.mouse.set_visible(True)
+                        Cont = False
+                        Attack = False
                         turn = 'player'
                         Analysis = False
                         words = '* Банда появляется!'
@@ -322,16 +326,36 @@ def main():
 
         # экран, если ход игрока
         if turn == 'player':
+            if Cont and not Action and not Item:
+                pygame.mouse.set_visible(False)
+                text = font.render('Нажите "Enter". Будте готовы!', True, 'white')
+                textRect = text.get_rect()
+                textRect.center = button_continue.center
+                screen.blit(text, textRect)
+            if Attack:
+                pygame.mouse.set_visible(False)
+                mercy = 0
+                Band_scare = False
+                if XP_band - Your_hit <= 0:
+                    XP_band = 0
+                    words = 'Вы победили!'
+                    end = True
+                else:
+                    words = '* Вы решили атаковать!'
+                    XP_band -= Your_hit
+                    Attack = False
+                dop_attack = 0
             # механника пощады
             if Mercy:
+                pygame.mouse.set_visible(False)
                 if mercy >= 4:
+                    Cont = False
                     end = True
                     words = 'Банда вас отпускает.)) Вы победили!)'
                     text = font_small.render(words, True, 'white')
                     textRect = text.get_rect()
                     textRect.center = Action_rect.center
                     screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'white', Action_rect, 1)
                     Band_talk = 'None'
                 else:
                     words = 'Ничего не произошло.'
@@ -339,10 +363,8 @@ def main():
                     textRect = text.get_rect()
                     textRect.center = Action_rect.center
                     screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'white', Action_rect, 1)
                     Band_talk = 'None'
                     Mercy = False
-                    turn = 'enemy'
             # механника действий
             if Action and not end:
                 text = font.render('* Угрожать', True, 'white')
@@ -367,7 +389,6 @@ def main():
                 textRect = text.get_rect()
                 textRect.center = Action_rect.center
                 screen.blit(text, textRect)
-                pygame.draw.rect(screen, 'white', Action_rect, 1)
             else:
                 # угрожать
                 if Band_scare == 'good':
@@ -377,7 +398,6 @@ def main():
                     textRect = text.get_rect()
                     textRect.center = Action_rect.center
                     screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'white', Action_rect, 1)
                     Band_scare = 'None'
                 elif Band_scare == 'refuse':
                     dop_attack = 10
@@ -386,18 +406,17 @@ def main():
                     textRect = text.get_rect()
                     textRect.center = Action_rect.center
                     screen.blit(text, textRect)
-                    pygame.draw.rect(screen, 'white', Action_rect, 1)
                     Band_scare = 'None'
                 # поговорить
                 elif Band_talk == 'refuse':
                     dop_attack = 5
                     words = 'Банда не хочет говорить. Атаки банды стали сильнее.'
-                    Band_scare = 'None'
+                    Band_talk = 'None'
                 elif Band_talk == 'good':
                     mercy += 1
                     if mercy != 3:
-                        words = 'Вы хорошо побеседовали с бандой.))'
-                        Band_talk = 'None'
+                        words = 'Вы хорошо побеседовали с бандой. Продолжайте в том же духе!)'
+                    Band_talk = 'None'
                 Action = False
             # механника предметов
             if Item and not end:
@@ -444,7 +463,7 @@ def main():
                 Action = False
 
             # основное окно
-            text = font_small.render(words, True, 'white')
+            text = font.render(words, True, 'white')
             textRect = text.get_rect()
             textRect.center = Action_rect.center
             screen.blit(text, textRect)
@@ -489,7 +508,7 @@ def main():
                 Action = False
                 Item = False
                 Analysis = False
-                words = '* Банда ждёт ваших действий!'
+            words = '* Банда ждёт ваших действий!'
         # кнопка атаки
         text = font.render('Атака', True, 'yellow')
         textRect = text.get_rect()
@@ -534,23 +553,35 @@ def main():
         textRect.center = XP_str.center
         screen.blit(text, textRect)
 
+        pygame.draw.rect(screen, 'black', Hero_XP_rect)
+        text = font.render('Ваше здоровье', True, 'white')
+        textRect = text.get_rect()
+        textRect.center = Hero_XP_rect.center
+        screen.blit(text, textRect)
+
         pygame.draw.rect(screen, 'red', XP_Hero_rect)
 
         pygame.draw.rect(screen, 'yellow', (500, 700, XP_Hero, 50))
 
         # XP банды
-        XP_band_rect = pygame.Rect(340, 10, 200, 50)
+        XP_band_rect = pygame.Rect(340, 30, 200, 50)
 
-        XP_str = pygame.Rect(340, 60, 200, 50)
+        XP_str = pygame.Rect(340, 80, 200, 50)
         pygame.draw.rect(screen, 'black', XP_band_rect)
         text = font.render(str(XP_band) + '/200', True, 'white')
         textRect = text.get_rect()
         textRect.center = XP_str.center
         screen.blit(text, textRect)
 
+        pygame.draw.rect(screen, 'black', Enemy_XP_rect)
+        text = font.render('Здоровье врага', True, 'white')
+        textRect = text.get_rect()
+        textRect.center = Enemy_XP_rect.center
+        screen.blit(text, textRect)
+
         pygame.draw.rect(screen, 'red', XP_band_rect)
 
-        pygame.draw.rect(screen, 'yellow', (340, 10, XP_band, 50))
+        pygame.draw.rect(screen, 'yellow', (340, 30, XP_band, 50))
 
         # кнопка перезапуска
         text = font.render('R', True, 'red')
