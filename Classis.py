@@ -96,6 +96,11 @@ class MenuDisplay(SomeDisplay):
         return self.buttonGroup.click_id(event)
 
 
+class LoadDisplay(MenuDisplay):
+    def _made_buttons(self, id_list, butt_im=None, indent=20):
+        super()._made_buttons(id_list, butt_im=butt_im, indent=indent)
+
+
 class InventoryDisplay(SomeDisplay):
     def __init__(self, size, coords, color='gray', indent=20):
         super().__init__(size, coords, color=color)
