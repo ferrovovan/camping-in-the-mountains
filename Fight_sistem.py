@@ -114,8 +114,8 @@ def main():
     font_small = pygame.font.Font('freesansbold.ttf', 20)
     words = '* Банда появляется!'
 
-    sound = pygame.mixer.Sound(path.join('Hit.wav'))
-    pygame.mixer.music.load(path.join('Battle_theme.mp3'))
+    sound = pygame.mixer.Sound(path.join('data/sounds/Hit.wav'))
+    pygame.mixer.music.load(path.join('data/sounds/Battle_theme.mp3'))
     pygame.mixer.music.set_volume(0.4)
     pygame.mixer.music.play(loops=-1)
 
@@ -159,8 +159,8 @@ def main():
     global player_img
     global hit_img
     global enemy_img
-    player_img = pygame.image.load(path.join("heart.jpg")).convert()
-    hit_img = pygame.image.load(path.join("Enemy_fire.jpg")).convert()
+    player_img = pygame.image.load(path.join("data/gfx/textures/interface/heart.jpg")).convert()
+    hit_img = pygame.image.load(path.join("data/gfx/textures/interface/Enemy_fire.jpg")).convert()
     #enemy_img = pygame.image.load(path.join("Enemy.jpg")).convert()
 
     all_sprites = pygame.sprite.Group()
