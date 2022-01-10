@@ -33,11 +33,19 @@ class Player(pygame.sprite.Sprite):
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_a]:
             self.speedx = -3
+        elif keystate[pygame.K_LEFT]:
+            self.speedx = -3
         if keystate[pygame.K_d]:
+            self.speedx = 3
+        elif keystate[pygame.K_RIGHT]:
             self.speedx = 3
         if keystate[pygame.K_s]:
             self.speedy = 3
+        elif keystate[pygame.K_DOWN]:
+            self.speedy = 3
         if keystate[pygame.K_w]:
+            self.speedy = -3
+        elif keystate[pygame.K_UP]:
             self.speedy = -3
         self.rect.x += self.speedx
         self.rect.y += self.speedy
@@ -70,7 +78,7 @@ class Enemy_attacks(pygame.sprite.Sprite):
         if self.rect.top > W // 2.58 - 20 or self.rect.left < H // 1.406 or self.rect.right > H // 0.937:
             self.rect.x = randint(int(H // 1.406), int(H // 0.937))
             self.rect.y = W // 5.32
-            self.speedy = random.randrange(3, 5)
+            self.speedy = random.randrange(3, 4)
             self.speedx = random.randrange(-2, 2)
 
 
@@ -176,21 +184,21 @@ def main():
         attacks.add(attack)
 
     while True:
-        # if end and XP_Hero > 0:
-        # Victory = True
-        # return False
-        # elif end and XP_Hero == 0:
-        # return False
+        if end and XP_Hero > 0:
+            Victory = True
+            return False
+        elif end and XP_Hero == 0:
+            return False
         screen.fill('black')
         enemies.draw(screen)
         # проверка на милосердие
         if mercy <= 2:
-            Your_hit = randint(30, 70)
-            Band_hit = randint(15, 30) + dop_attack
+            Your_hit = randint(30, 50)
+            Band_hit = randint(15, 20) + dop_attack
         else:
             dop_attack = 0
-            Your_hit = randint(30, 70)
-            Band_hit = randint(5, 15)
+            Your_hit = randint(30, 50)
+            Band_hit = randint(5, 10)
 
         # проверка на события
         for event in pygame.event.get():
@@ -280,7 +288,7 @@ def main():
                     # кнопка разговора
                     elif button_talk.collidepoint(mouse_pos) and Action:
                         chance = randint(0, 100)
-                        if chance >= 20:
+                        if chance >= 10:
                             Band_talk = 'good'
                         else:
                             Band_talk = 'refuse'
@@ -297,8 +305,10 @@ def main():
                         heals[0] = ''
                         if XP_Hero + 70 >= 200:
                             XP_Hero = 200
+                            Total_hit_player = (200 * int(infoObject.current_w // 9.6)) // 200
                         else:
                             XP_Hero += 70
+                            Total_hit_player += (70 * int(infoObject.current_w // 9.6)) // 200
                         Item = False
                         words = '* Вы использовали аптечку. +70ХР'
                         Cont = True
@@ -308,8 +318,10 @@ def main():
                         heals[1] = ''
                         if XP_Hero + 50 >= 200:
                             XP_Hero = 200
+                            Total_hit_player = (200 * int(infoObject.current_w // 9.6)) // 200
                         else:
                             XP_Hero += 50
+                            Total_hit_player += (50 * int(infoObject.current_w // 9.6)) // 200
                         Item = False
                         words = 'Вы сьели бутерброд. +50ХР'
                         Cont = True
@@ -319,8 +331,10 @@ def main():
                         heals[2] = ''
                         if XP_Hero + 30 >= 200:
                             XP_Hero = 200
+                            Total_hit_player = (200 * int(infoObject.current_w // 9.6)) // 200
                         else:
                             XP_Hero += 30
+                            Total_hit_player += (30 * int(infoObject.current_w // 9.6)) // 200
                         Item = False
                         words = 'Вы использовали бинт. +30ХР'
                         Cont = True
@@ -330,8 +344,10 @@ def main():
                         heals[3] = ''
                         if XP_Hero + 60 >= 200:
                             XP_Hero = 200
+                            Total_hit_player = (200 * int(infoObject.current_w // 9.6)) // 200
                         else:
                             XP_Hero += 60
+                            Total_hit_player += (60 * int(infoObject.current_w // 9.6)) // 200
                         Item = False
                         words = 'Вы приняли антибиотик. +60ХР'
                         Cont = True
@@ -341,8 +357,10 @@ def main():
                         heals[4] = ''
                         if XP_Hero + 100 >= 200:
                             XP_Hero = 200
+                            Total_hit_player = (200 * int(infoObject.current_w // 9.6)) // 200
                         else:
                             XP_Hero += 100
+                            Total_hit_player += (100 * int(infoObject.current_w // 9.6)) // 200
                         Item = False
                         words = 'Вы приняли обезболивающее. +100ХР'
                         Cont = True
@@ -352,8 +370,10 @@ def main():
                         heals[5] = ''
                         if XP_Hero + 20 >= 200:
                             XP_Hero = 200
+                            Total_hit_player = (200 * int(infoObject.current_w // 9.6)) // 200
                         else:
                             XP_Hero += 20
+                            Total_hit_player += (20 * int(infoObject.current_w // 9.6)) // 200
                         Item = False
                         words = 'Вы сьели консервы. +20ХР'
                         Cont = True
@@ -549,7 +569,7 @@ def main():
                 pygame.draw.rect(screen, 'white', Fight_rect, 1)
                 if time_hit <= 0 and Hit:
                     sound.play()
-                    time_hit = 0.3
+                    time_hit = 0.325
                     if abs(dop_attack) > Band_hit:
                         XP_Hero -= Band_hit
                         Total_hit_player -= ((Band_hit - dop_attack)
@@ -567,6 +587,7 @@ def main():
                     XP_Hero = 0
                     words = 'Вы погибли!'
                     end = True
+                    Total_hit_player = 0
                     turn = 'player'
             elif time >= 25:
                 pygame.mouse.set_visible(True)
