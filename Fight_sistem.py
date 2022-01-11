@@ -694,10 +694,5 @@ def main():
 
 pygame.quit()
 
-if __name__ == '__main__':
-    Victory = False
-    main()
-    if Victory:
-        print('Победа!')
-    else:
-        print('Ну всё....')
+
+print(main())
