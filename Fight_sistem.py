@@ -694,5 +694,6 @@ def main():
 
 pygame.quit()
 
-
+Victory = True
 print(main())
+print(Victory)
