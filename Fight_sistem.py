@@ -4,14 +4,14 @@ from os import path
 from random import randint
 
 
-#class Enemy(pygame.sprite.Sprite):
-    #def __init__(self):
-        #pygame.sprite.Sprite.__init__(self)
-        #self.image = pygame.transform.scale(enemy_img, (400, 500))
-        #self.image.set_colorkey('black')
-        #self.rect = self.image.get_rect()
-        #self.rect.centerx = W // 2
-        #self.rect.centery = H // 3
+# class Enemy(pygame.sprite.Sprite):
+# def __init__(self):
+# pygame.sprite.Sprite.__init__(self)
+# self.image = pygame.transform.scale(enemy_img, (400, 500))
+# self.image.set_colorkey('black')
+# self.rect = self.image.get_rect()
+# self.rect.centerx = W // 2
+# self.rect.centery = H // 3
 
 
 class Player(pygame.sprite.Sprite):
@@ -169,13 +169,13 @@ def main():
     global enemy_img
     player_img = pygame.image.load(path.join("data/gfx/textures/interface/heart.jpg")).convert()
     hit_img = pygame.image.load(path.join("data/gfx/textures/interface/Enemy_fire.jpg")).convert()
-    #enemy_img = pygame.image.load(path.join("Enemy.jpg")).convert()
+    # enemy_img = pygame.image.load(path.join("Enemy.jpg")).convert()
 
     all_sprites = pygame.sprite.Group()
     attacks = pygame.sprite.Group()
     enemies = pygame.sprite.Group()
-    #enemy = Enemy()
-    #enemies.add(enemy)
+    # enemy = Enemy()
+    # enemies.add(enemy)
     player = Player()
     all_sprites.add(player)
     for i in range(10):
@@ -695,6 +695,3 @@ def main():
 
 
 pygame.quit()
-
-Victory = True
-print(main())
