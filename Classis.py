@@ -446,12 +446,15 @@ class Interface:
                     return "return"
 
     def is_click(self, event):
-        for button in self.menuButtGr:
-            if button.is_click(event):
+        if self.draw_message:  # если есть сообщение
+            self.draw_message = False
+        else:
+            for button in self.menuButtGr:
+                if button.is_click(event):
+                    return True
+            if not self.menu_close and self.menuButtonsGroup.click_id(event):
                 return True
-        if not self.menu_close and self.menuButtonsGroup.click_id(event):
-            return True
-        return False
+            return False
 
     def _close_menu(self, a=None):
         if a is None:
