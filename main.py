@@ -32,6 +32,8 @@ def start_screen(screen, FPS):
     images = {'button1': load_image('gfx/buttons/button1.png'),
               'button2': load_image('gfx/buttons/button2.png')}
 
+    message = load_localisation('messages', language=language)[3][1]
+
     menu_id = [1, 2, 3, 4]  # id кнопок меню
     load_id = [0, 0, 0, 7]  # а кто-то поверил...
 
@@ -75,7 +77,7 @@ def start_screen(screen, FPS):
                         screens_dict[draw_screen].manage_settings(event)
                     elif id == 10:  # применить
                         screens_dict[draw_screen].save_settings()
-                        messageWin = MessageWin((300, size[1] // 9), message='Настройки сохранены, перезапустите игру', auto_words_size=True)
+                        messageWin = MessageWin((300, size[1] // 9), message=message, auto_words_size=True)
         # рендер
         if messageWin is not None:
             scrRect = screens_dict[draw_screen].get_rect()
