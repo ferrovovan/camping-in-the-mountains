@@ -265,8 +265,11 @@ class MessageWin(pygame.Surface):
         # рисуем надпись на экране
         self.blit(string_rendered, message_rect)
 
-    def render(self, screen, coords=(0, 0)):
-        screen.blit(self, coords)
+    def render(self, screen, coords=(0, 0), centrees=False):
+        if centrees:
+            screen.blit(self, (coords[0] - (self.get_width() // 2), coords[1] - (self.get_height() // 2)))
+        else:
+            screen.blit(self, coords)
 
 
 class ButtonGroup(pygame.sprite.Group):
@@ -411,7 +414,7 @@ class Interface:
         self.menuButtGr = ButtonGroup()  # кнопка меню
         self.menuButtonsGroup = ButtonGroup()
         # окошко сообщения
-        self.message_win = MessageWin((400, 200), '', color='red', auto_words_size=True)
+        self.message_win = MessageWin((screenBoards[0] // 5, screenBoards[1] // 4), '', color='red', auto_words_size=True)
         self.draw_message = False
 
         # меню кнопки
@@ -471,7 +474,7 @@ class Interface:
             self.menuButtonsGroup.draw(screen)
             self.menuButtonsGroup.draw_text(screen, text_dict=self.localisation)
         if self.draw_message:
-            self.message_win.render(screen, (30, 40))
+            self.message_win.render(screen, (screen.get_width() // 2, screen.get_height() // 2), centrees=True)
 
 
 class Character:
