@@ -490,6 +490,7 @@ class Character:
         # загружаем локализацию
         self.item_names = load_localisation('items name', language=language)
         self.items_depiction = load_localisation('items depiction', language=language)
+        self.messages = load_localisation('messages', language=language)
         # настройки экрана
         self.rect = pygame.Rect(screenBoards[0] / 8, screenBoards[1] / 5, screenBoards[0] * (3 / 4),
                                 screenBoards[1] * (3 / 5))
@@ -525,12 +526,13 @@ class Character:
         if self.hero_link.move(vCoords) is False:  # если нельзя пройти
             victory = fight()  # запускаем битву
             if not victory:
-                self.keyManager_linc.interface_linc.change_message(text='U die', set_visible=True)
+                print(self.messages)
+                self.keyManager_linc.interface_linc.change_message(text=self.messages[1][1], set_visible=True)
                 pygame.time.set_timer(30, 3000)  # ставим таймер
                 self.keyManager_linc.is_died = True  # ставим флажок
             else:
                 pygame.mixer.music.stop()
-                self.keyManager_linc.interface_linc.change_message(text='Ok', set_visible=True)
+                self.keyManager_linc.interface_linc.change_message(text=self.messages[2][1], set_visible=True)
 
     def get_click(self, mouse_pos):
         mouse_pos = (mouse_pos[0] - self.rect.x, mouse_pos[1] - self.rect.y)
