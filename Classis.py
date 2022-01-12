@@ -2,6 +2,7 @@ import pygame
 import os
 import sys
 import datetime as dt
+from Fight_sistem import main as fight
 
 
 def load_image(name, colorkey=None):
@@ -496,6 +497,15 @@ class Character:
                       'eventlog': self.eventlog}
         self.open_page = 'inventory'
 
+    def move_hero(self, vCoords):
+        # запускаем ход игрока
+        if self.hero_link.move(vCoords) is False:  # если нельзя пройти
+            victory = fight()  # запускаем битву
+            if victory:
+                pass
+            else:
+                pass
+
     def get_click(self, mouse_pos):
         mouse_pos = (mouse_pos[0] - self.rect.x, mouse_pos[1] - self.rect.y)
         if self.open_page == 'inventory':
@@ -821,9 +831,9 @@ class KeyBoardManager:
             self.map_linc.move(x=-10)
         #
         if kPressed[pygame.K_w]:
-            self.character_link.hero_link.move((1, 0))
+            self.character_link.move_hero((1, 0))
         elif kPressed[pygame.K_s]:
-            self.character_link.hero_link.move((-1, 0))
+            self.character_link.move_hero((-1, 0))
         elif kPressed[pygame.K_i]:
             self.character_link.set_open()
         elif kPressed[pygame.K_d]:  # черенок
