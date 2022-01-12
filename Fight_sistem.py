@@ -214,6 +214,17 @@ def main():
                                 and words != '* Банда ждёт ваших действий!':
                             turn = 'enemy'
                             Cont = False
+                    # hot keys
+                    if event.key == pygame.K_t:  # attack
+                        if turn == 'player' and not Action:
+                            Attack = True
+                            turn = 'enemy'
+#                    if event.key == pygame.K_y:  # действие
+#                        if turn == 'player' and not Action and not Item and not Attack:
+#                            Action = True
+#                    elif event.key == pygame.K_i:  # предметы
+#                        if turn == 'player' and not Item:
+#                            Item = True
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = event.pos
                     if Back_button.collidepoint(mouse_pos) and Back:
