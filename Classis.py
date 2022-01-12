@@ -529,6 +529,7 @@ class Character:
                 pygame.time.set_timer(30, 3000)  # ставим таймер
                 self.keyManager_linc.is_died = True  # ставим флажок
             else:
+                pygame.mixer.music.stop()
                 self.keyManager_linc.interface_linc.change_message(text='Ok', set_visible=True)
 
     def get_click(self, mouse_pos):
