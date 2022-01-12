@@ -518,10 +518,10 @@ class Character:
         # запускаем ход игрока
         if self.hero_link.move(vCoords) is False:  # если нельзя пройти
             victory = fight()  # запускаем битву
-            if victory:
-                self.keyManager_linc.interface_linc.change_message(text='Ok', set_visible=True)
-            else:
+            if not victory:
                 self.keyManager_linc.interface_linc.change_message(text='U die', set_visible=True)
+            else:
+                self.keyManager_linc.interface_linc.change_message(text='Ok', set_visible=True)
 
     def get_click(self, mouse_pos):
         mouse_pos = (mouse_pos[0] - self.rect.x, mouse_pos[1] - self.rect.y)
