@@ -26,14 +26,15 @@ def start_screen(screen, FPS):
     # инициализация
     menuIm = load_image('gfx/textures/interface/fone.png')  # загружаем картинку
     screen.blit(menuIm, menuIm.get_rect())  # ставим на экран
-    messageWin = None
 
     # изображения
     images = {'button1': load_image('gfx/buttons/button1.png'),
               'button2': load_image('gfx/buttons/button2.png')}
-
+    # сообщение
     message = load_localisation('messages', language=language)[3][1]
-
+    messageWin = MessageWin((300, size[1] // 9), message=message, auto_words_size=True)
+    draw_message = False
+    # ставим кнопки
     menu_id = [1, 2, 3, 4]  # id кнопок меню
     load_id = [0, 0, 0, 7]  # а кто-то поверил...
 
@@ -57,7 +58,7 @@ def start_screen(screen, FPS):
                 pygame.quit()
                 quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                messageWin = None
+                draw_message = False
                 id = screens_dict[draw_screen].click_id(event)  # id нажатой кнопки
                 if id is not None:
                     if id == 1:  # играть
@@ -77,9 +78,9 @@ def start_screen(screen, FPS):
                         screens_dict[draw_screen].manage_settings(event)
                     elif id == 10:  # применить
                         screens_dict[draw_screen].save_settings()
-                        messageWin = MessageWin((300, size[1] // 9), message=message, auto_words_size=True)
+                        draw_message = True  # включаем рисование сообщения
         # рендер
-        if messageWin is not None:
+        if draw_message:
             scrRect = screens_dict[draw_screen].get_rect()
             messageWin.render(screens_dict[draw_screen], coords=((scrRect.width - messageWin.get_width()) // 2, (scrRect.height - messageWin.get_height()) // 2))
         screens_dict[draw_screen].render(screen, language=language)
