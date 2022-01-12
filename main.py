@@ -96,6 +96,10 @@ def main():
     character = Character(size, hero_link=hero1)  # создаём интерфейс героя
     mouseManager = MouseManager(screen, interface, board, character)  # создаём менеджера мыши
     keyManager = KeyBoardManager(screen, interface, board, character)  # создаём менеджера клавиатуры
+    #
+    DIE_EVENT = 30
+    is_died = False
+    keyManager.is_died = is_died
     # цикл
     running = True
     clock = pygame.time.Clock()  # часы
@@ -118,6 +122,8 @@ def main():
                     running = False
             elif event.type == pygame.MOUSEMOTION:
                 mouseManager.manage_motion(event)
+            elif keyManager.is_died and event.type == DIE_EVENT:
+                quit()
         # рендер
         screen.fill('black')  # перекрашиваем экран
         board.render(screen)  # рисуем доску

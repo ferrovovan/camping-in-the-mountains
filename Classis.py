@@ -526,6 +526,8 @@ class Character:
             victory = fight()  # запускаем битву
             if not victory:
                 self.keyManager_linc.interface_linc.change_message(text='U die', set_visible=True)
+                pygame.time.set_timer(30, 3000)
+                self.keyManager_linc.is_died = True
             else:
                 self.keyManager_linc.interface_linc.change_message(text='Ok', set_visible=True)
 
