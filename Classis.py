@@ -243,20 +243,27 @@ class MessageWin(pygame.Surface):
     def __init__(self, size, message='', color='red', word_size=60, auto_words_size=False):
         super().__init__(size)
         self.rect = pygame.Rect(0, 0, size[0], size[1])
+        self.color = color
         # рисуем надпись
+        self.set_text(message=message, word_size=word_size, auto_words_size=auto_words_size)
+
+    def _auto_words_size(self, message):
+        if len(message) > 0:
+            return int(2.5 * self.rect.width // len(message))
+        else:
+            return self.rect.width
+
+    def set_text(self, message='', word_size=60, auto_words_size=False):
         if auto_words_size:
             word_size = self._auto_words_size(message)
         font = pygame.font.Font(None, word_size)
-        string_rendered = font.render(message, True, pygame.Color(color))
+        string_rendered = font.render(message, True, pygame.Color(self.color))
         message_rect = string_rendered.get_rect()
         # ставим координаты
-        message_rect.x = (size[0] - message_rect.width) // 2
-        message_rect.y = (size[1] - message_rect.height) // 2
+        message_rect.x = (self.rect.width - message_rect.width) // 2
+        message_rect.y = (self.rect.height - message_rect.height) // 2
         # рисуем надпись на экране
         self.blit(string_rendered, message_rect)
-
-    def _auto_words_size(self, message):
-        return int(2.5 * self.rect.width // len(message))
 
     def render(self, screen, coords=(0, 0)):
         screen.blit(self, coords)
@@ -403,7 +410,9 @@ class Interface:
         self.specificationsSpriteGroup = pygame.sprite.Group()  # рисунки, только отображающиеся
         self.menuButtGr = ButtonGroup()  # кнопка меню
         self.menuButtonsGroup = ButtonGroup()
-        # распределение кнопок
+        # окошко сообщения
+        self.message_win = MessageWin((400, 200), '', color='red', auto_words_size=True)
+        self.draw_message = False
 
         # меню кнопки
         self.menuButt = Button(self.menuButtGr, screenBoards[0] - cell_size // 2,
@@ -417,6 +426,12 @@ class Interface:
             Button(self.menuButtonsGroup, (screenBoards[0] - width) // 2,
                    screenBoards[1] // 2 + int((n // 2 - i) * height * k),
                    width, height, id=x[i])
+
+    def change_message(self, text=None, set_visible=None):
+        if text is not None and isinstance(text, str):
+            self.message_win.set_text(message=text, auto_words_size=True)
+        if set_visible is not None and isinstance(set_visible, bool):
+            self.draw_message = set_visible
 
     def get_click(self, event):
         for button in self.menuButtGr:
@@ -452,6 +467,8 @@ class Interface:
         if not self.menu_close:
             self.menuButtonsGroup.draw(screen)
             self.menuButtonsGroup.draw_text(screen, text_dict=self.localisation)
+        if self.draw_message:
+            self.message_win.render(screen, (30, 40))
 
 
 class Character:
@@ -502,9 +519,9 @@ class Character:
         if self.hero_link.move(vCoords) is False:  # если нельзя пройти
             victory = fight()  # запускаем битву
             if victory:
-                pass
+                self.keyManager_linc.interface_linc.change_message(text='Ok', set_visible=True)
             else:
-                pass
+                self.keyManager_linc.interface_linc.change_message(text='U die', set_visible=True)
 
     def get_click(self, mouse_pos):
         mouse_pos = (mouse_pos[0] - self.rect.x, mouse_pos[1] - self.rect.y)
