@@ -420,6 +420,7 @@ def main():
                     XP_band = 0
                     words = 'Вы победили!'
                     end = True
+                    return True
                 else:
                     words = '* Вы решили атаковать!'
                     XP_band -= Your_hit
@@ -589,6 +590,7 @@ def main():
                     end = True
                     Total_hit_player = 0
                     turn = 'player'
+                    return False
             elif time >= 25:
                 pygame.mouse.set_visible(True)
                 all_sprites.update()
@@ -696,4 +698,3 @@ pygame.quit()
 
 Victory = True
 print(main())
-print(Victory)
