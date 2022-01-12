@@ -126,7 +126,8 @@ def main():
             elif event.type == pygame.MOUSEMOTION:
                 mouseManager.manage_motion(event)
             elif keyManager.is_died and event.type == DIE_EVENT:
-                quit()
+                is_return = True
+                running = False
         # рендер
         screen.fill('black')  # перекрашиваем экран
         board.render(screen)  # рисуем доску
