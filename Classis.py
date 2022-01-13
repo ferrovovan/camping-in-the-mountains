@@ -99,8 +99,30 @@ class MenuDisplay(SomeDisplay):
 
 
 class LoadDisplay(MenuDisplay):
+    def __init__(self, size, id_list, settingsDict, butt_im=None, t=0, indent=0, color='gray'):
+        super().__init__(size, id_list, butt_im=butt_im, t=t, indent=indent, color=color)
+        self.settingsDict = settingsDict
+
     def _made_buttons(self, id_list, butt_im=None, indent=20):
         super()._made_buttons(id_list, butt_im=butt_im, indent=indent)
+
+    def set_map(self, num):
+        settings1 = open('settings.txt', mode='w')
+        for key in self.settingsDict.keys():
+            if key == 'display':
+                line = key + ' = ' + f'({self.settingsDict[key][0]},{self.settingsDict[key][1]})'
+            elif key == 'map':
+                line = key + ' = '
+                if num == 1:
+                    line = line + 'main_map.txt'
+                elif num == 2:
+                    line = line + 'support_map.txt'
+                else:
+                    line = line + self.settingsDict[key]
+            else:
+                line = key + ' = ' + self.settingsDict[key]
+            line = line + '\n'
+            settings1.write(line)
 
 
 class InventoryDisplay(SomeDisplay):

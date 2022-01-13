@@ -51,13 +51,13 @@ def start_screen(screen, FPS):
     draw_message = False
     # ставим кнопки
     menu_id = [1, 2, 3, 4]  # id кнопок меню
-    load_id = [0, 0, 0, 7]  # а кто-то поверил...
+    load_id = [11, 12, 0, 7]  # а кто-то поверил...
 
     butt_indent = 20  # отступ от кнопок
     y_indent = 50  # отступ от верхнего края экрана
     menuWin = MenuDisplay(screen.get_size(), menu_id, images['button1'], t=y_indent, indent=butt_indent)
     settingsWin = SettingsDisplay(screen.get_size(), settingsDict, images['button1'], t=y_indent, indent=butt_indent)
-    loadWin = LoadDisplay(screen.get_size(), load_id, images['button1'], t=y_indent, indent=butt_indent)
+    loadWin = LoadDisplay(screen.get_size(), load_id, settingsDict, butt_im=images['button1'], t=y_indent, indent=butt_indent)
 
     # страницы
     screens_dict = {'menuWin': menuWin,
@@ -94,6 +94,10 @@ def start_screen(screen, FPS):
                     elif id == 10:  # применить
                         screens_dict[draw_screen].save_settings()
                         draw_message = True  # включаем рисование сообщения
+                    elif id == 11:  # карта 1
+                        loadWin.set_map(1)
+                    elif id == 12:  # карта 2
+                        loadWin.set_map(2)
         # рендер
         if draw_message:
             scrRect = screens_dict[draw_screen].get_rect()
