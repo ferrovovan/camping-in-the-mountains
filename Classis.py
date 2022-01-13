@@ -114,7 +114,8 @@ class InventoryDisplay(SomeDisplay):
         self.item_name = StrokeSprite(self.otherGroup, '', size=50, color=pygame.color.Color(230, 100, 130))
         self.item_name.set_in_center((coords[0], coords[1] + 30))
         # настройка строки описания
-        self.item_lore = StrokeSprite(self.otherGroup, '', coords=(space_size[0] * self.inventory.cell_size + 20, coords[1] + size[1] * (1 / 2)))
+        self.item_lore = StrokeSprite(self.otherGroup, '', coords=(
+        space_size[0] * self.inventory.cell_size + 20, coords[1] + size[1] * (1 / 2)))
 
     def is_click(self, mouse_pos):
         return self.inventory.is_click((mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1]))
@@ -240,6 +241,7 @@ class MessageWin(pygame.Surface):
     """
     Всплывающее сообщение
     """
+
     def __init__(self, size, message='', color='red', word_size=60, auto_words_size=False):
         super().__init__(size)
         self.rect = pygame.Rect(0, 0, size[0], size[1])
@@ -414,7 +416,8 @@ class Interface:
         self.menuButtGr = ButtonGroup()  # кнопка меню
         self.menuButtonsGroup = ButtonGroup()
         # окошко сообщения
-        self.message_win = MessageWin((screenBoards[0] // 5, screenBoards[1] // 4), '', color='red', auto_words_size=True)
+        self.message_win = MessageWin((screenBoards[0] // 5, screenBoards[1] // 4), '', color='red',
+                                      auto_words_size=True)
         self.draw_message = False
 
         # меню кнопки
@@ -530,6 +533,7 @@ class Character:
             else:
                 pygame.mixer.music.stop()
                 self.keyManager_linc.interface_linc.change_message(text=self.messages[2][1], set_visible=True)
+                # выдача награды
                 chance = random.randrange(1, 10)
                 item = None
                 if chance == 7:
@@ -688,7 +692,8 @@ class Inventory(Board):
             item = self.board[cell_coord]
             if isinstance(item, Item) and self.character_link.item_names[item.id][1] != self.display_link.item_name:
                 self.display_link.item_name.set_text(self.character_link.item_names[item.id][1])
-                self.display_link.item_name.set_in_center(((self.display_link.get_size()[0] + self.space[0] * self.cell_size) // 2, 30))
+                self.display_link.item_name.set_in_center(
+                    ((self.display_link.get_size()[0] + self.space[0] * self.cell_size) // 2, 30))
                 self.display_link.item_lore.set_text(self.character_link.items_depiction[item.id][1])
 
 
@@ -916,22 +921,6 @@ class Wall(StaticObj):
 
 class Shop(StaticObj):
     pass
-
-
-class Battle:
-    """
-    класс битвы, здесь происходит механика боя.
-    """
-
-    def battle(self, hero, enemy):
-        """
-        как-то меняет параметры вводных объектов
-        """
-        sum1 = sum(hero.character_link.health, hero.character_link.defense, hero.character_link.attack)
-        sum2 = sum(enemy.health, enemy.defense, enemy.attack)
-        if sum1 >= sum2:
-            return hero
-        return enemy
 
 
 class MoveObj(StaticObj):
