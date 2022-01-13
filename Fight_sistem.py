@@ -397,11 +397,18 @@ def main():
                     Band_talk = 'None'
                     Mercy = False
             if Cont and not Action and not Item:
-                pygame.mouse.set_visible(False)
-                text = font_small.render('Нажите "Enter". Будте готовы к бою!', True, 'white')
-                textRect = text.get_rect()
-                textRect.center = button_continue.center
-                screen.blit(text, textRect)
+                if not end:
+                    pygame.mouse.set_visible(False)
+                    text = font_small.render('Нажите "Enter". Будте готовы к бою!', True, 'white')
+                    textRect = text.get_rect()
+                    textRect.center = button_continue.center
+                    screen.blit(text, textRect)
+                else:
+                    pygame.mouse.set_visible(False)
+                    text = font_small.render('Нажите "Enter".', True, 'white')
+                    textRect = text.get_rect()
+                    textRect.center = button_continue.center
+                    screen.blit(text, textRect)
             if Back and not end:
                 text = font_small.render('Назад', True, 'white')
                 textRect = text.get_rect()
