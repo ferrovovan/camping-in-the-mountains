@@ -535,11 +535,11 @@ class Character:
                 self.keyManager_linc.interface_linc.change_message(text=self.messages[2][1], set_visible=True)
                 chans = random.randrange(1, 10)
                 if chans > 8:
-                    item = Item('stalk.png')
+                    item = Item('gfx/textures/items/stalk.png', id=1)
                 elif chans > 9:
-                    item = Item('shovel.png')
+                    item = Item('gfx/textures/items/shovel.png', id=2)
                 else:
-                    item = Item('shield.png')
+                    item = Item('gfx/textures/items/shield.png', id=3)
                 self.inventory.inventory.add_item(item)
 
     def get_click(self, mouse_pos):
