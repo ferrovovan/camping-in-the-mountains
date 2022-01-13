@@ -525,7 +525,6 @@ class Character:
         if self.hero_link.move(vCoords) is False:  # если нельзя пройти
             victory = fight()  # запускаем битву
             if not victory:
-                print(self.messages)
                 self.keyManager_linc.interface_linc.change_message(text=self.messages[1][1], set_visible=True)
                 pygame.time.set_timer(30, 3000)  # ставим таймер
                 self.keyManager_linc.is_died = True  # ставим флажок
