@@ -36,8 +36,11 @@ def start_screen(screen, FPS):
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(loops=-1)
 
-    menuIm = load_image('gfx/textures/interface/fone.png')  # загружаем картинку
-    screen.blit(menuIm, menuIm.get_rect())  # ставим на экран
+    menuIm = load_image('gfx/textures/interface/fone.png')  # загружаем фон
+    nameIm = load_image('gfx/Name_prog.png')  # загружаем название
+    # ставим на экран
+    screen.blit(menuIm, menuIm.get_rect())
+    screen.blit(nameIm, ((size[0] - nameIm.get_width()) // 2, size[1] // 5))
 
     # изображения
     images = {'button1': load_image('gfx/buttons/button1.png'),
