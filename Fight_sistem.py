@@ -127,7 +127,7 @@ def main(scr_size=None):
 
     sound = pygame.mixer.Sound(path.join('data/sounds/Hit.wav'))
     pygame.mixer.music.load(path.join('data/sounds/Battle_theme.mp3'))
-    pygame.mixer.music.set_volume(0.4)
+    pygame.mixer.music.set_volume(0.2)
     pygame.mixer.music.play(loops=-1)
 
     # задание всех кнопок
