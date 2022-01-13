@@ -1,3 +1,4 @@
 FPS = 60
 language = russian
 display = (1000,780)
+map = main_map.txt

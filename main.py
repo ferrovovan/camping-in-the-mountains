@@ -23,6 +23,8 @@ for key in settingsDict.keys():
         language = settingsDict[key]
     elif key == 'display':
         size = (int(settingsDict[key][0]), int(settingsDict[key][1]))
+    elif key == 'map':
+        load_map = settingsDict[key]
 
 screen = pygame.display.set_mode(size)  # ставим размер экрана
 
@@ -104,7 +106,7 @@ def main():
     is_return = False  # если нужно вернуться
     # данные игры
     board = Map(16, 16, screenBoards=size)  # создаём доску
-    board.load_map('data/maps/main_map.txt', size)  # загружаем карту
+    board.load_map(f'data/maps/{load_map}', size)  # загружаем карту
     interface = Interface(size, board.cell_size, language=language)  # создаём интерфейс
     hero1 = Hero(board.board, 0, 7, is_in_circle=True)  # создаём героя
     character = Character(size, hero_link=hero1)  # создаём интерфейс героя
