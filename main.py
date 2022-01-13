@@ -123,7 +123,10 @@ def main():
                 running = False
             #  клавиатура
             if event.type == pygame.KEYDOWN:
-                keyManager.manage_keydown(event)
+                message = keyManager.manage_keydown(event)
+                if message == "return":
+                    is_return = True
+                    running = False
             elif event.type == pygame.KEYUP:
                 keyManager.manage_keyup(event)
             #  мышь
