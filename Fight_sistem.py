@@ -210,7 +210,9 @@ def main(scr_size=None):
                     return False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        if turn == 'player' and not Action and not Item and not Attack\
+                        if words == 'Вы победили!':
+                            return True
+                        elif turn == 'player' and not Action and not Item and not Attack\
                                 and words != '* Банда появляется!' \
                                 and words != '* Банда ждёт ваших действий!':
                             turn = 'enemy'
