@@ -142,7 +142,6 @@ def main():
                                 infoObject.current_h // 16)
     button_information = pygame.Rect(infoObject.current_w // 2.2, infoObject.current_h // 1.4,
                                      infoObject.current_w // 10, infoObject.current_h // 16)
-    button_restart = pygame.Rect(10, 10, 20, 20)
     button_id_1 = pygame.Rect(infoObject.current_w // 4.2, infoObject.current_h // 1.44, infoObject.current_w // 15,
                               infoObject.current_h // 30)
     button_id_2 = pygame.Rect(infoObject.current_w // 4.2, infoObject.current_h // 1.34, infoObject.current_w // 12,
@@ -218,7 +217,6 @@ def main():
                     if event.key == pygame.K_t:  # attack
                         if turn == 'player' and not Action:
                             Attack = True
-                            turn = 'enemy'
 #                    if event.key == pygame.K_y:  # действие
 #                        if turn == 'player' and not Action and not Item and not Attack:
 #                            Action = True
@@ -239,30 +237,6 @@ def main():
                             and not Cont:
                         Attack = True
                         Cont = True
-                    # кнопка перезапуска. Она только для проверки
-                    elif button_restart.collidepoint(mouse_pos):
-                        Total_hit_enemy = int(infoObject.current_w // 9.6)
-                        Total_hit_player = int(infoObject.current_w // 9.6)
-                        Back = False
-                        Cont = False
-                        Attack = False
-                        pygame.mouse.set_visible(True)
-                        time_hit = 0
-                        Hit = 0
-                        turn = 'player'
-                        words = '* Банда появляется!'
-                        XP_band = 200
-                        XP_Hero = 200
-                        Action = False
-                        end = False
-                        Analysis = False
-                        Band_scare = 'None'
-                        Band_talk = 'None'
-                        dop_attack = 0
-                        mercy = 0
-                        Item = False
-                        items = ['Аптечка', 'Бутерброд', 'Бинт', 'Антибиотик', 'Обезболивающее', 'Консервы']
-                        heals = ['70', '50', '30', '60', '100', '10']
                     # кнопка действия
                     elif button_action.collidepoint(
                             mouse_pos) and not Action and not Item and not end and not Attack and not Cont:
@@ -394,32 +368,6 @@ def main():
             if turn == 'enemy':
                 if event.type == pygame.QUIT:
                     return False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_pos = event.pos
-                    if button_restart.collidepoint(mouse_pos):
-                        Back = False
-                        pygame.mouse.set_visible(True)
-                        Total_hit_enemy = int(infoObject.current_w // 9.6)
-                        Total_hit_player = int(infoObject.current_w // 9.6)
-                        Cont = False
-                        Attack = False
-                        turn = 'player'
-                        Analysis = False
-                        words = '* Банда появляется!'
-                        XP_band = 200
-                        XP_Hero = 200
-                        Action = False
-                        end = False
-                        time_hit = 0
-                        Hit = False
-                        Band_scare = 'None'
-                        Band_talk = 'None'
-                        dop_attack = 0
-                        mercy = 0
-                        Item = False
-                        Mercy = False
-                        items = ['Аптечка', 'Бутерброд', 'Бинт', 'Антибиотик', 'Обезболивающее', 'Консервы']
-                        heals = ['70', '50', '30', '60', '100', '10']
 
         # экран, если ход игрока
         if turn == 'player':
@@ -694,13 +642,6 @@ def main():
 
         pygame.draw.rect(screen, 'yellow', (int(infoObject.current_w // 2.2), int(infoObject.current_h // 15),
                                             Total_hit_enemy, int(infoObject.current_h // 24)))
-
-        # кнопка перезапуска
-        text = font.render('R', True, 'red')
-        textRect = text.get_rect()
-        textRect.center = button_restart.center
-        screen.blit(text, textRect)
-        pygame.draw.rect(screen, 'blue', button_restart, 1)
         pygame.display.update()
         clock.tick(FPS)
 
