@@ -82,7 +82,7 @@ class Enemy_attacks(pygame.sprite.Sprite):
             self.speedx = random.randrange(-2, 2)
 
 
-def main(scr_size=None):
+def main(scr_size=None, Your_hit=randint(30, 50)):
     global Victory
     pygame.init()
     pygame.mixer.init()
@@ -419,7 +419,7 @@ def main(scr_size=None):
                 textRect.center = Back_button.center
                 screen.blit(text, textRect)
                 pygame.draw.rect(screen, 'white', Back_button, 1)
-            # механника действий
+            # механика действий
             if Action and not end:
                 text = font.render('* Угрожать', True, 'white')
                 textRect = text.get_rect()
@@ -471,7 +471,7 @@ def main(scr_size=None):
                     words = 'Вы хорошо побеседовали с бандой. Продолжайте в том же духе!)'
                     Band_talk = 'None'
                 Action = False
-            # механника предметов
+            # механика предметов
             if Item and not end:
                 words = ''
                 text = font_small.render('*' + items[0] + ' ' + heals[0], True, 'white')
@@ -509,7 +509,7 @@ def main(scr_size=None):
                 textRect.center = button_id_6.center
                 screen.blit(text, textRect)
                 pygame.draw.rect(screen, 'black', button_id_6, 1)
-            # механника анализа
+            # механика анализа
             if Analysis and not end:
                 words = 'Банда - ' + str(Band_hit) + ' атаки; ' + str(XP_band) + ' - здоровья'
                 Analysis = False
