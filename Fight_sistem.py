@@ -193,12 +193,11 @@ def main(scr_size=None):
         screen.fill('black')
         enemies.draw(screen)
         # проверка на милосердие
+        Your_hit = randint(30, 50)
         if mercy <= 2:
-            Your_hit = randint(30, 50)
             Band_hit = randint(15, 20) + dop_attack
         else:
             dop_attack = 0
-            Your_hit = randint(30, 50)
             Band_hit = randint(5, 10)
 
         # проверка на события
