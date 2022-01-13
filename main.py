@@ -6,6 +6,7 @@ from Classis import *
 
 pygame.init()
 pygame.display.set_caption('Поход по горам')
+pygame.display.set_icon(pygame.image.load('icon.ico'))
 
 # открытие настроек
 settingsDict = {}
