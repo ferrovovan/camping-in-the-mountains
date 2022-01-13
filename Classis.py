@@ -531,13 +531,16 @@ class Character:
                 pygame.mixer.music.stop()
                 self.keyManager_linc.interface_linc.change_message(text=self.messages[2][1], set_visible=True)
                 chans = random.randrange(1, 10)
-                if chans > 8:
+                print(chans)
+                item = None
+                if chans == 7:
                     item = Item('gfx/textures/items/stalk.png', id=1)
-                elif chans > 9:
+                elif chans == 8:
                     item = Item('gfx/textures/items/shovel.png', id=2)
-                else:
+                elif chans == 9:
                     item = Item('gfx/textures/items/shield.png', id=3)
-                self.inventory.inventory.add_item(item)
+                if isinstance(item, Item):
+                    self.inventory.inventory.add_item(item)
 
     def get_click(self, mouse_pos):
         mouse_pos = (mouse_pos[0] - self.rect.x, mouse_pos[1] - self.rect.y)
