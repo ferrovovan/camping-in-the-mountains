@@ -172,7 +172,7 @@ class SettingsDisplay(MenuDisplay):
                    id=i % 2 + 8, sp_id=i // 2 + 1, image=butt_im)
 
             if i % 2 == 0:
-                thisCoords = [0,
+                thisCoords = [5,
                               indent + (scr_size[1] - indent - 2 * (button_height * (1 + k) // k)) * (i // 2) // (
                                       n // 2)]
                 # название
