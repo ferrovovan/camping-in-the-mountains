@@ -939,7 +939,19 @@ class MoveObj(StaticObj):
         меняет своё положение на доске
         :param vCoords: (deltaX: int, deltaY: int)
         """
+        x1, y1 = self.new_coords(vCoords)
+        if x1 is not False:
+            if self.board[y1][x1] is None:
+                self.board[y1][x1] = self
+                self.board[self.y][self.x] = None
+                self.x = x1
+                self.y = y1
+            else:
+                return False
+
+    def new_coords(self, vCoords):
         dX = vCoords[0]
+        dY = vCoords[1]
         boardHeight = len(self.board)
         boardWight = len(self.board[0])
         if self.in_circle:  # если в кругу
@@ -987,20 +999,11 @@ class MoveObj(StaticObj):
                 if s + dX < 0:
                     s += 2 * (boardWight + boardHeight - 2)
 
-            x1, y1 = num_in_coords(s + dX)
-            if self.board[y1][x1] is None:  # производим замену
-                self.board[y1][x1] = self
-                self.board[self.y][self.x] = None
-                self.x = x1
-                self.y = y1
-            else:
-                return False
+            return num_in_coords(s + dX)
         else:
-            dY = vCoords[1]
-            if 0 < self.x + dX < boardWight and 0 < self.y + dY < boardHeight and \
-                    self.board[self.y + dY][self.x + dX] is None:
-                self.board[self.y + dY][self.x + dX] = self
-                self.board[self.y][self.x] = None
+            if 0 < self.x + dX < boardWight and 0 < self.y + dY < boardHeight:
+                return self.x + dX, self.y + dY
+            return False, False
 
 
 class Hero(MoveObj):
