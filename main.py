@@ -1,3 +1,7 @@
+from os import path  # для музыки
+
+import pygame.mixer_music
+
 from Classis import *
 
 pygame.init()
@@ -24,6 +28,11 @@ screen = pygame.display.set_mode(size)  # ставим размер экрана
 
 def start_screen(screen, FPS):
     # инициализация
+    # музон
+    pygame.mixer.music.load(path.join('data/sounds/TNO Burgundian Lullaby.mp3'))
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play(loops=-1)
+
     menuIm = load_image('gfx/textures/interface/fone.png')  # загружаем картинку
     screen.blit(menuIm, menuIm.get_rect())  # ставим на экран
 
@@ -90,6 +99,7 @@ def start_screen(screen, FPS):
 
 def main():
     # инициализация
+    pygame.mixer.stop()  # останавливаем музон
     is_return = False  # если нужно вернуться
     # данные игры
     board = Map(16, 16, screenBoards=size)  # создаём доску
