@@ -99,7 +99,7 @@ def start_screen(screen, FPS):
 
 def main():
     # инициализация
-    pygame.mixer.stop()  # останавливаем музон
+    pygame.mixer.music.stop()  # останавливаем музон
     is_return = False  # если нужно вернуться
     # данные игры
     board = Map(16, 16, screenBoards=size)  # создаём доску
