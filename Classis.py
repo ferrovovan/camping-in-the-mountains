@@ -449,15 +449,12 @@ class Interface:
                     return "return"
 
     def is_click(self, event):
-        if self.draw_message:  # если есть сообщение
-            self.draw_message = False
-        else:
-            for button in self.menuButtGr:
-                if button.is_click(event):
-                    return True
-            if not self.menu_close and self.menuButtonsGroup.click_id(event):
+        for button in self.menuButtGr:
+            if button.is_click(event):
                 return True
-            return False
+        if not self.menu_close and self.menuButtonsGroup.click_id(event):
+            return True
+        return False
 
     def _close_menu(self, a=None):
         if a is None:
@@ -823,14 +820,17 @@ class MouseManager:
         character.mouseManager_linc = self
 
     def manage_click(self, event):
-        if self.interface_linc.is_click(event) and self.modifications['interface']:  # интерфейс
-            message = self.interface_linc.get_click(event)
-            if message is not None:
-                return message
-        elif self.character_linc.is_click(event) and self.modifications['character']:  # инвентарь
-            self.character_linc.get_click(pygame.mouse.get_pos())
-        elif self.map_linc.is_click(pygame.mouse.get_pos()) and self.modifications['map']:  # карта
-            self.map_linc.on_click(pygame.mouse.get_pos())
+        if self.interface_linc.draw_message:
+            self.interface_linc.draw_message = False
+        else:
+            if self.interface_linc.is_click(event) and self.modifications['interface']:  # интерфейс
+                message = self.interface_linc.get_click(event)
+                if message is not None:
+                    return message
+            elif self.character_linc.is_click(event) and self.modifications['character']:  # инвентарь
+                self.character_linc.get_click(pygame.mouse.get_pos())
+            elif self.map_linc.is_click(pygame.mouse.get_pos()) and self.modifications['map']:  # карта
+                self.map_linc.on_click(pygame.mouse.get_pos())
 
     def manage_motion(self, event):
         pass
@@ -853,33 +853,37 @@ class KeyBoardManager:
         character.keyManager_linc = self
 
     def manage_keydown(self, event):
-        kPressed = pygame.key.get_pressed()  # нажатые кнопки
-        if kPressed[pygame.K_ESCAPE]:
-            self.interface_linc._close_menu()
-        # стрелки
-        if kPressed[pygame.K_UP]:
-            self.map_linc.move(y=-10)
-        if kPressed[pygame.K_DOWN]:
-            self.map_linc.move(y=10)
-        if kPressed[pygame.K_RIGHT]:
-            self.map_linc.move(x=10)
-        if kPressed[pygame.K_LEFT]:
-            self.map_linc.move(x=-10)
-        #
-        if kPressed[pygame.K_w]:
-            self.character_link.move_hero((1, 0))
-        elif kPressed[pygame.K_s]:
-            self.character_link.move_hero((-1, 0))
-        elif kPressed[pygame.K_i]:
-            self.character_link.set_open()
-        elif kPressed[pygame.K_d]:  # черенок
-            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/stalk.png', id=1))
-        elif kPressed[pygame.K_f]:  # лопата
-            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shovel.png', id=2))
-        elif kPressed[pygame.K_g]:  # щит
-            self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shield.png', id=3))
-        elif kPressed[pygame.K_r]:  # удалить элемент
-            self.character_link.inventory.inventory.del_item(0)
+        if self.interface_linc.draw_message:
+            self.interface_linc.draw_message = False
+        else:
+            kPressed = pygame.key.get_pressed()  # нажатые кнопки
+            if kPressed[pygame.K_ESCAPE]:
+                self.interface_linc._close_menu()
+            if self.interface_linc.menu_close:
+                # стрелки
+                if kPressed[pygame.K_UP]:
+                    self.map_linc.move(y=-10)
+                if kPressed[pygame.K_DOWN]:
+                    self.map_linc.move(y=10)
+                if kPressed[pygame.K_RIGHT]:
+                    self.map_linc.move(x=10)
+                if kPressed[pygame.K_LEFT]:
+                    self.map_linc.move(x=-10)
+                #
+                if kPressed[pygame.K_w]:
+                    self.character_link.move_hero((1, 0))
+                elif kPressed[pygame.K_s]:
+                    self.character_link.move_hero((-1, 0))
+                elif kPressed[pygame.K_i]:
+                    self.character_link.set_open()
+                elif kPressed[pygame.K_d]:  # черенок
+                    self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/stalk.png', id=1))
+                elif kPressed[pygame.K_f]:  # лопата
+                    self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shovel.png', id=2))
+                elif kPressed[pygame.K_g]:  # щит
+                    self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shield.png', id=3))
+                elif kPressed[pygame.K_r]:  # удалить элемент
+                    self.character_link.inventory.inventory.del_item(0)
 
     def manage_keyup(self, event):
         self.manage_keydown(event)
