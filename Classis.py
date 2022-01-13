@@ -523,7 +523,8 @@ class Character:
 
     def move_hero(self, vCoords):
         # запускаем ход игрока
-        if self.hero_link.move(vCoords) is False:  # если нельзя пройти
+        new_coords = self.hero_link.new_coords(vCoords)
+        if self.hero_link.move(vCoords) is False and isinstance(self.hero_link.board[new_coords[1]][new_coords[0]], BadGroup):  # если нельзя пройти, потому что банда
             victory = fight()  # запускаем битву
             pygame.mouse.set_visible(True)
             if not victory:
@@ -763,6 +764,9 @@ class Map(Board):
     def move(self, x=0, y=0):
         self.left += x
         self.top += y
+
+    def get_cell_object(self, coords):
+        return self.board[coords[1]][coords[0]]
 
     # готов
     def load_map(self, filename, screenBoards=None):
