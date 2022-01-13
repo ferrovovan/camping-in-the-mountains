@@ -82,22 +82,25 @@ class Enemy_attacks(pygame.sprite.Sprite):
             self.speedx = random.randrange(-2, 2)
 
 
-def main():
+def main(scr_size=None):
     global Victory
     pygame.init()
     pygame.mixer.init()
     clock = pygame.time.Clock()
     FPS = 60
-    infoObject = pygame.display.Info()
     global W
     global H
-    W = infoObject.current_w
-    H = infoObject.current_h
-    screen = pygame.display.set_mode((infoObject.current_w, infoObject.current_h))
+    infoObject = pygame.display.Info()
+    if scr_size is None:
+        W = infoObject.current_w
+        H = infoObject.current_h
+    else:
+        W, H = scr_size
+    screen = pygame.display.set_mode((W, H))
     XP_band = 200
     XP_Hero = 200
-    Total_hit_enemy = int(infoObject.current_w // 9.6)
-    Total_hit_player = int(infoObject.current_w // 9.6)
+    Total_hit_enemy = int(W // 9.6)
+    Total_hit_player = int(W // 9.6)
     Action = False
     end = False
     Band_scare = 'None'
