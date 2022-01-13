@@ -183,10 +183,9 @@ def main():
         attacks.add(attack)
 
     while True:
-        if end and XP_Hero > 0:
-            Victory = True
-            return False
-        elif end and XP_Hero == 0:
+        if end and XP_Hero > 0 and not Cont:
+            return True
+        elif end and XP_Hero == 0 and not Cont:
             return False
         screen.fill('black')
         enemies.draw(screen)
@@ -208,8 +207,8 @@ def main():
                     return False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        if turn == 'player' and not Action and not Item and not end and not Attack \
-                                and not Mercy and words != '* Банда появляется!' \
+                        if turn == 'player' and not Action and not Item and not Attack\
+                                and words != '* Банда появляется!' \
                                 and words != '* Банда ждёт ваших действий!':
                             turn = 'enemy'
                             Cont = False
@@ -217,12 +216,12 @@ def main():
                     if event.key == pygame.K_t:  # attack
                         if turn == 'player' and not Action:
                             Attack = True
-#                    if event.key == pygame.K_y:  # действие
-#                        if turn == 'player' and not Action and not Item and not Attack:
-#                            Action = True
-#                    elif event.key == pygame.K_i:  # предметы
-#                        if turn == 'player' and not Item:
-#                            Item = True
+                #                    if event.key == pygame.K_y:  # действие
+                #                        if turn == 'player' and not Action and not Item and not Attack:
+                #                            Action = True
+                #                    elif event.key == pygame.K_i:  # предметы
+                #                        if turn == 'player' and not Item:
+                #                            Item = True
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = event.pos
                     if Back_button.collidepoint(mouse_pos) and Back:
@@ -379,7 +378,7 @@ def main():
                     XP_band = 0
                     words = 'Вы победили!'
                     end = True
-                    return True
+                    Cont = True
                 else:
                     words = '* Вы решили атаковать!'
                     XP_band -= Your_hit
@@ -390,7 +389,6 @@ def main():
             if Mercy:
                 pygame.mouse.set_visible(False)
                 if mercy >= 3:
-                    Cont = False
                     end = True
                     words = 'Банда вас отпускает.)) Вы победили!)'
                     Band_talk = 'None'
@@ -398,7 +396,7 @@ def main():
                     words = 'Банда не отреагировала. Попробуйте с ней поговорить.'
                     Band_talk = 'None'
                     Mercy = False
-            if Cont and not Action and not Item and not end:
+            if Cont and not Action and not Item:
                 pygame.mouse.set_visible(False)
                 text = font_small.render('Нажите "Enter". Будте готовы к бою!', True, 'white')
                 textRect = text.get_rect()
@@ -549,7 +547,6 @@ def main():
                     end = True
                     Total_hit_player = 0
                     turn = 'player'
-                    return False
             elif time >= 25:
                 pygame.mouse.set_visible(True)
                 all_sprites.update()
