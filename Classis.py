@@ -420,7 +420,7 @@ class Interface:
         # меню кнопки
         self.menuButt = Button(self.menuButtGr, screenBoards[0] - cell_size // 2,
                                0, cell_size // 2, cell_size // 2)
-        x = [6, 12, 5]
+        x = [6]
         n = len(x)  # количество кнопок
         width = 240
         height = 120
