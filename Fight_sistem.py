@@ -388,7 +388,7 @@ def main(scr_size=None):
                     Total_hit_enemy -= (Your_hit * int(infoObject.current_w // 9.6)) // 200
                     Attack = False
                 dop_attack = 0
-            # механника пощады
+            # механика пощады
             if Mercy:
                 pygame.mouse.set_visible(False)
                 if mercy >= 3:
