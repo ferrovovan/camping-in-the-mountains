@@ -530,14 +530,13 @@ class Character:
             else:
                 pygame.mixer.music.stop()
                 self.keyManager_linc.interface_linc.change_message(text=self.messages[2][1], set_visible=True)
-                chans = random.randrange(1, 10)
-                print(chans)
+                chance = random.randrange(1, 10)
                 item = None
-                if chans == 7:
+                if chance == 7:
                     item = Item('gfx/textures/items/stalk.png', id=1)
-                elif chans == 8:
+                elif chance == 8:
                     item = Item('gfx/textures/items/shovel.png', id=2)
-                elif chans == 9:
+                elif chance == 9:
                     item = Item('gfx/textures/items/shield.png', id=3)
                 if isinstance(item, Item):
                     self.inventory.inventory.add_item(item)
