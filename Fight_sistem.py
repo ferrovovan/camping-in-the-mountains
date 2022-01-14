@@ -77,7 +77,7 @@ class Enemy_attacks(pygame.sprite.Sprite):
         if any((self.rect.top > H // 3 + W // 5,
                self.rect.left < W // 2.5,
                self.rect.right > 3 * W // 5)):  # если улетело за рамки
-            self.rect.x = randint(int(H // 1.406), int(H // 0.937))
+            self.rect.x = randint(W // 2.5, 3 * W // 5)
             self.rect.y = W // 5.32
             self.speedy = random.randrange(3, 4)
             self.speedx = random.randrange(-2, 2)
