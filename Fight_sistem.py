@@ -133,6 +133,7 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
     pygame.mixer.music.play(loops=-1)
 
     # задание (становление) всех кнопок
+    # батоны
     button_attack = pygame.Rect(W // 5.6, H - H // 14,
                                 W // 8, H // 14)
     button_action = pygame.Rect(W // 2.8, H - H // 14,
@@ -159,15 +160,19 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
                               W // 8, H // 30)
     button_id_6 = pygame.Rect(W // 1.6, H // 1.34,
                               W // 12, H // 30)
+    Back_button = pygame.Rect(W // 1.35, H // 1.28,
+                              H // 15, H // 34)
+    button_continue = pygame.Rect(W // 1.4, H // 1.3, 20, 50)
+
+    # квадратики
+    Enemy_XP_rect = pygame.Rect(W // 2, H // 898, 10, 29)
+    Hero_XP_rect = pygame.Rect(W // 1.5, H // 1.22, 10, 10)
     Action_rect = pygame.Rect(W // 6, H // 1.5,
                               W // 1.47, H // 7)
     Fight_rect = pygame.Rect(W // 2.5, H // 3,
                              W // 5, W // 5)
-    button_continue = pygame.Rect(W // 1.4, H // 1.3, 20, 50)
-    Enemy_XP_rect = pygame.Rect(W // 2, H // 898, 10, 29)
-    Hero_XP_rect = pygame.Rect(W // 1.5, H // 1.22, 10, 10)
-    Back_button = pygame.Rect(W // 1.35, H // 1.28,
-                              H // 15, H // 34)
+
+
     global player_img
     global hit_img
     global enemy_img
