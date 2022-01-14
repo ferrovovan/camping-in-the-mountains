@@ -69,7 +69,7 @@ class Enemy_attacks(pygame.sprite.Sprite):
         self.rect.x = randint(W // 2.5, 3 * W // 5)
         self.rect.y = H // 3.5
         self.speedy = int(random.randrange(3, 5) * H / 800)
-        self.speedx = int(random.randrange(-2, 2) * W / 500)
+        self.speedx = int(random.randrange(-2, 2))
 
     def update(self):
         self.rect.x += self.speedx
@@ -80,7 +80,7 @@ class Enemy_attacks(pygame.sprite.Sprite):
             self.rect.x = randint(W // 2.5, 3 * W // 5)
             self.rect.y = H // 3.5
             self.speedy = int(random.randrange(3, 4) * H / 800)
-            self.speedx = int(random.randrange(-2, 2) * W / 500)
+            self.speedx = int(random.randrange(-2, 2))
 
 
 def main(scr_size=None, Your_hit=randint(30, 50)):
