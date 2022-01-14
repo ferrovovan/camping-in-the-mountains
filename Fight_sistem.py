@@ -133,15 +133,15 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
     pygame.mixer.music.play(loops=-1)
 
     # задание (становление) всех кнопок
-    button_attack = pygame.Rect(W // 5.6, H - infoObject.current_h // 14,
-                                W // 8, infoObject.current_h // 14)
-    button_action = pygame.Rect(W // 2.8, infoObject.current_h - infoObject.current_h // 14,
+    button_attack = pygame.Rect(W // 5.6, H - H // 14,
                                 W // 8, H // 14)
-    button_item = pygame.Rect(W // 1.85, H - infoObject.current_h // 14,
+    button_action = pygame.Rect(W // 2.8, H - H // 14,
+                                W // 8, H // 14)
+    button_item = pygame.Rect(W // 1.85, H - H // 14,
                               W // 8, H // 14)
-    button_mercy = pygame.Rect(W // 1.4, infoObject.current_h - infoObject.current_h // 14,
-                               W // 8, infoObject.current_h // 14)
-    button_talk = pygame.Rect(W // 1.45, infoObject.current_h // 1.4, infoObject.current_w // 8,
+    button_mercy = pygame.Rect(W // 1.4, H - H // 14,
+                               W // 8, H // 14)
+    button_talk = pygame.Rect(W // 1.45, H // 1.4, W // 8,
                               H // 16)
     button_threat = pygame.Rect(infoObject.current_w // 4.6, infoObject.current_h // 1.4, infoObject.current_w // 8,
                                 infoObject.current_h // 16)
