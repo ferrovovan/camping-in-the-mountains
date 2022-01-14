@@ -167,9 +167,9 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
     # квадратики
     Enemy_XP_rect = pygame.Rect(W // 2, H // 898, 10, 29)
     Hero_XP_rect = pygame.Rect(W // 1.5, H // 1.22, 10, 10)
-    Action_rect = pygame.Rect(W // 6, H // 1.5,
+    Action_rect = pygame.Rect(W // 6, H // 1.5,  # где написано событие
                               W // 1.47, H // 7)
-    Fight_rect = pygame.Rect(W // 2.5, H // 3,
+    Fight_rect = pygame.Rect(W // 2.5, H // 3,  # где ходит персонаж, рамки
                              W // 5, W // 5)
 
     global player_img
@@ -392,7 +392,7 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
                 else:
                     words = '* Вы решили атаковать!'
                     XP_band -= Your_hit
-                    Total_hit_enemy -= (Your_hit * int(infoObject.current_w // 9.6)) // 200
+                    Total_hit_enemy -= (Your_hit * int(W // 9.6)) // 200
                     Attack = False
                 dop_attack = 0
             # механика пощады
@@ -530,7 +530,7 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
 
         # экран, если ход противника
         if turn == 'enemy':
-            pygame.draw.rect(screen, 'black', Fight_rect)
+            pygame.draw.rect(screen, 'black', Fight_rect)  # поле
             # проверка на время
             if time < 25:
                 all_sprites.update()
@@ -541,7 +541,7 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
                 all_sprites.draw(screen)
                 pygame.mouse.set_visible(False)
                 time += v * clock.tick() / 1000
-                pygame.draw.rect(screen, 'white', Fight_rect, 1)
+                pygame.draw.rect(screen, 'white', Fight_rect, 1)  # рамки
                 if time_hit <= 0 and Hit:
                     sound.play()
                     time_hit = 0.325
@@ -654,8 +654,8 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
 
         pygame.draw.rect(screen, 'red', XP_band_rect)
 
-        pygame.draw.rect(screen, 'yellow', (int(infoObject.current_w // 2.2), int(infoObject.current_h // 15),
-                                            Total_hit_enemy, int(infoObject.current_h // 24)))
+        pygame.draw.rect(screen, 'yellow', (int(W // 2.2), int(H // 15),
+                                            Total_hit_enemy, int(H // 24)))
         pygame.display.update()
         clock.tick(FPS)
 
