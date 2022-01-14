@@ -22,6 +22,40 @@ size = (int(settingsDict['display'][0]), int(settingsDict['display'][1]))
 load_map = settingsDict['map']
 
 if settingsDict.get('First_open'):  # если открывается в первый раз
+    # все настройки
+    open_settings = open('data/common/all_settings.txt')
+    all_settings = dict()
+    for line in open_settings:
+        line = line.split(' = ')  # [param, '[value1, value2, value3]\n']
+        values = line[1][1:len(line[1]) - 2].split(', ')
+        all_settings[line[0]] = values
+    # настройка параметров, не соответсвующих стандарту
+    all_settings['display'] = list(
+        map(lambda value: tuple(value[1:len(value) - 1].split(',')), all_settings['display']))
+    display_set = all_settings['display']
+    display_set = list(map(lambda x1: (int(x1[0]), int(x1[1])), display_set))
+    display_set.sort(key=lambda x1: x1[1])
+    open_settings.close()
+    # находим ближайший экран
+    inf_obj = pygame.display.Info()
+    W = inf_obj.current_w
+    H = inf_obj.current_h
+    # находим новый размер экрана
+    H1 = 9 * W / 16
+    if H1 >= display_set[-1][1]:  # если больше наибольшего
+        size = display_set[-1]
+    elif H1 <= display_set[0][1]:  # если меньше наименьшего
+        size = display_set[0]
+    else:
+        for i in range(len(display_set) - 1):
+            if H1 > display_set[i][1]:
+                if H1 - display_set[i][1] < display_set[i + 1][1] - H1:
+                    size = display_set[i]
+                else:
+                    size = display_set[i + 1]
+                break
+
+    settingsDict['display'] = (str(size[0]), str(size[1]))
     # переписываем настройки, без первого открытия
     settings1 = open('settings.txt', mode='w')
     for key in settingsDict.keys():
@@ -65,7 +99,8 @@ def start_screen(screen, FPS):
     y_indent = 50  # отступ от верхнего края экрана
     menuWin = MenuDisplay(screen.get_size(), menu_id, images['button1'], t=y_indent, indent=butt_indent)
     settingsWin = SettingsDisplay(screen.get_size(), settingsDict, images['button1'], t=y_indent, indent=butt_indent)
-    loadWin = LoadDisplay(screen.get_size(), load_id, settingsDict, butt_im=images['button1'], t=y_indent, indent=butt_indent)
+    loadWin = LoadDisplay(screen.get_size(), load_id, settingsDict, butt_im=images['button1'], t=y_indent,
+                          indent=butt_indent)
 
     # страницы
     screens_dict = {'menuWin': menuWin,
@@ -114,7 +149,8 @@ def start_screen(screen, FPS):
         # рендер
         if draw_message:
             scrRect = screens_dict[draw_screen].get_rect()
-            messageWin.render(screens_dict[draw_screen], coords=((scrRect.width - messageWin.get_width()) // 2, (scrRect.height - messageWin.get_height()) // 2))
+            messageWin.render(screens_dict[draw_screen], coords=(
+                (scrRect.width - messageWin.get_width()) // 2, (scrRect.height - messageWin.get_height()) // 2))
         screens_dict[draw_screen].render(screen, language=language)
         pygame.display.flip()
         clock.tick(FPS)
