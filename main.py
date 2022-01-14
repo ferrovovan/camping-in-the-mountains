@@ -51,7 +51,7 @@ def start_screen(screen, FPS):
     draw_message = False
     # ставим кнопки
     menu_id = [1, 2, 3, 4]  # id кнопок меню
-    load_id = [11, 12, 0, 7]  # а кто-то поверил...
+    load_id = [11, 12, 13, 7]  # а кто-то поверил...
 
     butt_indent = 20  # отступ от кнопок
     y_indent = 50  # отступ от верхнего края экрана
@@ -98,6 +98,8 @@ def start_screen(screen, FPS):
                         loadWin.set_map(1)
                     elif id == 12:  # карта 2
                         loadWin.set_map(2)
+                    elif id == 13:  # карта 3
+                        loadWin.set_map(3)
         # рендер
         if draw_message:
             scrRect = screens_dict[draw_screen].get_rect()

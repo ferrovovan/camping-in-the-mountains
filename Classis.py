@@ -117,6 +117,8 @@ class LoadDisplay(MenuDisplay):
                     line = line + 'main_map.txt'
                 elif num == 2:
                     line = line + 'support_map.txt'
+                elif num == 3:
+                    line = line + 'map_3.txt'
                 else:
                     line = line + self.settingsDict[key]
             else:
