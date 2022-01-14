@@ -21,13 +21,11 @@ for key in settingsDict.keys():
         FPS = int(settingsDict[key])
     elif key == 'language':
         language = settingsDict[key]
+    elif key == 'display':
+        size = (int(settingsDict[key][0]), int(settingsDict[key][1]))
     elif key == 'map':
         load_map = settingsDict[key]
 
-infoObject = pygame.display.Info()
-W = infoObject.current_w
-H = infoObject.current_h
-size = W, H
 screen = pygame.display.set_mode(size)  # ставим размер экрана
 
 
