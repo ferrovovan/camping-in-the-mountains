@@ -14,9 +14,8 @@ with open('settings.txt', 'r') as settings:
     for line in settings:
         x = line[:-1].split(' = ')
         settingsDict[x[0]] = x[1]
-# меняем display
 settingsDict['display'] = tuple(settingsDict['display'][1:-1].split(','))
-
+# заполняем поля
 FPS = int(settingsDict['FPS'])
 language = settingsDict['language']
 size = (int(settingsDict['display'][0]), int(settingsDict['display'][1]))
