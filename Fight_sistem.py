@@ -67,7 +67,7 @@ class Enemy_attacks(pygame.sprite.Sprite):
         self.radius = int(self.rect.width * .85 / 2)
         # pygame.draw.circle(self.image, 'red', self.rect.center, self.radius)
         self.rect.x = randint(W // 2.5, 3 * W // 5)
-        self.rect.y = W // 5.32
+        self.rect.y = H // 3.5
         self.speedy = random.randrange(3, 5)
         self.speedx = random.randrange(-2, 2)
 
@@ -78,7 +78,7 @@ class Enemy_attacks(pygame.sprite.Sprite):
                self.rect.left < W // 2.5,
                self.rect.right > 3 * W // 5)):  # если улетело за рамки
             self.rect.x = randint(W // 2.5, 3 * W // 5)
-            self.rect.y = W // 5.32
+            self.rect.y = H // 3.5
             self.speedy = random.randrange(3, 4)
             self.speedx = random.randrange(-2, 2)
 
