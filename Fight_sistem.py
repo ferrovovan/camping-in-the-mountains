@@ -172,7 +172,6 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
     Fight_rect = pygame.Rect(W // 2.5, H // 3,
                              W // 5, W // 5)
 
-
     global player_img
     global hit_img
     global enemy_img
