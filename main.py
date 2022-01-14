@@ -21,6 +21,19 @@ language = settingsDict['language']
 size = (int(settingsDict['display'][0]), int(settingsDict['display'][1]))
 load_map = settingsDict['map']
 
+if settingsDict.get('First_open'):  # если открывается в первый раз
+    # переписываем настройки, без первого открытия
+    settings1 = open('settings.txt', mode='w')
+    for key in settingsDict.keys():
+        if key != 'First_open':
+            if key == 'display':
+                line = key + ' = ' + f'({settingsDict[key][0]},{settingsDict[key][1]})'
+            else:
+                line = key + ' = ' + settingsDict[key]
+            line = line + '\n'
+            settings1.write(line)
+    settings1.close()
+
 screen = pygame.display.set_mode(size)  # ставим размер экрана
 
 
