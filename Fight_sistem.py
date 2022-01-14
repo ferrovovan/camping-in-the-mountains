@@ -151,16 +151,16 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
                               W // 15, H // 30)
     button_id_2 = pygame.Rect(W // 4.2, H // 1.34,
                               W // 12, H // 30)
-    button_id_3 = pygame.Rect(infoObject.current_w // 2.1, infoObject.current_h // 1.44, infoObject.current_w // 22,
-                              infoObject.current_h // 30)
-    button_id_4 = pygame.Rect(infoObject.current_w // 2.1, infoObject.current_h // 1.34, infoObject.current_w // 12,
-                              infoObject.current_h // 30)
-    button_id_5 = pygame.Rect(infoObject.current_w // 1.6, infoObject.current_h // 1.44, infoObject.current_w // 8,
-                              infoObject.current_h // 30)
-    button_id_6 = pygame.Rect(infoObject.current_w // 1.6, infoObject.current_h // 1.34, infoObject.current_w // 12,
-                              infoObject.current_h // 30)
-    Action_rect = pygame.Rect(infoObject.current_w // 6, infoObject.current_h // 1.5, infoObject.current_w // 1.47,
-                              infoObject.current_h // 7)
+    button_id_3 = pygame.Rect(W // 2.1, H // 1.44,
+                              W // 22, H // 30)
+    button_id_4 = pygame.Rect(W // 2.1, H // 1.34,
+                              W // 12, H // 30)
+    button_id_5 = pygame.Rect(W // 1.6, H // 1.44,
+                              W // 8, H // 30)
+    button_id_6 = pygame.Rect(W // 1.6, H // 1.34,
+                              W // 12, H // 30)
+    Action_rect = pygame.Rect(W // 6, H // 1.5,
+                              W // 1.47, H // 7)
     Fight_rect = pygame.Rect(infoObject.current_w // 2.5, infoObject.current_h // 3, infoObject.current_w // 5,
                              infoObject.current_w // 5)
     button_continue = pygame.Rect(infoObject.current_w // 1.4, infoObject.current_h // 1.3, 20, 50)
