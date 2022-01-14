@@ -161,13 +161,13 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
                               W // 12, H // 30)
     Action_rect = pygame.Rect(W // 6, H // 1.5,
                               W // 1.47, H // 7)
-    Fight_rect = pygame.Rect(infoObject.current_w // 2.5, infoObject.current_h // 3, infoObject.current_w // 5,
-                             infoObject.current_w // 5)
-    button_continue = pygame.Rect(infoObject.current_w // 1.4, infoObject.current_h // 1.3, 20, 50)
-    Enemy_XP_rect = pygame.Rect(infoObject.current_w // 2, infoObject.current_h // 898, 10, 29)
-    Hero_XP_rect = pygame.Rect(infoObject.current_w // 1.5, infoObject.current_h // 1.22, 10, 10)
-    Back_button = pygame.Rect(infoObject.current_w // 1.35, infoObject.current_h // 1.28, infoObject.current_h // 15,
-                              infoObject.current_h // 34)
+    Fight_rect = pygame.Rect(W // 2.5, H // 3,
+                             W // 5, W // 5)
+    button_continue = pygame.Rect(W // 1.4, H // 1.3, 20, 50)
+    Enemy_XP_rect = pygame.Rect(W // 2, H // 898, 10, 29)
+    Hero_XP_rect = pygame.Rect(W // 1.5, H // 1.22, 10, 10)
+    Back_button = pygame.Rect(W // 1.35, H // 1.28,
+                              H // 15, H // 34)
     global player_img
     global hit_img
     global enemy_img
