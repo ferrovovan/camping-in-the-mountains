@@ -24,31 +24,29 @@ class Player(pygame.sprite.Sprite):
         # pygame.draw.circle(self.image, 'red', self.rect.center, self.radius)
         self.rect.centerx = H // 1.12
         self.rect.centery = W // 3.4
-        self.speedx = 0
-        self.speedy = 0
+        self.speedx = 3
+        self.speedy = 3
 
     def update(self):
-        self.speedx = 0
-        self.speedy = 0
         keystate = pygame.key.get_pressed()
+        # x
         if keystate[pygame.K_a]:
-            self.speedx = -3
+            self.rect.x -= self.speedx
         elif keystate[pygame.K_LEFT]:
-            self.speedx = -3
+            self.rect.x -= self.speedx
         if keystate[pygame.K_d]:
-            self.speedx = 3
+            self.rect.x += 3
         elif keystate[pygame.K_RIGHT]:
-            self.speedx = 3
+            self.rect.x += 3
+        # y
         if keystate[pygame.K_s]:
-            self.speedy = 3
+            self.rect.y += 3
         elif keystate[pygame.K_DOWN]:
-            self.speedy = 3
+            self.rect.y += 3
         if keystate[pygame.K_w]:
-            self.speedy = -3
+            self.rect.y -= 3
         elif keystate[pygame.K_UP]:
-            self.speedy = -3
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
+            self.rect.y -= 3
         if self.rect.right > H // 0.937:
             self.rect.right = H // 0.937
         if self.rect.left < H // 1.406:
