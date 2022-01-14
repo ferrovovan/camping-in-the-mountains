@@ -48,14 +48,14 @@ class Player(pygame.sprite.Sprite):
             self.rect.y -= 3
         elif keystate[pygame.K_UP]:
             self.rect.y -= 3
-        if self.rect.right > H // 0.937:
-            self.rect.right = H // 0.937
-        if self.rect.left < H // 1.406:
-            self.rect.left = H // 1.406
-        if self.rect.top < W // 5.32:
-            self.rect.top = W // 5.32
-        if self.rect.bottom > W // 2.58:
-            self.rect.bottom = W // 2.58
+        if self.rect.right > 3 * W // 5:
+            self.rect.right = 3 * W // 5
+        if self.rect.left < W // 2.5:
+            self.rect.left = W // 2.5
+        if self.rect.top < H // 3:
+            self.rect.top = H // 3
+        if self.rect.bottom > H // 3 + W // 5:
+            self.rect.bottom = H // 3 + W // 5
 
 
 class Enemy_attacks(pygame.sprite.Sprite):
