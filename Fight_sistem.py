@@ -97,6 +97,7 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
     else:
         W, H = scr_size
     screen = pygame.display.set_mode((W, H))
+    # инициализация параметров
     XP_band = 200
     XP_Hero = 200
     Total_hit_enemy = int(W // 9.6)
@@ -125,12 +126,13 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
     font_small = pygame.font.Font('freesansbold.ttf', 20)
     words = '* Банда появляется!'
 
+    # музыка
     sound = pygame.mixer.Sound(path.join('data/sounds/Hit.wav'))
     pygame.mixer.music.load(path.join('data/sounds/Battle_theme.mp3'))
     pygame.mixer.music.set_volume(0.2)
     pygame.mixer.music.play(loops=-1)
 
-    # задание всех кнопок
+    # задание (становление) всех кнопок
     button_attack = pygame.Rect(infoObject.current_w // 5.6, infoObject.current_h - infoObject.current_h // 14,
                                 infoObject.current_w // 8, infoObject.current_h // 14)
     button_action = pygame.Rect(infoObject.current_w // 2.8, infoObject.current_h - infoObject.current_h // 14,
@@ -203,11 +205,12 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
         # проверка на события
         for event in pygame.event.get():
 
+            if event.type == pygame.QUIT:
+                return False
+
             # события, если ход игрока
             if turn == 'player':
-                if event.type == pygame.QUIT:
-                    return False
-                elif event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         if words == 'Вы победили!':
                             return True
@@ -369,8 +372,7 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
 
             # события, если ход противника
             if turn == 'enemy':
-                if event.type == pygame.QUIT:
-                    return False
+                pass
 
         # экран, если ход игрока
         if turn == 'player':
