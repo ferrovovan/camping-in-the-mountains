@@ -96,10 +96,13 @@ def start_screen(screen, FPS):
                         draw_message = True  # включаем рисование сообщения
                     elif id == 11:  # карта 1
                         loadWin.set_map(1)
+                        draw_message = True  # включаем рисование сообщения
                     elif id == 12:  # карта 2
                         loadWin.set_map(2)
+                        draw_message = True  # включаем рисование сообщения
                     elif id == 13:  # карта 3
                         loadWin.set_map(3)
+                        draw_message = True  # включаем рисование сообщения
         # рендер
         if draw_message:
             scrRect = screens_dict[draw_screen].get_rect()
