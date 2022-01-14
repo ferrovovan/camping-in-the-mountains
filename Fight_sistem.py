@@ -141,16 +141,16 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
                               W // 8, H // 14)
     button_mercy = pygame.Rect(W // 1.4, H - H // 14,
                                W // 8, H // 14)
-    button_talk = pygame.Rect(W // 1.45, H // 1.4, W // 8,
-                              H // 16)
-    button_threat = pygame.Rect(infoObject.current_w // 4.6, infoObject.current_h // 1.4, infoObject.current_w // 8,
-                                infoObject.current_h // 16)
-    button_information = pygame.Rect(infoObject.current_w // 2.2, infoObject.current_h // 1.4,
-                                     infoObject.current_w // 10, infoObject.current_h // 16)
-    button_id_1 = pygame.Rect(infoObject.current_w // 4.2, infoObject.current_h // 1.44, infoObject.current_w // 15,
-                              infoObject.current_h // 30)
-    button_id_2 = pygame.Rect(infoObject.current_w // 4.2, infoObject.current_h // 1.34, infoObject.current_w // 12,
-                              infoObject.current_h // 30)
+    button_talk = pygame.Rect(W // 1.45, H // 1.4,
+                              W // 8, H // 16)
+    button_threat = pygame.Rect(W // 4.6, H // 1.4,
+                                W // 8, H // 16)
+    button_information = pygame.Rect(W // 2.2, H // 1.4,
+                                     W // 10, H // 16)
+    button_id_1 = pygame.Rect(W // 4.2, H // 1.44,
+                              W // 15, H // 30)
+    button_id_2 = pygame.Rect(W // 4.2, H // 1.34,
+                              W // 12, H // 30)
     button_id_3 = pygame.Rect(infoObject.current_w // 2.1, infoObject.current_h // 1.44, infoObject.current_w // 22,
                               infoObject.current_h // 30)
     button_id_4 = pygame.Rect(infoObject.current_w // 2.1, infoObject.current_h // 1.34, infoObject.current_w // 12,
