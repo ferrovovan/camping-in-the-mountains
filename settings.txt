@@ -1,5 +1,5 @@
 FPS = 60
 language = russian
-display = (1000,780)
+display = (1366,768)
 map = main_map.txt
 First_open = True
