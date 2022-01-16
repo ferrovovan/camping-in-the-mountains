@@ -585,6 +585,9 @@ class Character:
                     item = Item('gfx/textures/items/shield.png', id=3)
                 if isinstance(item, Item):
                     self.inventory.inventory.add_item(item)
+        if self.turn >= 6:
+            self.turn = 0
+            self.map_linc.new_badGroup()
         self.turn += 1
 
     def get_click(self, mouse_pos):
@@ -831,6 +834,9 @@ class Map(Board):
                     BadGroup(self.board, j, i, is_in_circle=is_in_circle)
         if screenBoards is not None:
             self.set_board_in_center(screenBoards)
+
+    def new_badGroup(self):
+        pass
 
     # готов
     def render(self, screen):
