@@ -131,9 +131,9 @@ class InventoryDisplay(SomeDisplay):
     def __init__(self, size, coords, color='gray', indent=20):
         super().__init__(size, coords, color=color)
         space_size = (5, 4)
-        self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // (space_size[1] + 1)),
+        self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // space_size[1]),
                                    display_link=self)
-        self.inventory.left = size[0] // 4
+        self.inventory.left = (size[0] - space_size[0] * self.inventory.cell_size) // 2
         coords = ((size[0] + space_size[0] * self.inventory.cell_size + self.inventory.left) // 2, self.inventory.top)
         # настройка строки названия
         self.item_name = StrokeSprite(self.otherGroup, '', size=50, color=pygame.color.Color(230, 100, 130))
