@@ -814,6 +814,7 @@ class Map(Board):
         """
         Загружает карту с файла
         :param filename: txt filename
+        :param screenBoards: size of screen
         """
         with open(filename, 'r') as mapFile:
             map = [line.strip() for line in mapFile]
@@ -836,7 +837,19 @@ class Map(Board):
             self.set_board_in_center(screenBoards)
 
     def new_badGroup(self):
-        pass
+        """
+        добавляет по кругу
+        """
+        none_cells = []
+        for i in range(2 * (self.height + self.width) - 4):
+            x = i % self.height
+            y = i // self.width
+            if self.board[y][x] is None:
+                none_cells.append((x, y))
+        if len(none_cells) >= 1:  # есть свободное место
+            print(random.choices)
+            x, y = random.choice(none_cells)
+            BadGroup(self.board, x, y, group_size=random.randrange(1, 5), is_in_circle=True)
 
     # готов
     def render(self, screen):
