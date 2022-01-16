@@ -161,6 +161,25 @@ class InventoryDisplay(SomeDisplay):
         self.inventory.render()
 
 
+class StatsDisplay(SomeDisplay):
+    def __init__(self, size, coords, character_linc=None, color='gray'):
+        super().__init__(size, coords, color=color)
+
+        self.character_linc = character_linc
+
+        self.buttBackRect = pygame.Rect(size[0] - 60, size[1] - 60, 50, 50)
+        self.buttBack = Button(self.buttonGroup, self.buttBackRect.left, self.buttBackRect.top, self.buttBackRect.width,
+                               self.buttBackRect.height, id=9)
+
+    def get_click(self, mouse_pos):
+        if self.buttBackRect.collidepoint(*mouse_pos):
+            self.character_linc.next_page()
+
+    def is_click(self, mouse_pos):
+        mouse_pos = (mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1])
+        return self.buttBackRect.collidepoint(*mouse_pos)
+
+
 class SettingsDisplay(MenuDisplay):
     """
     Меню настроек
@@ -545,7 +564,7 @@ class Character:
         self.inventory = InventoryDisplay(page_size, coords, color=color, indent=indent)
         self.inventory.inventory.character_link = self
         # строительство статов, окна героя
-        self.stats = SomeDisplay(page_size, coords, color=color)
+        self.stats = StatsDisplay(page_size, coords, character_linc=self, color=color)
         #
         self.pages = {'inventory': self.inventory,
                       'stats': self.stats}
@@ -594,6 +613,8 @@ class Character:
         mouse_pos = (mouse_pos[0] - self.rect.x, mouse_pos[1] - self.rect.y)
         if self.open_page == 'inventory':
             self.inventory.get_click(mouse_pos)
+        elif self.open_page == 'stats':
+            self.stats.get_click(mouse_pos)
 
     def is_click(self, event):
         return self.pages[self.open_page].is_click(event.pos)
