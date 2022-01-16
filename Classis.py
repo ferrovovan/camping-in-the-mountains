@@ -576,10 +576,10 @@ class Character:
                 if isinstance(item, Item):
                     self.inventory.inventory.add_item(item)
 
-    def get_click(self, event):
-        mouse_pos = event.pos
+    def get_click(self, mouse_pos):
+        mouse_pos = (mouse_pos[0] - self.rect.x, mouse_pos[1] - self.rect.y)
         if self.open_page == 'inventory':
-            self.inventory.get_click(event)
+            self.inventory.get_click(mouse_pos)
 
     def is_click(self, event):
         return self.pages[self.open_page].is_click(event.pos)
@@ -667,8 +667,6 @@ class Inventory(Board):
         self.board = [None for _ in range(space[0] * space[1])]
         self.display_link = display_link
         self.character_link = character_link
-        self.butGroup = ButtonGroup()
-        self.buttBack = Button(self.butGroup, 20, cell_size * space[1] - 20, 40, 40, id=8)
 
     def render(self):
         super().render(self.display_link)
@@ -679,8 +677,6 @@ class Inventory(Board):
             if isinstance(item, Item):
                 item.render(self.display_link, x=(i % self.space[0]) * self.cell_size + self.cell_size // 2,
                             y=(i // self.space[0]) * self.cell_size + self.cell_size // 2)
-        self.butGroup.draw(self.display_link)
-        self.butGroup.draw_text(self.display_link)
 
     def add_item(self, item):
         if not isinstance(item, Item):
@@ -716,9 +712,7 @@ class Inventory(Board):
         for i in range(self.width * self.height - x):
             self.board.append(None)
 
-    def get_cell(self, event):
-        self.butGroup.click_id(event)
-        mouse_pos = event.pos
+    def get_cell(self, mouse_pos):
         if self.is_click(mouse_pos):
             return sum(((mouse_pos[0] - self.left) // self.cell_size,  # строка
                         ((mouse_pos[1] - self.top) // self.cell_size) * self.space[0]))  # столбец
@@ -875,7 +869,7 @@ class MouseManager:
                 if message is not None:
                     return message
             elif self.character_linc.is_click(event) and self.modifications['character']:  # инвентарь
-                self.character_linc.get_click(event)
+                self.character_linc.get_click(pygame.mouse.get_pos())
             elif self.map_linc.is_click(pygame.mouse.get_pos()) and self.modifications['map']:  # карта
                 self.map_linc.on_click(pygame.mouse.get_pos())
 
