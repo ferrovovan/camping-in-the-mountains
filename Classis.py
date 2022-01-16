@@ -171,6 +171,8 @@ class StatsDisplay(SomeDisplay):
         self.buttBack = Button(self.buttonGroup, self.buttBackRect.left, self.buttBackRect.top, self.buttBackRect.width,
                                self.buttBackRect.height, id=9)
 
+        self.activeItem = None
+
     def get_click(self, mouse_pos):
         if self.buttBackRect.collidepoint(*mouse_pos):
             self.character_linc.next_page()
@@ -185,6 +187,9 @@ class StatsDisplay(SomeDisplay):
         for i in range(1, n + 1):
             pygame.draw.rect(self, 'gray', pygame.Rect(self.get_size()[0] * i // 6, self.get_size()[1] // 3, 80, 80),
                              width=2)
+        if self.activeItem is not None:
+            pygame.draw.rect(self, 'gold', pygame.Rect(self.get_size()[0] * self.activeItem // 6, self.get_size()[1] // 3, 80, 80),
+                             width=3)
 
 
 class SettingsDisplay(MenuDisplay):
