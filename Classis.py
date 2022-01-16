@@ -165,8 +165,8 @@ class StatsDisplay(SomeDisplay):
     def __init__(self, size, coords, character_linc=None, color='gray'):
         super().__init__(size, coords, color=color)
 
-        self.character_linc = character_linc
-
+        self.character_linc = character_linc  # ссылка на character
+        # строительство кнопки
         self.buttBackRect = pygame.Rect(size[0] - 60, size[1] - 60, 50, 50)
         self.buttBack = Button(self.buttonGroup, self.buttBackRect.left, self.buttBackRect.top, self.buttBackRect.width,
                                self.buttBackRect.height, id=9)
@@ -178,6 +178,13 @@ class StatsDisplay(SomeDisplay):
     def is_click(self, mouse_pos):
         mouse_pos = (mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1])
         return self.buttBackRect.collidepoint(*mouse_pos)
+
+    def render(self, screen, language='russian'):
+        super(StatsDisplay, self).render(screen, language=language)
+        n = 3  # кол-во всевозможный предметов
+        for i in range(1, n + 1):
+            pygame.draw.rect(self, 'gray', pygame.Rect(self.get_size()[0] * i // 6, self.get_size()[1] // 3, 80, 80),
+                             width=2)
 
 
 class SettingsDisplay(MenuDisplay):
