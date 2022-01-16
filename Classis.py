@@ -139,13 +139,21 @@ class InventoryDisplay(SomeDisplay):
         self.item_name.set_in_center((coords[0], coords[1] + 30))
         # настройка строки описания
         self.item_lore = StrokeSprite(self.otherGroup, '', coords=(
-        space_size[0] * self.inventory.cell_size + 20, coords[1] + size[1] * (1 / 2)))
+            space_size[0] * self.inventory.cell_size + 20, coords[1] + size[1] * (1 / 2)))
+
+        self.buttBackRect = pygame.Rect(10, size[1] - 60, 50, 50)
+        self.buttBack = Button(self.buttonGroup, self.buttBackRect.left, self.buttBackRect.top, self.buttBackRect.width,
+                               self.buttBackRect.height, id=8)
 
     def is_click(self, mouse_pos):
-        return self.inventory.is_click((mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1]))
+        mouse_pos = (mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1])
+        return any((self.inventory.is_click(mouse_pos), self.buttBackRect.collidepoint(*mouse_pos)))
 
     def get_click(self, mouse_pos):
-        self.inventory.get_click(mouse_pos)
+        if self.buttBackRect.collidepoint(*mouse_pos):
+            pass
+        else:
+            self.inventory.get_click(mouse_pos)
 
     def render(self, screen, language='russian'):
         super().render(screen, language=language)
@@ -548,7 +556,8 @@ class Character:
     def move_hero(self, vCoords):
         # запускаем ход игрока
         new_coords = self.hero_link.new_coords(vCoords)
-        if self.hero_link.move(vCoords) is False and isinstance(self.hero_link.board[new_coords[1]][new_coords[0]], BadGroup):  # если нельзя пройти, потому что банда
+        if self.hero_link.move(vCoords) is False and isinstance(self.hero_link.board[new_coords[1]][new_coords[0]],
+                                                                BadGroup):  # если нельзя пройти, потому что банда
             victory = fight()  # запускаем битву
             pygame.mouse.set_visible(True)
             if not victory:
