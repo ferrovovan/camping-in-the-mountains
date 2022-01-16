@@ -151,7 +151,7 @@ class InventoryDisplay(SomeDisplay):
 
     def get_click(self, mouse_pos):
         if self.buttBackRect.collidepoint(*mouse_pos):
-            pass
+            self.inventory.character_link.next_page()
         else:
             self.inventory.get_click(mouse_pos)
 
@@ -546,6 +546,12 @@ class Character:
         self.pages = {'inventory': self.inventory,
                       'stats': self.stats}
         self.open_page = 'inventory'
+
+    def next_page(self):
+        if self.open_page == 'inventory':
+            self.open_page = 'stats'
+        else:
+            self.open_page = 'inventory'
 
     def move_hero(self, vCoords):
         # запускаем ход игрока
