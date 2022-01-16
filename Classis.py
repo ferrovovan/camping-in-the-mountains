@@ -515,11 +515,14 @@ class Character:
     Это класс, в котором игрок сможет увидеть свои вещи, свои навыки, летопись действий и прочее
     """
 
-    def __init__(self, screenBoards, hero_link=None, language='russian'):
+    def __init__(self, screenBoards, hero_link=None, map_linc=None, language='russian'):
+        self.turn = 0
         self.is_open = False
         if isinstance(hero_link, Hero):  # если дали ссылку
             self.hero_link = hero_link
             hero_link.character_link = self
+        if isinstance(map_linc, Map):
+            self.map_linc = map_linc
         # загружаем локализацию
         self.item_names = load_localisation('items name', language=language)
         self.items_depiction = load_localisation('items depiction', language=language)
@@ -582,6 +585,7 @@ class Character:
                     item = Item('gfx/textures/items/shield.png', id=3)
                 if isinstance(item, Item):
                     self.inventory.inventory.add_item(item)
+        self.turn += 1
 
     def get_click(self, mouse_pos):
         mouse_pos = (mouse_pos[0] - self.rect.x, mouse_pos[1] - self.rect.y)

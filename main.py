@@ -165,7 +165,7 @@ def main():
     board.load_map(f'data/maps/{load_map}', size)  # загружаем карту
     interface = Interface(size, board.cell_size, language=language)  # создаём интерфейс
     hero1 = Hero(board.board, 0, 7, is_in_circle=True)  # создаём героя
-    character = Character(size, hero_link=hero1)  # создаём интерфейс героя
+    character = Character(size, hero_link=hero1, map_linc=board)  # создаём интерфейс героя
     mouseManager = MouseManager(screen, interface, board, character)  # создаём менеджера мыши
     keyManager = KeyBoardManager(screen, interface, board, character)  # создаём менеджера клавиатуры
     #
