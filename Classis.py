@@ -131,15 +131,16 @@ class InventoryDisplay(SomeDisplay):
     def __init__(self, size, coords, color='gray', indent=20):
         super().__init__(size, coords, color=color)
         space_size = (5, 4)
-        self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // space_size[1]),
+        self.inventory = Inventory(space_size, cell_size=((size[1] - indent) // (space_size[1] + 1)),
                                    display_link=self)
-        coords = ((size[0] + space_size[0] * self.inventory.cell_size) // 2, 0)
+        self.inventory.left = size[0] // 4
+        coords = ((size[0] + space_size[0] * self.inventory.cell_size + self.inventory.left) // 2, self.inventory.top)
         # настройка строки названия
         self.item_name = StrokeSprite(self.otherGroup, '', size=50, color=pygame.color.Color(230, 100, 130))
         self.item_name.set_in_center((coords[0], coords[1] + 30))
         # настройка строки описания
         self.item_lore = StrokeSprite(self.otherGroup, '', coords=(
-            space_size[0] * self.inventory.cell_size + 20, coords[1] + size[1] * (1 / 2)))
+            coords[0], coords[1] + size[1] * (1 / 2)))
 
         self.buttBackRect = pygame.Rect(10, size[1] - 60, 50, 50)
         self.buttBack = Button(self.buttonGroup, self.buttBackRect.left, self.buttBackRect.top, self.buttBackRect.width,
@@ -681,8 +682,8 @@ class Inventory(Board):
             if item is None:
                 break
             if isinstance(item, Item):
-                item.render(self.display_link, x=(i % self.space[0]) * self.cell_size + self.cell_size // 2,
-                            y=(i // self.space[0]) * self.cell_size + self.cell_size // 2)
+                item.render(self.display_link, x=(i % self.space[0]) * self.cell_size + self.cell_size // 2 + self.left,
+                            y=(i // self.space[0]) * self.cell_size + self.cell_size // 2 + self.top)
 
     def add_item(self, item):
         if not isinstance(item, Item):
