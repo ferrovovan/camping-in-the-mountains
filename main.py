@@ -130,7 +130,7 @@ def start_screen(screen, FPS):
                         draw_screen = 'settingsWin'
                     elif id == 4:  # выход
                         pygame.quit()
-                        quit()
+                        return False
                     elif id == 7:  # назад
                         draw_screen = 'menuWin'
                     elif id == 8:  # <-
