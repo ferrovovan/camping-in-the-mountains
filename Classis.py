@@ -188,9 +188,9 @@ class StatsDisplay(SomeDisplay):
         for i in range(1, n + 1):
             pygame.draw.rect(self, 'gray', pygame.Rect(size[0] * i // 6, size[1] // 3, 80, 80),
                              width=2)
-            coord = self.character_linc.inventory.inventory.have_item(id=i)
-            if isinstance(coord, int):
-                self.character_linc.inventory.inventory.board[coord].render(self, x=size[0] * i // 6, y=size[1] // 3)
+            item = self.character_linc.inventory.inventory.have_item(id=i)
+            if isinstance(item, Item):
+                item.render(self, x=size[0] * i // 6, y=size[1] // 3)
         if self.activeItem is not None:
             pygame.draw.rect(self, 'gold', pygame.Rect(self.get_size()[0] * self.activeItem // 6, self.get_size()[1] // 3, 80, 80),
                              width=3)
@@ -755,6 +755,12 @@ class Inventory(Board):
     def have_item(self, id=0):
         if self.board[0] is None or id == 0:
             return False
+        i = 0
+        while i < len(self.board) and self.board[i] is not None:
+            if self.board[i].id == id:
+                return self.board[i]
+            i += 1
+        return False
 
     def sort_board(self):
         if None in self.board:
