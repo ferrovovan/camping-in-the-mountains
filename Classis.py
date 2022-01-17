@@ -605,7 +605,11 @@ class Character:
         new_coords = self.hero_link.new_coords(vCoords)
         if self.hero_link.move(vCoords) is False and isinstance(self.hero_link.board[new_coords[1]][new_coords[0]],
                                                                 BadGroup):  # если нельзя пройти, потому что банда
-            victory = fight()  # запускаем битву
+            if self.stats.activeItem is not None:
+                hit = self.stats.activeItem * 14
+            else:
+                hit = 8
+            victory = fight(Your_hit=hit)  # запускаем битву
             pygame.mouse.set_visible(True)
             if not victory:
                 self.keyManager_linc.interface_linc.change_message(text=self.messages[1][1], set_visible=True)

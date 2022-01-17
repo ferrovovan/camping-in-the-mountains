@@ -83,7 +83,7 @@ class Enemy_attacks(pygame.sprite.Sprite):
             self.speedx = int(random.randrange(-2, 2))
 
 
-def main(scr_size=None, Your_hit=randint(30, 50)):
+def main(scr_size=None, Your_hit=5):
     global Victory
     pygame.init()
     pygame.mixer.init()
@@ -201,7 +201,6 @@ def main(scr_size=None, Your_hit=randint(30, 50)):
         screen.fill('black')
         enemies.draw(screen)
         # проверка на милосердие
-        Your_hit = randint(30, 50)
         if mercy <= 2:
             Band_hit = randint(15, 20) + dop_attack
         else:
