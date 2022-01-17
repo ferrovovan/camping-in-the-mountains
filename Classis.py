@@ -996,9 +996,9 @@ class MouseManager:
                 message = self.interface_linc.get_click(event)
                 if message is not None:
                     return message
-            elif self.character_linc.is_click(event) and self.modifications['character']:  # инвентарь
+            elif self.character_linc.is_click(event) and self.interface_linc.menu_close:  # инвентарь
                 self.character_linc.get_click(pygame.mouse.get_pos())
-            elif self.map_linc.is_click(pygame.mouse.get_pos()) and self.modifications['map']:  # карта
+            elif self.map_linc.is_click(pygame.mouse.get_pos()) and self.interface_linc.menu_close:  # карта
                 self.map_linc.on_click(pygame.mouse.get_pos())
 
     def manage_motion(self, event):
