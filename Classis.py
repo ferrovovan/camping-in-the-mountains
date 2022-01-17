@@ -102,7 +102,8 @@ class InstructionDisplay(SomeDisplay):
     def __init__(self, size, butt_im=None, instructionImage=None, t=0, indent=0, color='gray'):
         size, coords = self._auto_data(size, t=t)
         super().__init__(size, coords, color=color)
-        self._made_buttons(butt_im=butt_im, instructionImage=instructionImage, indent=indent)
+        self.instructionImage = instructionImage
+        self._made_buttons(butt_im=butt_im, indent=indent)
 
     @staticmethod
     def _auto_data(size, t=0):
@@ -110,7 +111,7 @@ class InstructionDisplay(SomeDisplay):
         coords1 = (size[0] // 2 - size1[0] // 2, size[1] // 3 + t)
         return size1, coords1
 
-    def _made_buttons(self, butt_im=None, instructionImage=None, indent=20):
+    def _made_buttons(self, butt_im=None, indent=20):
         """
         Ставит кнопки на себе
         """
@@ -127,6 +128,7 @@ class InstructionDisplay(SomeDisplay):
                id=7, image=butt_im)
 
     def render(self, screen, language='russian'):
+        self.blit(self.instructionImage, dest=(0, 0))
         super().render(screen, language=language)
 
     def click_id(self, event):

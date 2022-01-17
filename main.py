@@ -101,7 +101,8 @@ def start_screen(screen, FPS):
     settingsWin = SettingsDisplay(screen.get_size(), settingsDict, images['button1'], t=y_indent, indent=butt_indent)
     loadWin = LoadDisplay(screen.get_size(), load_id, settingsDict, butt_im=images['button1'], t=y_indent,
                           indent=butt_indent)
-    instruction = InstructionDisplay(screen.get_size(), butt_im=images['button1'], t=y_indent, indent=butt_indent)
+    isnIm = load_image('gfx/instruction.png')
+    instruction = InstructionDisplay(screen.get_size(), butt_im=images['button1'], instructionImage=isnIm, t=y_indent, indent=butt_indent)
 
     # страницы
     screens_dict = {'menuWin': menuWin,
