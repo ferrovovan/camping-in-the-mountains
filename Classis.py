@@ -98,6 +98,42 @@ class MenuDisplay(SomeDisplay):
         return self.buttonGroup.click_id(event)
 
 
+class InstructionDisplay(SomeDisplay):
+    def __init__(self, size, butt_im=None, instructionImage=None, t=0, indent=0, color='gray'):
+        size, coords = self._auto_data(size, t=t)
+        super().__init__(size, coords, color=color)
+        self._made_buttons(butt_im=butt_im, instructionImage=instructionImage, indent=indent)
+
+    @staticmethod
+    def _auto_data(size, t=0):
+        size1 = (560, size[1] // 3)
+        coords1 = (size[0] // 2 - size1[0] // 2, size[1] // 3 + t)
+        return size1, coords1
+
+    def _made_buttons(self, butt_im=None, instructionImage=None, indent=20):
+        """
+        Ставит кнопки на себе
+        """
+        k = 4
+        scr_size = self.get_size()
+        if butt_im is None:
+            butt_im = Button.image
+        n = 1
+        button_width = scr_size[0] - 2 * indent
+        button_height = (scr_size[1] - 2 * indent) * k // (n * (k + 1) - 1)
+        Button(self.buttonGroup,
+               indent, indent + scr_size[1] // 5,
+               button_width, button_height,
+               id=7, image=butt_im)
+
+    def render(self, screen, language='russian'):
+        super().render(screen, language=language)
+
+    def click_id(self, event):
+        event.pos = (event.pos[0] - self.coords[0], event.pos[1] - self.coords[1])
+        return self.buttonGroup.click_id(event)
+
+
 class LoadDisplay(MenuDisplay):
     def __init__(self, size, id_list, settingsDict, butt_im=None, t=0, indent=0, color='gray'):
         super().__init__(size, id_list, butt_im=butt_im, t=t, indent=indent, color=color)
@@ -181,7 +217,8 @@ class StatsDisplay(SomeDisplay):
         if self.buttBackRect.collidepoint(*mouse_pos):
             self.character_linc.next_page()
         for i in range(len(self.activeRects)):
-            if self.activeRects[i].collidepoint(*mouse_pos) and self.character_linc.inventory.inventory.have_item(id=(i + 1)):
+            if self.activeRects[i].collidepoint(*mouse_pos) and self.character_linc.inventory.inventory.have_item(
+                    id=(i + 1)):
                 self.activeItem = i + 1
 
     def is_click(self, mouse_pos):

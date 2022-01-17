@@ -92,7 +92,7 @@ def start_screen(screen, FPS):
     messageWin = MessageWin((300, size[1] // 9), message=message, auto_words_size=True)
     draw_message = False
     # ставим кнопки
-    menu_id = [1, 2, 3, 4]  # id кнопок меню
+    menu_id = [1, 2, 3, 14, 4]  # id кнопок меню
     load_id = [11, 12, 13, 7]  # а кто-то поверил...
 
     butt_indent = 20  # отступ от кнопок
@@ -101,11 +101,13 @@ def start_screen(screen, FPS):
     settingsWin = SettingsDisplay(screen.get_size(), settingsDict, images['button1'], t=y_indent, indent=butt_indent)
     loadWin = LoadDisplay(screen.get_size(), load_id, settingsDict, butt_im=images['button1'], t=y_indent,
                           indent=butt_indent)
+    instruction = InstructionDisplay(screen.get_size(), butt_im=images['button1'], t=y_indent, indent=butt_indent)
 
     # страницы
     screens_dict = {'menuWin': menuWin,
                     'settingsWin': settingsWin,
-                    'loadWin': loadWin}
+                    'loadWin': loadWin,
+                    'instruction': instruction}
     draw_screen = 'menuWin'  # текущая страница
     # цикл
     running = True
@@ -146,6 +148,8 @@ def start_screen(screen, FPS):
                     elif id == 13:  # карта 3
                         loadWin.set_map(3)
                         draw_message = True  # включаем рисование сообщения
+                    elif id == 14:  # инструкция
+                        draw_screen = 'instruction'
         # рендер
         if draw_message:
             scrRect = screens_dict[draw_screen].get_rect()
