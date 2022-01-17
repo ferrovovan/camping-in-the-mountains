@@ -205,7 +205,7 @@ def main(scr_size=None, Your_hit=5):
             Band_hit = randint(15, 20) + dop_attack
         else:
             dop_attack = 0
-            Band_hit = randint(5, 10)
+            Band_hit = randint(4, 8)
 
         # проверка на события
         for event in pygame.event.get():
