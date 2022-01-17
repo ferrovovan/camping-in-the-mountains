@@ -645,9 +645,9 @@ class Character:
         if self.hero_link.move(vCoords) is False and isinstance(self.hero_link.board[new_coords[1]][new_coords[0]],
                                                                 BadGroup):  # если нельзя пройти, потому что банда
             if self.stats.activeItem is not None:
-                hit = self.stats.activeItem * 14
+                hit = self.stats.activeItem * 11 + 9
             else:
-                hit = 8
+                hit = 10
             victory = fight(Your_hit=hit)  # запускаем битву
             pygame.mouse.set_visible(True)
             if not victory:
