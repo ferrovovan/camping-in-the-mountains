@@ -172,27 +172,35 @@ class StatsDisplay(SomeDisplay):
                                self.buttBackRect.height, id=9)
 
         self.activeItem = None
+        self.activeRects = []
+        n = 3  # кол-во всевозможный предметов
+        for i in range(1, n + 1):
+            self.activeRects.append(pygame.Rect(size[0] * i // 4, size[1] // 3, 80, 80))
 
     def get_click(self, mouse_pos):
         if self.buttBackRect.collidepoint(*mouse_pos):
             self.character_linc.next_page()
+        for i in range(len(self.activeRects)):
+            if self.activeRects[i].collidepoint(*mouse_pos) and self.character_linc.inventory.inventory.have_item(id=(i + 1)):
+                self.activeItem = i + 1
 
     def is_click(self, mouse_pos):
         mouse_pos = (mouse_pos[0] - self.coords[0], mouse_pos[1] - self.coords[1])
-        return self.buttBackRect.collidepoint(*mouse_pos)
+        actRect = any([self.activeRects[i].collidepoint(*mouse_pos) for i in range(len(self.activeRects))])
+        return any((self.buttBackRect.collidepoint(*mouse_pos), actRect))
 
     def render(self, screen, language='russian'):
         super(StatsDisplay, self).render(screen, language=language)
-        n = 3  # кол-во всевозможный предметов
+
         size = self.get_size()
-        for i in range(1, n + 1):
-            pygame.draw.rect(self, 'gray', pygame.Rect(size[0] * i // 6, size[1] // 3, 80, 80),
+        for i in range(1, len(self.activeRects) + 1):
+            pygame.draw.rect(self, 'gray', self.activeRects[i - 1],
                              width=2)
             item = self.character_linc.inventory.inventory.have_item(id=i)
             if isinstance(item, Item):
-                item.render(self, x=size[0] * i // 6, y=size[1] // 3)
+                item.render(self, x=self.activeRects[i - 1].left + self.activeRects[i - 1].width // 2, y=size[1] // 3)
         if self.activeItem is not None:
-            pygame.draw.rect(self, 'gold', pygame.Rect(self.get_size()[0] * self.activeItem // 6, self.get_size()[1] // 3, 80, 80),
+            pygame.draw.rect(self, 'gold', self.activeRects[self.activeItem - 1],
                              width=3)
 
 
