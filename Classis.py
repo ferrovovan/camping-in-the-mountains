@@ -119,11 +119,11 @@ class InstructionDisplay(SomeDisplay):
         scr_size = self.get_size()
         if butt_im is None:
             butt_im = Button.image
-        n = 1
         button_width = scr_size[0] - 2 * indent
-        button_height = (scr_size[1] - 2 * indent) * k // (n * (k + 1) - 1)
+        button_height = (scr_size[1] - 2 * indent) * k // (5 * (k + 1) - 1)
+        self.instructionImage = pygame.transform.scale(self.instructionImage, (scr_size[0], scr_size[1] - indent - button_height))
         Button(self.buttonGroup,
-               indent, indent + scr_size[1] // 5,
+               indent, scr_size[1] - indent - button_height,
                button_width, button_height,
                id=7, image=butt_im)
 
