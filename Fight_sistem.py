@@ -213,6 +213,10 @@ def main(scr_size=None, Your_hit=5):
             if event.type == pygame.QUIT:
                 return False
 
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return False
+
             # события, если ход игрока
             if turn == 'player':
                 if event.type == pygame.KEYDOWN:
