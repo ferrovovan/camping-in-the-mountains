@@ -9,6 +9,7 @@
 8; <-
 9; ->
 10; appliquer
-11;
-12;
-13;
+11; carte 1
+12; carte 2
+13; carte 3
+14; instruction

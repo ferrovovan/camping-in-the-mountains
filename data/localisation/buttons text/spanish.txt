@@ -9,6 +9,7 @@
 8; <-
 9; ->
 10; Aplicar
-11;
-12;
-13;
+11; mapa 1
+12; mapa 2
+13; mapa 3
+14; instrucción
