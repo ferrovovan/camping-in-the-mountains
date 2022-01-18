@@ -1,4 +1,0 @@
-0 ;
-1 ; tige d'une pelle - pas mal plus
-2 ; une pelle est un bon ami dans la ville et pas seulement
-3 ; le bouclier - un métal bon et durable
