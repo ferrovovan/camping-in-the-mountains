@@ -1,5 +1,5 @@
 0;
 1; You are dead!
-2; Victory!
+2; oK
 3; Settings saved, restart the game
 4;
