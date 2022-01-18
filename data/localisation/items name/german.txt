@@ -1,0 +1,4 @@
+0;
+1; Schneiden
+2; Schaufel
+3; Schild
