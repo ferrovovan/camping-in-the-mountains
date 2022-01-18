@@ -1,0 +1,5 @@
+0;
+1; ¡Estás muerto!
+2; ¡Victoria!
+3; Configuración guardada, reinicia el juego
+4;
