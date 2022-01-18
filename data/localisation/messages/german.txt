@@ -1,0 +1,5 @@
+0;
+1; Du bist tot!
+2; Sieg!
+3; Einstellungen gespeichert, Spiel neu starten
+4;
