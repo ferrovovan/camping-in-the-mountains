@@ -1,0 +1,4 @@
+0;
+1; bastone
+2; Pala
+3; scudo
