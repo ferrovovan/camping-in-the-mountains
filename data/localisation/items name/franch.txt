@@ -1,0 +1,4 @@
+0 ;
+1; Coupe
+2 ; pelle
+3 ; bouclier
