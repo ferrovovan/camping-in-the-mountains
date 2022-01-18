@@ -1,5 +1,5 @@
 0;
-1; u diet
-2; oK
+1; You are dead!
+2; Victory!
 3; Settings saved, restart the game
-4; 
+4;
