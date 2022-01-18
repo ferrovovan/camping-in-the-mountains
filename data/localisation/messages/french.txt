@@ -1,0 +1,5 @@
+0;
+1; Tu es mort!
+2; La victoire!
+3; Paramètres enregistrés, redémarrez le jeu
+4;
