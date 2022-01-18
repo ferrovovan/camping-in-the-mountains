@@ -1,0 +1,4 @@
+0;
+1; taglio
+2; Pala
+3; scudo
