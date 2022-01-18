@@ -1045,14 +1045,14 @@ class KeyBoardManager:
                     self.character_link.move_hero((-1, 0))
                 elif kPressed[pygame.K_i]:
                     self.character_link.set_open()
-                elif kPressed[pygame.K_d]:  # черенок
-                    self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/stalk.png', id=1))
-                elif kPressed[pygame.K_f]:  # лопата
-                    self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shovel.png', id=2))
-                elif kPressed[pygame.K_g]:  # щит
-                    self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shield.png', id=3))
-                elif kPressed[pygame.K_r]:  # удалить элемент
-                    self.character_link.inventory.inventory.del_item(0)
+                #   elif kPressed[pygame.K_d]:  # черенок
+                #       self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/stalk.png', id=1))
+                #   elif kPressed[pygame.K_f]:  # лопата
+                #       self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shovel.png', id=2))
+                #   elif kPressed[pygame.K_g]:  # щит
+                #       self.character_link.inventory.inventory.add_item(Item('gfx/textures/items/shield.png', id=3))
+                #   elif kPressed[pygame.K_r]:  # удалить элемент
+                #       self.character_link.inventory.inventory.del_item(0)
             else:
                 if kPressed[pygame.K_RETURN]:
                     return 'return'

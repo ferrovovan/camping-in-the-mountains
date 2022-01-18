@@ -229,9 +229,9 @@ def main(scr_size=None, Your_hit=5):
                             turn = 'enemy'
                             Cont = False
                     # hot keys
-                    if event.key == pygame.K_t:  # attack
-                        if turn == 'player' and not Action:
-                            Attack = True
+                    #   if event.key == pygame.K_t:  # attack
+                    #       if turn == 'player' and not Action:
+                    #           Attack = True
                 #                    if event.key == pygame.K_y:  # действие
                 #                        if turn == 'player' and not Action and not Item and not Attack:
                 #                            Action = True
