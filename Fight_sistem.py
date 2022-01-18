@@ -123,8 +123,8 @@ def main(scr_size=None, Your_hit=5):
     turn = 'player'
     items = ['Аптечка', 'Бутерброд', 'Бинт', 'Антибиотик', 'Обезболивающее', 'Консервы']
     heals = ['70', '50', '30', '60', '100', '20']
-    font = pygame.font.Font('freesansbold.ttf', 35)
-    font_small = pygame.font.Font('freesansbold.ttf', 20)
+    font = pygame.font.Font('data/freesansbold.ttf', 35)
+    font_small = pygame.font.Font('data/freesansbold.ttf', 20)
     words = '* Банда появляется!'
 
     # музыка
